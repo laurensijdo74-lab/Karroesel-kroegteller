@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#171c18" />
+  <meta name="color-scheme" content="dark" />
+  <title>Karroesel Hilversum · Kroegteller</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='20' fill='%23161d17'/%3E%3Ccircle cx='40' cy='40' r='30' fill='%23c9944f'/%3E%3Ccircle cx='40' cy='40' r='24' fill='%232a503c'/%3E%3Ctext x='40' y='51' font-size='37' text-anchor='middle' fill='%23fce8bd' font-family='Georgia'%3EK%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #101511;
+      --panel: #19231c;
+      --panel-light: #223328;
+      --panel-soft: #1e2a21;
+      --surface: #233329;
+      --line: rgba(237,222,184,.17);
+      --paper: #ffedc8;
+      --muted: #aab5a7;
+      --gold: #e9b967;
+      --gold-dark: #bd8543;
+      --red: #dc6c61;
+      --good: #8bcaa1;
+      --text: #fff7e6;
+      --shadow: 0 18px 60px rgba(0,0,0,.22);
+      --r: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; min-height:100dvh; color:var(--text); font: 15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; background:
+      radial-gradient(ellipse 70% 520px at 0 0,rgba(63,101,66,.36),transparent 75%),
+      radial-gradient(ellipse 60% 480px at 100% 0,rgba(139,78,38,.21),transparent 77%),
+      #101511; }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; -webkit-tap-highlight-color: transparent; }
+    button:disabled { opacity:.42; cursor:not-allowed; }
+    button:focus-visible,input:focus-visible,select:focus-visible,[role="button"]:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    input,select { min-width:0; }
+    a { color:var(--gold); }
+    .shell { max-width:1140px; margin:0 auto; padding:0 24px 120px; }
+    .masthead { display:flex; justify-content:space-between; align-items:center; padding:24px 0 18px; gap:18px; }
+    .brand { display:flex; align-items:center; gap:15px; min-width:0; }
+    .emblem { width:64px; height:64px; flex-shrink:0; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 29%,#4c7a55,#183c29 70%); border:3px double var(--gold); box-shadow:inset 0 0 0 4px rgba(0,0,0,.2),0 6px 18px rgba(0,0,0,.3); position:relative; }
+    .emblem:after { content:""; position:absolute; inset:6px; border-radius:50%; border:1px solid rgba(255,224,167,.33); }
+    .emblem span { font:bold 39px/1 Georgia,serif; color:var(--paper); text-shadow:0 3px 0 rgba(0,0,0,.25); }
+    .brand-over { font-size:10px; letter-spacing:.25em; color:var(--gold); font-weight:850; text-transform:uppercase; }
+    .brand-title { font: 700 clamp(25px,3vw,40px)/1.1 Georgia,"Times New Roman",serif; letter-spacing:.055em; margin-top:2px; white-space:nowrap; }
+    .brand-sub { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+    .head-badge { color:#edd8ae; font-size:12px; text-align:right; letter-spacing:.09em; line-height:1.6; border-left:1px solid var(--line); padding-left:22px; white-space:nowrap; }
+    .head-badge .dot { display:inline-block; height:7px; width:7px; border-radius:50%; background:var(--good); margin-right:6px; box-shadow:0 0 0 4px rgba(139,202,161,.12); }
+    .tabs { display:grid; grid-template-columns:repeat(5,1fr); background:#162019; border:1px solid var(--line); border-radius:16px; padding:5px; gap:5px; margin-bottom:23px; box-shadow:var(--shadow); }
+    .tab { border:0; color:#b6bfb2; background:transparent; padding:13px 11px; border-radius:11px; font-weight:780; display:flex; justify-content:center; gap:8px; align-items:center; transition:background .15s,color .15s; }
+    .tab svg { width:18px; height:18px; opacity:.9; }
+    .tab.active { background:#3f6046; color:#ffefd2; box-shadow:0 2px 10px rgba(0,0,0,.2); }
+    .tab:not(.active):hover { background:#23372a; }
+    .view { display:none; animation:rise .22s ease-out both; }
+    .view.active { display:block; }
+    @keyframes rise { from { opacity:0;transform:translateY(5px) } to { opacity:1;transform:translateY(0) } }
+    .hero { border-radius:21px; background:
+      radial-gradient(circle at 100% -20%,rgba(241,189,98,.17),transparent 46%),
+      radial-gradient(circle at 0% 120%,rgba(114,167,114,.22),transparent 60%),
+      linear-gradient(125deg,#284c35 0%,#1a3a2a 50%,#152b21 100%); border:1px solid rgba(251,224,167,.26); box-shadow:0 20px 60px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.06); padding:28px 30px 25px; position:relative; overflow:hidden; }
+    .hero:after { content:""; height:200px; width:200px; position:absolute; border:1px solid rgba(245,214,142,.07); border-radius:50%; top:-140px;right:-45px; box-shadow:0 0 0 36px rgba(242,212,165,.025),0 0 0 80px rgba(242,212,165,.022); pointer-events:none; }
+    .hero-top { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:1; }
+    .eyebrow { margin:0 0 6px; font-size:11px; letter-spacing:.18em; font-weight:900; text-transform:uppercase; color:var(--gold); }
+    .hero h1 { margin:0; font:700 clamp(25px,3.5vw,36px)/1.12 Georgia,serif; }
+    .hero-sub { color:#d1decd; margin:8px 0 0; font-size:13px; }
+    .hero-metrics { display:grid; grid-template-columns:1fr 1.35fr 1.2fr; gap:12px; margin-top:25px; position:relative; z-index:1; }
+    .metric { border-radius:14px; border:1px solid rgba(255,232,184,.2); padding:15px 17px; background:rgba(5,27,16,.23); }
+    .metric-label { font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:#c4d4c4; font-weight:750; }
+    .metric-main { display:flex; gap:8px; align-items:baseline; margin-top:5px; }
+    .metric-value { font:bold clamp(27px,3.7vw,39px)/1.1 Georgia,serif; color:var(--paper); font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .metric-small { color:#d1c5a8; font-size:12px; }
+    .metric.warning .metric-value { color:#e4c49c; }
+    .btn { display:inline-flex; gap:8px; align-items:center; justify-content:center; border:1px solid var(--line); background:var(--surface); color:var(--text); border-radius:11px; min-height:39px; font-weight:750; padding:9px 14px; white-space:nowrap; }
+    .btn:hover { filter:brightness(1.13); }
+    .btn:active { transform:translateY(1px); }
+    .btn-gold { background:var(--gold); border-color:var(--gold); color:#2b241a; }
+    .btn-outline { background:rgba(12,29,19,.31); border-color:rgba(237,219,168,.33); color:#f1e3cb; }
+    .btn-plain { background:transparent; }
+    .btn-sm { min-height:34px; padding:7px 10px; font-size:12px; }
+    .btn-danger { color:#ffc7bb; border-color:rgba(230,112,99,.38); }
+    .search-row { display:flex; align-items:center; flex-wrap:wrap; gap:11px; margin:25px 0 15px; }
+    .searchbox { border-radius:12px; border:1px solid var(--line); background:#202b23; display:flex; align-items:center; gap:10px; min-height:46px; padding:0 13px; flex:1 1 260px; }
+    .searchbox svg { width:18px;height:18px; flex-shrink:0; color:var(--gold); }
+    .searchbox input { border:0; outline:none; color:var(--text); background:transparent; width:100%; font-size:14px; }
+    .searchbox input::placeholder { color:#a1aca0; }
+    .category-chips { display:flex; overflow-x:auto; gap:7px; padding:1px 0 4px; scrollbar-width:none; flex:1 1 420px; }
+    .category-chips::-webkit-scrollbar { display:none; }
+    .chip { padding:9px 13px; flex-shrink:0; border:1px solid var(--line); border-radius:999px; color:#cfdbcc; background:#18231b; font-size:12px; font-weight:750; }
+    .chip.selected { background:#e9b967; border-color:#e9b967; color:#24251c; }
+    .section-title { display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin:20px 0 13px; }
+    .section-title h2 { font:700 21px/1.1 Georgia,serif; margin:0; }
+    .section-title .tiny { color:var(--muted); font-size:12px; }
+    .section-title .spark { color:var(--gold); font:15px sans-serif; margin-right:7px; }
+    .drink-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .drink-card { position:relative; background:linear-gradient(145deg,#25382a,#1c2c21); border:1px solid #3c5340; border-radius:16px; padding:18px; min-height:142px; user-select:none; -webkit-user-select:none; touch-action:manipulation; transition:transform .08s,background .12s,border-color .12s; cursor:pointer; }
+    .drink-card:hover { border-color:#b39a64; background:linear-gradient(145deg,#2d4533,#213526); }
+    .drink-card:active { transform:scale(.975); background:linear-gradient(145deg,#3d5940,#29462f); }
+    .drink-card.has-count { border-color:rgba(235,185,103,.65); box-shadow:inset 0 0 0 1px rgba(229,174,94,.12); }
+    .drink-card::after { content:"+"; color:#152b20; font-size:22px; font-weight:800; position:absolute; right:15px;top:15px; width:31px;height:31px; border-radius:10px; background:var(--gold); display:grid;place-items:center; }
+    .drink-card-top { display:flex; align-items:center; gap:11px; padding-right:41px; }
+    .drink-icon { height:36px; width:36px; border-radius:10px; background:rgba(250,224,157,.11); display:grid;place-items:center; font-size:21px; flex-shrink:0; }
+    .drink-name { font-weight:825; font-size:15px; line-height:1.22; }
+    .drink-info { font-size:12px; color:#abbfac; margin-top:5px; }
+    .drink-lower { display:flex; align-items:flex-end; justify-content:space-between; margin-top:17px; gap:9px; }
+    .qty { color:var(--paper); font:bold 28px/1 Georgia,serif; font-variant-numeric:tabular-nums; }
+    .qty small { font:600 11px system-ui,sans-serif; color:#b8c6b5; margin-left:5px; }
+    .drink-amount { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+    .line-total { color:#f4d19c; font-size:12px; font-weight:800; }
+    .minus { border-radius:7px; min-height:29px; min-width:36px; background:#405345; border:1px solid #5c745b; color:var(--paper); font-size:21px; font-weight:700; line-height:1; position:absolute; right:54px; top:16px; z-index:2; }
+    .minus:disabled { opacity:.19; }
+    .subtle-note { border:1px dashed rgba(231,196,126,.25); border-radius:13px; padding:14px 15px; color:#c7cab7; background:rgba(209,187,132,.05); margin-top:18px; font-size:13px; }
+    .subtle-note a { text-decoration:underline; }
+    .empty-search { padding:34px; color:var(--muted); text-align:center; border:1px dashed var(--line); border-radius:16px; }
+    .sticky-total { display:none; }
+    .main-header { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; margin:8px 0 20px; }
+    .main-header h1 { font:700 clamp(26px,3vw,35px)/1.15 Georgia,serif; margin:0; }
+    .main-header p { color:var(--muted); margin:9px 0 0; max-width:690px; }
+    .cols { display:grid; grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr); gap:20px; }
+    .panel { background:linear-gradient(140deg,#1d2b21,#18231b); border:1px solid var(--line); border-radius:var(--r); padding:23px; box-shadow:var(--shadow); }
+    .panel h2 { font:700 23px Georgia,serif; margin:0 0 17px; }
+    .panel h3 { font-size:15px; margin:0 0 12px; }
+    .panel p { color:#b6c1b2; }
+    .receipt { background:var(--paper); color:#242620; border-radius:10px 10px 2px 2px; padding:28px; position:relative; box-shadow:0 12px 28px rgba(0,0,0,.3); }
+    .receipt:after { content:""; position:absolute; top:100%; left:0; right:0; height:10px; background:linear-gradient(135deg,var(--paper) 25%,transparent 25%) 0 0/16px 16px,linear-gradient(225deg,var(--paper) 25%,transparent 25%) 0 0/16px 16px; }
+    .receipt-header { text-align:center; padding-bottom:17px; border-bottom:2px dashed #c9bea6; }
+    .receipt-header .brand-name { font:bold 22px Georgia,serif; letter-spacing:.06em; }
+    .receipt-header .brand-hint { font-size:10px; letter-spacing:.19em; margin-top:4px; }
+    .receipt-date { font-size:12px; margin-top:12px; opacity:.65; }
+    .fieldlabel { display:block; font-size:12px; font-weight:800; color:#c5d0c2; margin:0 0 7px; }
+    .amount-input { display:flex; align-items:center; gap:8px; background:#fffdf6; border:2px solid #d7cab4; border-radius:11px; margin:22px 0 19px; padding:11px 15px; }
+    .amount-input label { white-space:nowrap; color:#5d574f; font-size:13px; font-weight:800; }
+    .amount-input input { width:100%; background:transparent; border:0; color:#171c16; text-align:right; outline:0; font-size:30px; font-weight:900; font-variant-numeric:tabular-nums; }
+    .receipt-amounts { border-top:2px dashed #c9bea6; padding-top:17px; }
+    .receipt-line { display:flex; justify-content:space-between; align-items:baseline; gap:15px; margin:8px 0; font-size:14px; }
+    .receipt-line strong { font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .receipt-line.total { border-top:1px solid #d2c8b1; padding-top:14px; margin-top:14px; font-size:19px; font-weight:800; }
+    .receipt-state { border-radius:10px; margin-top:22px; padding:13px; font-weight:700; line-height:1.4; text-align:center; background:#e7dfca; color:#6d644d; }
+    .receipt-state.good { background:#d4e8d4; color:#256037; }
+    .receipt-state.bad { background:#f8ddc9; color:#894326; }
+    .receipt-state.info { background:#e9e2d0; color:#655c48; }
+    .orderlist { margin:0; padding:0; list-style:none; }
+    .orderlist li { display:grid; grid-template-columns:minmax(0,1fr) 45px 94px; gap:8px; padding:12px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+    .orderlist .label { font-weight:650; min-width:0; }
+    .orderlist .unit { color:#adb9a9; font-size:12px; font-weight:400; }
+    .orderlist .times { color:var(--gold); font-weight:800; text-align:center; }
+    .orderlist .val { font-weight:750; text-align:right; white-space:nowrap; }
+    .sumline { display:flex; align-items:center; justify-content:space-between; margin-top:17px; font-weight:800; gap:7px; }
+    .secondary-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:19px; }
+    .filebox { border:1px dashed rgba(239,189,102,.55); background:linear-gradient(105deg,rgba(214,172,95,.09),rgba(50,89,54,.17)); border-radius:16px; padding:22px; display:flex; justify-content:space-between; gap:17px; align-items:center; }
+    .filebox-icon { flex:0 0 50px; width:50px; height:50px; border-radius:14px; background:rgba(221,179,110,.14); font-size:27px; display:grid; place-items:center; }
+    .filebox h3 { margin:0 0 5px; font-size:16px; }
+    .filebox p { margin:0; color:var(--muted); font-size:12px; }
+    .filebox-content { flex:1; min-width:0; }
+    .helper-row { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin:13px 0 20px; color:var(--muted); font-size:12px; }
+    .text-action { background:transparent; color:var(--gold); border:0; padding:0; font-weight:750; text-decoration:underline; text-underline-offset:3px; }
+    .add-form { display:grid; grid-template-columns:2fr 1fr 1fr auto; align-items:end; gap:10px; }
+    .input { height:42px; border:1px solid #4b5c4b; background:#101a13; color:var(--text); padding:9px 11px; border-radius:9px; width:100%; }
+    .input::placeholder { color:#7e8c7e; }
+    .pricing-header { display:flex; justify-content:space-between; flex-wrap:wrap; gap:15px; align-items:flex-end; margin-bottom:11px; }
+    .pricing-table { border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+    .price-row { display:grid; grid-template-columns:minmax(180px,2fr) minmax(106px,1fr) minmax(116px,.9fr) 73px 52px; gap:12px; padding:10px 13px; align-items:center; border-bottom:1px solid var(--line); background:rgba(24,39,27,.67); }
+    .price-row:last-child { border-bottom:0; }
+    .price-row.header { background:#314535; color:#e1d4b1; text-transform:uppercase; letter-spacing:.07em; font-size:10px; font-weight:850; }
+    .price-name { font-weight:760; display:flex; gap:7px; align-items:center; min-width:0; }
+    .price-name > span { overflow-wrap:anywhere; }
+    .price-name small { font-weight:500; color:var(--muted); }
+    .price-row .input { height:36px; padding:6px 8px; font-size:13px; }
+    .row-icon { background:transparent; border:1px solid #495b49; color:#9ca998; border-radius:9px; height:34px; width:36px; font-size:18px; }
+    .row-icon.on { color:var(--gold); border-color:#8f7c50; }
+    .row-icon.danger { font-size:15px; }
+    .legend { color:var(--muted); font-size:12px; }
+    .session-list { display:grid; gap:10px; }
+    .session-row { text-align:left; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:17px; border:1px solid var(--line); border-radius:13px; background:#18261d; width:100%; color:var(--text); }
+    .session-row.current { border-color:var(--gold); background:#29392a; }
+    .session-row .name { font-size:15px; font-weight:800; }
+    .session-row .sub { color:var(--muted); font-size:12px; margin-top:3px; }
+    .session-row .side { text-align:right; font-weight:850; white-space:nowrap; }
+    .session-row .side small { font-size:11px; font-weight:500; color:var(--muted); display:block; margin-top:5px; }
+    .info-card { background:#17221a; border-radius:13px; padding:16px; border:1px solid var(--line); }
+    .info-card h3 { margin:0 0 6px; }
+    .info-card p { font-size:13px; margin:0; }
+    .details { font-size:12px; color:var(--muted); margin-top:6px; }
+    .statsbar { display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-bottom:16px; }
+    .statpill { color:#dcc9a6; padding:6px 10px; border:1px solid var(--line); border-radius:999px; background:#1a281e; font-size:12px; }
+    .modal-wrap { position:fixed; inset:0; z-index:100; background:rgba(1,10,5,.79); backdrop-filter:blur(5px); display:none; place-items:center; padding:14px; }
+    .modal-wrap.open { display:grid; }
+    .modal { width:min(720px,100%); max-height:min(90dvh,900px); overflow:auto; border:1px solid rgba(235,188,109,.5); border-radius:21px; background:#1b2920; padding:24px; box-shadow:0 36px 96px rgba(0,0,0,.54); }
+    .modal-top { display:flex; gap:14px; justify-content:space-between; align-items:flex-start; margin-bottom:17px; }
+    .modal-top h2 { font:700 26px Georgia,serif; margin:0; }
+    .modal-top p { color:var(--muted); margin:5px 0 0; }
+    .x-btn { width:35px;height:35px; background:#38473a; color:#f8e7c5; border:0; border-radius:9px; font-size:20px; flex-shrink:0; }
+    .modal-labels { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:18px 0; }
+    .preview-box { max-height:250px; overflow:auto; border:1px solid var(--line); border-radius:12px; }
+    .preview-table { border-collapse:collapse; width:100%; min-width:340px; font-size:12px; }
+    .preview-table th,.preview-table td { border-bottom:1px solid var(--line); padding:9px; text-align:left; }
+    .preview-table th { position:sticky;top:0; background:#334738; }
+    .preview-table td { color:#dbe6d4; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; flex-wrap:wrap; }
+    /* Doorlopende W-bon: duidelijk los van de avondtelling. */
+    .wbon-hero { position:relative; padding:24px 27px 25px; overflow:hidden; border:1px solid rgba(242,202,117,.37); border-radius:21px;
+      background:radial-gradient(circle at 100% 0,rgba(229,170,83,.13),transparent 48%),linear-gradient(125deg,#193b2b,#10281d 73%); box-shadow:var(--shadow); }
+    .wbon-top { display:flex; align-items:center; justify-content:space-between; gap:22px; }
+    .wbon-top h1 { margin:0; font:700 clamp(28px,4vw,39px)/1.08 Georgia,serif; }
+    .wbon-top p { margin:7px 0 0; font-size:13px; color:#c7d4c6; }
+    .wbon-label { color:var(--gold); font-size:11px; font-weight:850; letter-spacing:.17em; text-transform:uppercase; margin-bottom:6px; }
+    .w-badge { width:125px; min-width:125px; height:124px; background:#243d2c; border-radius:17px; display:grid; place-items:center; padding:10px 6px; border:1px solid rgba(233,185,103,.48); box-shadow:inset 0 0 26px rgba(0,0,0,.24); text-align:center; transition:background .3s,border-color .3s; }
+    .w-badge .w-letter { font:900 69px/.95 Georgia,serif; color:#627a5e; text-shadow:0 3px 0 rgba(0,0,0,.25); transition:color .3s,transform .3s; }
+    .w-badge .w-label { display:block; color:#b0c1b1; font-size:10px; font-weight:850; line-height:1.2; margin-top:6px; }
+    .w-badge.achieved { border-color:#ffe2a2; background:radial-gradient(circle at 50% 38%,#715126,#3d3420 84%); box-shadow:0 0 0 3px rgba(235,185,103,.13),inset 0 0 28px rgba(224,158,49,.15); }
+    .w-badge.achieved .w-letter { color:#ffdfa1; text-shadow:0 0 20px rgba(254,210,109,.55),0 3px 0 rgba(0,0,0,.35); transform:scale(1.035); }
+    .w-badge.achieved .w-label { color:#ffe8b4; }
+    .wbon-metrics { display:flex; gap:10px; margin-top:19px; }
+    .wbon-metric { flex:1; min-width:0; padding:12px 14px; border:1px solid rgba(237,222,184,.18); border-radius:12px; background:rgba(0,0,0,.15); }
+    .wbon-metric .label { display:block; color:#b7c9b7; font-weight:750; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+    .wbon-metric .value { display:block; color:#ffe9be; font:bold clamp(21px,3.1vw,33px)/1.2 Georgia,serif; margin-top:4px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .wbon-metric.wins .value { color:var(--gold); }
+    .wbon-progress-head { display:flex; align-items:center; justify-content:space-between; gap:8px; color:#dcd4b7; margin:19px 0 8px; font-size:12px; }
+    .wbon-track { height:9px; width:100%; border-radius:30px; overflow:hidden; background:#0b2117; border:1px solid rgba(255,240,199,.17); }
+    .wbon-track > span { display:block; height:100%; border-radius:30px; width:0; background:linear-gradient(90deg,#d6a04e,#ffe0a0); transition:width .35s ease; }
+    .wbon-warning { font-size:12px; line-height:1.45; color:#f6c995; margin-top:10px; }
+    .wbon-pay-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:18px; padding-top:14px; border-top:1px solid rgba(237,222,184,.15); }
+    .wbon-pay-row .btn-paid { min-height:43px; padding:10px 22px; color:#12341f; border-color:#b7e6bd; background:linear-gradient(135deg,#b9e8b9,#86cda0); font-weight:900; }
+    .wbon-pay-row .pay-hint { color:#c4d6c4; font-size:12px; line-height:1.4; flex:1 1 180px; }
+    .wbon-paid-info { margin-top:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; border-radius:13px; border:1px solid rgba(169,226,184,.55); background:rgba(65,117,77,.22); padding:12px 14px; }
+    .wbon-paid-info strong { display:block; color:#c7f3cb; font-size:14px; }
+    .wbon-paid-info small { display:block; margin-top:3px; color:#ccddcd; font-size:12px; }
+    .wbon-paid-tag { display:inline-block; font-size:11px; font-weight:900; padding:2px 7px; border:1px solid rgba(161,230,172,.46); border-radius:20px; color:#b0ebbe; background:#25452f; vertical-align:middle; }
+    .setje-feature { display:flex; gap:10px; margin-top:17px; }
+    .setje-btn { flex:1; display:flex; align-items:center; gap:15px; text-align:left; min-height:98px; padding:15px 18px; border:1px solid #dcb46c; border-radius:16px; background:linear-gradient(115deg,#674925,#382d1e 55%,#293523); color:#fff5dd; box-shadow:inset 0 1px rgba(255,249,203,.12); touch-action:manipulation; }
+    .setje-btn:active { transform:scale(.985); }
+    .setje-btn strong { display:block; font:bold 24px/1.15 Georgia,serif; }
+    .setje-btn .setje-emoji { font-size:38px; flex-shrink:0; }
+    .setje-btn small { display:block; color:#e9d4b7; margin-top:5px; font-size:12px; }
+    .setje-btn .setje-plus { margin-left:auto; flex-shrink:0; background:#eabb6c; color:#2d261c; border-radius:11px; padding:8px 12px; font-weight:900; font-size:17px; white-space:nowrap; }
+    .setje-minus { min-width:90px; border:1px solid rgba(220,180,108,.45); background:#262c22; border-radius:14px; color:#ebd3a7; padding:11px; font-weight:800; }
+    .wbon-receipt { margin-top:25px; }
+    .wbon-receipt .panel { min-width:0; }
+    .wbon-receipt .panel h2 { margin-bottom:8px; }
+    .wbon-receipt .panel .hint { color:#b4c0ad; font-size:12px; margin:0 0 14px; }
+    .wbon-receipt .fieldlabel { margin-top:17px; }
+    .wbon-receipt .amount-input { margin:5px 0 18px; }
+    .wbon-receipt .amount-input input { font-size:25px; }
+    .wbon-receipt .receipt-state { margin-top:15px; }
+    .wbon-receipt .receipt-state.info { background:#3a3b2b; color:#f0dcba; }
+    .wbon-receipt .receipt-state.good { background:#244735; color:#a5e4bb; }
+    .wbon-receipt .receipt-state.bad { background:#523427; color:#ffc3a8; }
+    .wbon-receipt .receipt-line { color:#f7e6c5; }
+    .wbon-receipt .receipt-line.total { border-top-color:var(--line); }
+    .wbon-note { font-size:12px; color:#b6c8b0; margin-top:16px; }
+    .wbon-celebrate { position:fixed; z-index:180; left:50%; top:19%; width:min(360px,calc(100% - 30px)); padding:19px; transform:translate(-50%,-20px) scale(.85); opacity:0; pointer-events:none;
+      border:2px solid #f7d38b; border-radius:22px; background:radial-gradient(circle at 50% 15%,#87602f,#1d3325 82%); text-align:center; box-shadow:0 26px 80px rgba(0,0,0,.65),0 0 0 600px rgba(0,0,0,.27); transition:transform .25s,opacity .25s; }
+    .wbon-celebrate.show { transform:translate(-50%,0) scale(1); opacity:1; }
+    .wbon-celebrate .huge-w { font:bold 115px/.95 Georgia,serif; color:#ffdb95; text-shadow:0 0 26px rgba(255,212,119,.45); }
+    .wbon-celebrate h2 { margin:8px 0 4px; font:700 27px Georgia,serif; color:#fff1cc; }
+    .wbon-celebrate p { margin:0; font-size:14px; color:#e9d9ba; }
+    .toast { position:fixed; bottom:18px; left:50%; transform:translate(-50%,18px); opacity:0; pointer-events:none; z-index:150; display:flex; align-items:center; justify-content:center; gap:12px; min-width:min(430px,calc(100% - 30px)); max-width:calc(100% - 25px); padding:13px 16px; border:1px solid rgba(224,191,121,.55); background:#334534; box-shadow:0 14px 45px rgba(0,0,0,.5); border-radius:13px; transition:opacity .16s, transform .16s; font-size:13px; font-weight:700; }
+    .toast.show { opacity:1; transform:translate(-50%,0); pointer-events:auto; }
+    .toast button { background:transparent; border:0; font-weight:900; color:var(--gold); text-decoration:underline; padding:6px; }
+    .footer { margin:30px 0 0; padding:16px 0; border-top:1px solid var(--line); text-align:center; color:#9fae9c; font-size:12px; }
+    .footer strong { color:#e7bc73; }
+    .hide { display:none!important; }
+    @media (max-width:890px) {
+      .cols { grid-template-columns:1fr; }
+      .drink-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .price-row { grid-template-columns:minmax(130px,2fr) minmax(110px,1fr) minmax(103px,1fr) 38px 35px; gap:6px; }
+      .add-form { grid-template-columns: 1.5fr 1fr; }
+    }
+    @media (max-width:600px) {
+      .shell { padding:0 13px 110px; }
+      .masthead { padding:17px 0 14px; }
+      .emblem { height:48px;width:48px;border-width:2px; }
+      .emblem span { font-size:29px; }
+      .brand { gap:10px; }
+      .brand-over { font-size:9px; }
+      .brand-title { font-size:25px; }
+      .brand-sub { font-size:9px; letter-spacing:.18em; }
+      .head-badge { display:none; }
+      .tabs { margin-bottom:14px; padding:4px; gap:3px; border-radius:13px; }
+      .tab { padding:10px 1px; gap:5px; flex-direction:column; font-size:10px; }
+      .tab svg { height:18px; width:18px; }
+      .hero { padding:21px 17px 16px; border-radius:16px; }
+      .hero h1 { font-size:27px; }
+      .hero-top .btn { display:none; } /* Nieuwe avonden staan altijd onder het tabblad Avonden. */
+      .hero-sub { font-size:12px; }
+      .hero-metrics { grid-template-columns: .85fr 1.2fr; gap:7px; margin-top:18px; }
+      .metric { padding:11px; border-radius:10px; }
+      .metric:last-child { grid-column:span 2; padding:10px 11px; display:flex; align-items:center; justify-content:space-between; }
+      .metric-label { font-size:10px; }
+      .metric-value { font-size:28px; }
+      .metric:last-child .metric-value { font:750 14px system-ui,sans-serif; }
+      .metric-main { margin-top:4px; }
+      .search-row { margin-top:18px; gap:9px; }
+      .searchbox { min-height:41px; }
+      .category-chips { flex-basis:100%; }
+      .section-title { margin:17px 0 11px; }
+      .section-title h2 { font-size:20px; }
+      .section-title .tiny { font-size:11px; }
+      .drink-grid { gap:9px; }
+      .drink-card { min-height:149px; border-radius:13px; padding:14px 12px 11px; }
+      .drink-card:after { right:10px;top:12px; width:28px;height:28px; }
+      .drink-card-top { flex-direction:column;align-items:flex-start;gap:7px;padding-right:24px; }
+      .drink-icon { height:30px;width:30px;font-size:17px;border-radius:9px; }
+      .drink-name { font-size:14px; min-height:18px; }
+      .drink-lower { margin-top:13px; }
+      .qty { font-size:25px; }
+      .qty small { font-size:10px;margin-left:3px; }
+      .minus { right:42px; top:12px; min-width:28px; height:28px; min-height:28px; font-size:19px; }
+      .drink-info { font-size:11px; }
+      .line-total { font-size:11px; }
+      .main-header { margin-top:8px; flex-wrap:wrap; }
+      .main-header h1 { font-size:27px; }
+      .main-header p { font-size:13px; }
+      .main-header .btn { width:100%; }
+      .panel { padding:16px; }
+      .panel h2 { font-size:21px; }
+      .receipt { padding:22px; }
+      .filebox { flex-wrap:wrap; padding:16px; gap:12px; }
+      .filebox .btn { width:100%; }
+      .filebox-icon { flex-basis:44px;width:44px;height:44px; }
+      .add-form { grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+      .add-form .new-name { grid-column:span 2; }
+      .add-form .btn { grid-column:span 2; }
+      .pricing-table { border:0; overflow:visible; display:grid; gap:8px; }
+      .price-row.header { display:none; }
+      .price-row { grid-template-columns:minmax(0,1fr) 115px 35px 35px; gap:8px; border:1px solid var(--line); border-radius:11px; padding:11px; }
+      .price-name { grid-column:span 4; font-size:14px; }
+      .price-row .category-select { grid-column:span 1; }
+      .price-row .price-input { grid-column:span 1; }
+      .price-row .star-btn,.price-row .hide-btn { grid-column:span 1; }
+      .modal { padding:18px; }
+      .modal-labels { grid-template-columns:1fr; }
+      .sticky-total { position:fixed; z-index:50; bottom:0;left:0;right:0; display:flex; align-items:center; gap:9px; justify-content:space-between; background:#182b1d; color:var(--text); padding:12px max(16px,env(safe-area-inset-right)) calc(11px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); border-top:1px solid rgba(238,199,126,.38); box-shadow:0 -15px 35px rgba(0,0,0,.4); }
+      .sticky-total.hidden { display:none; }
+      .sticky-total .first { font-weight:800; font-size:12px; color:#f1d9a8; }
+      .sticky-total .second { color:#c3d1bd; font-size:11px; }
+      .sticky-total .btn { flex-shrink:0; }
+      .wbon-hero { padding:20px 16px 17px; border-radius:16px; }
+      .wbon-top { gap:12px; align-items:flex-start; }
+      .wbon-top h1 { font-size:28px; }
+      .wbon-top p { font-size:12px; }
+      .w-badge { min-width:88px; width:88px; height:96px; border-radius:13px; padding:7px 3px; }
+      .w-badge .w-letter { font-size:53px; }
+      .w-badge .w-label { font-size:9px; }
+      .wbon-metrics { gap:7px; margin-top:16px; }
+      .wbon-metric { padding:10px; }
+      .wbon-metric .value { font-size:22px; }
+      .wbon-metric .label { font-size:9px; }
+      .wbon-progress-head { font-size:11px; }
+      .wbon-pay-row { align-items:flex-start; }
+      .wbon-pay-row .btn-paid { min-width:132px; }
+      .wbon-pay-row .pay-hint { flex:1 1 120px; }
+      .wbon-paid-info .btn { width:100%; }
+      .setje-feature { gap:7px; }
+      .setje-btn { min-height:88px; padding:11px 10px; gap:9px; }
+      .setje-btn strong { font-size:22px; }
+      .setje-btn .setje-emoji { font-size:28px; }
+      .setje-btn small { font-size:11px; }
+      .setje-btn .setje-plus { font-size:13px; padding:7px; }
+      .setje-minus { min-width:56px; max-width:60px; padding:6px; font-size:11px; }
+      .wbon-celebrate .huge-w { font-size:93px; }
+      .toast { bottom:79px; }
+    }
+    @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="masthead">
+    <div class="brand">
+      <div class="emblem" aria-hidden="true"><span>K</span></div>
+      <div>
+        <div class="brand-over">De gezelligste telling</div>
+        <div class="brand-title">KARROESEL</div>
+        <div class="brand-sub">Hilversum · Kroegteller</div>
+      </div>
+    </div>
+    <div class="head-badge"><div><span class="dot"></span>Werkt ook zonder internet</div><div>Één tik = één drankje</div></div>
+  </header>
+
+  <nav class="tabs" aria-label="Hoofdmenu">
+    <button class="tab active" data-view="teller" type="button" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14l-2 17H7L5 3Z"/><path d="M6 9h12"/></svg> Teller</button>
+    <button class="tab" data-view="wbon" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m6.5 8 2.5 8 3-6 3 6 2.5-8"/></svg> W-bon</button>
+    <button class="tab" data-view="bon" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14v19l-3-2-4 2-4-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg> Boncheck</button>
+    <button class="tab" data-view="prijzen" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M14.7 8.2a4.6 4.6 0 0 0-2.8-.8c-2.3 0-3.9 1.9-3.9 4.6 0 2.7 1.6 4.6 3.9 4.6a4.6 4.6 0 0 0 2.8-.8M6.4 11h6.9m-6.9 2.7h6.9"/></svg> Prijzen</button>
+    <button class="tab" data-view="avonden" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h18M7 3v8M17 3v8M4 5h16v16H4V5Z"/><path d="m9 16 2 2 4-5"/></svg> Avonden</button>
+  </nav>
+
+  <main>
+    <section id="view-teller" class="view active" aria-label="Drankjesteller">
+      <div class="hero">
+        <div class="hero-top">
+          <div><p class="eyebrow">● Jouw huidige bon</p><h1 id="currentEvening">Vanavond</h1><p class="hero-sub">Besteld? Tik op het drankje. Nog eentje? Tik opnieuw.</p></div>
+          <button id="heroNewNight" class="btn btn-outline btn-sm" type="button">＋ Nieuwe avond</button>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric"><div class="metric-label">Drankjes</div><div class="metric-main"><div id="heroCount" class="metric-value">0</div></div></div>
+          <div class="metric"><div class="metric-label">Berekening</div><div class="metric-main"><div id="heroTotal" class="metric-value">€ 0,00</div></div></div>
+          <div id="heroPriceStatusCard" class="metric"><div class="metric-label">Prijslijst</div><div class="metric-main"><div id="heroPriceStatus" class="metric-value">Nog invullen</div></div></div>
+        </div>
+      </div>
+      <div class="search-row">
+        <label class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="drinkSearch" type="search" placeholder="Zoek een drankje…" autocomplete="off" aria-label="Drankje zoeken" /></label>
+        <div id="categoryChips" class="category-chips" aria-label="Drankcategorieën"></div>
+      </div>
+      <div id="quickSection"><div class="section-title"><h2><span class="spark">✦</span>Sneltellers</h2><span class="tiny">Jouw meest gekozen drankjes</span></div><div id="quickGrid" class="drink-grid"></div></div>
+      <div id="otherSection"><div class="section-title"><h2>Overige drankjes</h2><span class="tiny">Tik op een kaart om +1 toe te voegen</span></div><div id="otherGrid" class="drink-grid"></div></div>
+      <div id="tellerEmpty" class="empty-search hide">Geen drankje gevonden. Je kunt zelf drankjes toevoegen bij <button class="text-action" data-go="prijzen" type="button">Prijzen</button>.</div>
+      <div id="missingHint" class="subtle-note"></div>
+    </section>
+
+    <section id="view-wbon" class="view" aria-label="Doorlopende W-bon">
+      <div class="wbon-hero">
+        <div class="wbon-top">
+          <div>
+            <div class="wbon-label">🎱 KARROESEL · DOORLOPENDE BON</div>
+            <h1>De W-bon</h1>
+            <p>Jullie eigen teller die over meerdere avonden gewoon doorloopt.<br/>Een W-tje bij iedere € 200: dan weet je het!</p>
+          </div>
+          <div id="wBadge" class="w-badge" aria-live="polite"><div><div class="w-letter">W</div><div id="wBadgeLabel" class="w-label">BIJ € 200</div></div></div>
+        </div>
+        <div class="wbon-metrics">
+          <div class="wbon-metric"><span class="label">Drankjes</span><strong id="wBonCount" class="value">0</strong></div>
+          <div class="wbon-metric"><span class="label">Stand W-bon</span><strong id="wBonTotal" class="value">€ 0,00</strong></div>
+          <div class="wbon-metric wins"><span class="label">W-tjes</span><strong id="wBonWins" class="value">0</strong></div>
+        </div>
+        <div class="wbon-progress-head"><strong id="wProgressTitle">Op weg naar het eerste W-tje</strong><span id="wProgressRemaining">Nog € 200,00</span></div>
+        <div class="wbon-track" role="progressbar" aria-label="Voortgang naar volgend W-tje" aria-valuemin="0" aria-valuemax="200" aria-valuenow="0" id="wProgressTrack"><span id="wProgressFill"></span></div>
+        <div id="wMissingHint" class="wbon-warning hide"></div>
+        <div id="wPayActions" class="wbon-pay-row">
+          <button id="markWBonPaid" type="button" class="btn btn-paid" title="Markeer als betaald en begin een nieuwe W-bon">✓ Betaald</button>
+          <span class="pay-hint">Afgerekend? Bewaar deze bon en begin automatisch weer op € 0,00.</span>
+        </div>
+        <div id="wPaidInfo" class="wbon-paid-info hide" role="status">
+          <div><strong>✓ Deze W-bon is betaald</strong><small id="wPaidDate"></small></div>
+          <button id="goCurrentWBon" type="button" class="btn btn-outline btn-sm">Naar lopende W-bon →</button>
+        </div>
+      </div>
+      <div id="wSetjeFeature" class="setje-feature">
+        <button id="wSetje" type="button" class="setje-btn" aria-label="Voeg een setje toe: één vaasje en één glas witte wijn">
+          <span class="setje-emoji" aria-hidden="true">🍺🥂</span><span><strong>Setje</strong><small>1 vaasje + 1 witte wijn <span id="wSetjePrice"></span></small></span><span class="setje-plus">＋ 2</span>
+        </button>
+        <button id="wSetjeMinus" type="button" class="setje-minus" aria-label="Een setje terugdraaien">− Setje</button>
+      </div>
+      <div id="wDrinkPicker" class="search-row">
+        <label class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="wDrinkSearch" type="search" placeholder="Zoek een drankje…" autocomplete="off" aria-label="Drankje zoeken op de W-bon" /></label>
+        <div id="wCategoryChips" class="category-chips" aria-label="Drankcategorieën W-bon"></div>
+      </div>
+      <div id="wQuickSection"><div class="section-title"><h2><span class="spark">✦</span>Sneltellers</h2><span class="tiny">Voeg toe aan de W-bon</span></div><div id="wQuickGrid" class="drink-grid"></div></div>
+      <div id="wOtherSection"><div class="section-title"><h2>Overige drankjes</h2><span class="tiny">Nog meer keuzes</span></div><div id="wOtherGrid" class="drink-grid"></div></div>
+      <div id="wTellerEmpty" class="empty-search hide">Geen drankje gevonden. <button class="text-action" data-go="prijzen" type="button">Drankje toevoegen →</button></div>
+      <div class="cols wbon-receipt" id="wBonReceipt">
+        <div class="panel"><p class="eyebrow">DOORLOPEND OVERZICHT</p><h2>Wat staat op de W-bon?</h2><p class="hint">De telling loopt onafhankelijk van je losse avonden.</p>
+          <ul id="wOrderList" class="orderlist"></ul><div id="wOrderSummary" class="sumline"></div>
+          <div class="secondary-actions"><button type="button" id="wCopyOrder" class="btn btn-outline btn-sm">⎘ Kopieer overzicht</button><button id="wDownloadOrder" type="button" class="btn btn-outline btn-sm">↓ Exporteer CSV</button></div>
+        </div>
+        <div class="panel"><p class="eyebrow">ALS JE GAAT AFREKENEN</p><h2>W-bon controleren</h2><p class="hint">Vul eventueel het bedrag op de rekening in en vergelijk.</p>
+          <div class="amount-input"><label for="wBillAmount">Op bon €</label><input id="wBillAmount" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" /></div>
+          <div class="receipt-line"><span>Jouw telling</span><strong id="wReceiptTotal">€ 0,00</strong></div>
+          <div class="receipt-line total"><span>Verschil</span><strong id="wReceiptDiff">—</strong></div>
+          <div id="wReceiptStatus" class="receipt-state info">Vul een bonbedrag in om te vergelijken.</div>
+          <p id="wBonHelp" class="wbon-note">Afgerekend? Tik bovenaan op <strong>✓ Betaald</strong>. Je teller gaat dan op nul en de betaalde W-bon blijft onder Avonden bewaard. Een losse avond beginnen heeft geen invloed op de W-bon.</p>
+          <div id="wNewActions" class="secondary-actions"><button id="startWBon" type="button" class="btn btn-outline btn-sm">＋ Nieuwe W-bon zonder betaling</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-bon" class="view" aria-label="Bon controleren">
+      <div class="main-header"><div><p class="eyebrow">KASSACONTROLE</p><h1>Klopt je bonnetje?</h1><p>Vul het totaal van je bon in. De teller vergelijkt dat met de drankjes die je zelf hebt aangetikt.</p></div></div>
+      <div class="cols">
+        <div class="receipt">
+          <div class="receipt-header"><div class="brand-name">KARROESEL</div><div class="brand-hint">HILVERSUM · EIGEN BONCHECK</div><div id="receiptDate" class="receipt-date"></div></div>
+          <div class="amount-input"><label for="billAmount">Op bon €</label><input id="billAmount" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-label="Totaalbedrag op de bon" /></div>
+          <div class="receipt-amounts"><div class="receipt-line"><span>Zelf geteld</span><strong id="receiptCount">0 drankjes</strong></div><div class="receipt-line"><span>Berekend totaal</span><strong id="receiptTotal">€ 0,00</strong></div><div class="receipt-line total"><span>Verschil met bon</span><strong id="receiptDiff">—</strong></div></div>
+          <div id="receiptStatus" class="receipt-state info">Vul het bonbedrag in om te vergelijken.</div>
+        </div>
+        <div class="panel"><h2>Wat heb je besteld?</h2><ul id="orderList" class="orderlist"></ul><div id="orderSummary" class="sumline"></div><div class="secondary-actions"><button id="copyOrder" type="button" class="btn btn-outline btn-sm">⎘ Kopieer overzicht</button><button id="downloadOrder" type="button" class="btn btn-outline btn-sm">↓ Exporteer CSV</button></div></div>
+      </div>
+    </section>
+
+    <section id="view-prijzen" class="view" aria-label="Prijslijst beheren">
+      <div class="main-header"><div><p class="eyebrow">JOUW EIGEN KROEGPRIJZEN</p><h1>Prijslijst beheren</h1><p>Upload een prijslijst of vul de prijzen zelf in. We hebben bewust geen bedragen verzonnen: de boncheck werkt met jouw ingevoerde prijzen.</p></div></div>
+      <div class="filebox"><div class="filebox-icon">📄</div><div class="filebox-content"><h3>Upload je prijslijst</h3><p>Excel (.xlsx) of CSV / TSV, met een kolom voor dranknaam en een kolom voor prijs. Werkt rechtstreeks op dit apparaat.</p></div><button id="selectPriceFile" class="btn btn-gold" type="button">↑ Bestand kiezen</button><input id="priceFile" type="file" accept=".xlsx,.csv,.tsv,.txt,.xls" hidden /></div>
+      <div class="helper-row"><span id="importMeta">Nog geen prijslijst geïmporteerd</span><button id="sampleCSV" type="button" class="text-action">Download voorbeeldprijslijst</button></div>
+      <div class="panel" style="margin-bottom:20px"><h2>Drankje toevoegen</h2><form id="addDrinkForm" class="add-form"><label class="new-name"><span class="fieldlabel">Naam</span><input id="newDrinkName" class="input" type="text" maxlength="80" placeholder="Bijv. Aperol Spritz" required /></label><label><span class="fieldlabel">Categorie</span><select id="newDrinkCategory" class="input"></select></label><label><span class="fieldlabel">Prijs (€)</span><input id="newDrinkPrice" class="input" type="text" inputmode="decimal" placeholder="Bijv. 6,50" /></label><button type="submit" class="btn btn-gold">＋ Toevoegen</button></form></div>
+      <div class="panel"><div class="pricing-header"><div><h2 style="margin-bottom:5px">Alle drankjes & prijzen</h2><span class="legend">Ster = voorrang bij sneltellers · Oogje = tonen of verbergen</span></div><div class="statsbar" id="priceStats" style="margin:0"></div></div><div id="pricingTable" class="pricing-table"></div></div>
+    </section>
+
+    <section id="view-avonden" class="view" aria-label="Avonden en gegevens">
+      <div class="main-header"><div><p class="eyebrow">EEN NIEUWE RONDE</p><h1>Je avonden</h1><p>Begin een nieuwe kroegavond zonder je vorige telling kwijt te raken. Eerdere avonden zijn opnieuw te openen.</p></div><button id="startNight" class="btn btn-gold">＋ Nieuwe avond</button></div>
+      <div class="panel" style="margin-bottom:17px"><div class="section-title" style="margin-top:0"><div><h2 style="margin:0">Doorlopende W-bonnen</h2><div class="details">Je betaalde W-bonnen blijven bewaard. Klik om ze in te zien.</div></div><button id="startWBonFromAvonden" class="btn btn-gold btn-sm" type="button">＋ Nieuwe W-bon</button></div><div id="wBonList" class="session-list"></div></div>
+      <div class="cols"><div class="panel"><h2>Eerdere tellingen</h2><div id="sessionList" class="session-list"></div><div class="secondary-actions"><button id="renameNight" class="btn btn-outline btn-sm">✎ Naam wijzigen</button><button id="deleteNight" class="btn btn-danger btn-sm">Verwijder geopende avond</button></div></div><div><div class="panel" style="margin-bottom:15px"><h2>Bewaar je gegevens</h2><p>Je tellingen en prijzen worden alleen op dit apparaat in deze browser bewaard. Maak af en toe een back-up, vooral voordat je van telefoon of browser wisselt.</p><div class="secondary-actions"><button id="exportBackup" class="btn btn-gold">↓ Back-up downloaden</button><button id="selectBackup" class="btn btn-outline">↑ Back-up terugzetten</button><input id="backupFile" type="file" accept=".json,application/json" hidden /></div></div><div class="info-card"><h3>🎱 Zo werkt de Kroegteller</h3><p>Eén tik telt één drankje. Met min corrigeer je een fout. De meeste getelde drankjes komen bovenaan. Met Boncheck vergelijk je de avond met de rekening. De W-bon telt apart door over meerdere avonden. Elke € 200 levert een W-tje op. ‘Setje’ telt meteen een vaasje én witte wijn. De knop Betaald sluit de W-bon af, bewaart hem en begint een nieuwe teller op nul. Er gaan geen gegevens naar een server.</p></div></div></div>
+    </section>
+  </main>
+  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.2 · Privé, lokaal en zonder account</footer>
+</div>
+
+<div id="stickyTotal" class="sticky-total" aria-live="off"><div><div id="mobileHeadline" class="first">0 drankjes · € 0,00</div><div id="mobileSub" class="second">Tik om je drankjes te tellen</div></div><button id="mobileReceipt" type="button" class="btn btn-gold btn-sm">Boncheck →</button></div>
+<div id="wCelebrate" class="wbon-celebrate" aria-live="polite"><div class="huge-w">W</div><h2>W-TJE!</h2><p id="wCelebrateText">Dan weet je het!</p></div>
+<div id="toast" class="toast" role="status" aria-live="polite"><span id="toastMessage"></span><button id="toastUndo" type="button">Herstel</button></div>
+
+<div id="modalWrap" class="modal-wrap" role="presentation"><div id="modalBody" class="modal" role="dialog" aria-modal="true" aria-label="Venster"></div></div>
+
+<script>
+'use strict';
+(() => {
+  // Alles in dit HTML-bestand: geen externe scripts en geen server nodig.
+  const KEY = 'karroesel_kroegteller_v1';
+  const CATEGORY = ['Bier','Wijn','Fris','Mix','Sterk','Overig'];
+  const DEFAULTS = [
+    ['vaasje','Vaasje','Bier','🍺',true],
+    ['wit','Glas witte wijn','Wijn','🥂',true],
+    ['bok','Bokbier','Bier','🍺',true],
+    ['rose','Rosé','Wijn','🍷',true],
+    ['rood','Rode wijn','Wijn','🍷',true],
+    ['fluitje','Fluitje','Bier','🍺',false],
+    ['pils','Pils (groot)','Bier','🍻',false],
+    ['speciaal','Speciaalbier','Bier','🍻',false],
+    ['radler','Radler','Bier','🍺',false],
+    ['bier00','Bier 0.0','Bier','🍺',false],
+    ['prosecco','Prosecco','Wijn','🥂',false],
+    ['rosebier','Rosébier','Bier','🍺',false],
+    ['cola','Cola','Fris','🥤',false],
+    ['colazero','Cola zero','Fris','🥤',false],
+    ['sinas','Sinas','Fris','🥤',false],
+    ['spa-blauw','Spa blauw','Fris','💧',false],
+    ['spa-rood','Spa rood','Fris','💧',false],
+    ['tonic','Tonic','Fris','🥤',false],
+    ['ice-tea','Ice tea','Fris','🧊',false],
+    ['appelsap','Appelsap','Fris','🧃',false],
+    ['gin-tonic','Gin-tonic','Mix','🍸',false],
+    ['bacardi-cola','Bacardi cola','Mix','🥃',false],
+    ['wodka-mix','Wodka mix','Mix','🍹',false],
+    ['aperol','Aperol Spritz','Mix','🍹',false],
+    ['jenever','Jenever','Sterk','🥃',false],
+    ['whisky','Whisky','Sterk','🥃',false],
+    ['limoncello','Limoncello','Sterk','🍋',false],
+    ['koffie','Koffie','Overig','☕',false],
+    ['thee','Thee','Overig','🍵',false]
+  ];
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const money = v => '€\u00a0' + Number(v||0).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const moneyNumber = v => Number(v).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const escapeHTML = v => String(v??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const escAttr = escapeHTML;
+  const nowISO = () => new Date().toISOString();
+  const makeId = () => (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now())+'-'+Math.random().toString(36).slice(2);
+  const iconFor = cat => ({Bier:'🍺',Wijn:'🍷',Fris:'🥤',Mix:'🍹',Sterk:'🥃',Overig:'☕'}[cat] || '🍹');
+  const nlDate = value => new Date(value).toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const shortDate = value => new Date(value).toLocaleDateString('nl-NL',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const defaultName = () => { const t = new Date(); return t.toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'}).replace(/^./,s=>s.toUpperCase()); };
+  const normalize = s => String(s??'').toLocaleLowerCase('nl-NL').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+
+  function parseAmount(input) {
+    if(input === null || input === undefined || String(input).trim() === '') return null;
+    if(typeof input === 'number') return Number.isFinite(input) && input>=0 ? Math.round(input*100)/100 : null;
+    let txt=String(input).trim().replace(/\s/g,'').replace(/€/g,'').replace(/[\u00a0]/g,'');
+    if(!txt || /^[-]/.test(txt)) return null;
+    // Europees 1.234,56 en Engels 1,234.56; een gewone komma is decimaal.
+    if(txt.includes(',') && txt.includes('.')) {
+      if(txt.lastIndexOf(',') > txt.lastIndexOf('.')) txt=txt.replace(/\./g,'').replace(',','.');
+      else txt=txt.replace(/,/g,'');
+    } else if(txt.includes(',')) txt=txt.replace(',','.');
+    else if((txt.match(/\./g)||[]).length>1) txt=txt.replace(/\./g,'');
+    if(!/^\+?\d+(?:\.\d{1,2})?$/.test(txt)) return null;
+    const number=Number(txt);
+    return Number.isFinite(number) && number>=0 && number<=1000000 ? Math.round(number*100)/100 : null;
+  }
+  function blankOrMoney(p) { return (p===null || p===undefined) ? 'prijs onbekend' : money(p); }
+  function makeDrinks() { return DEFAULTS.map((d,i)=>({id:d[0],name:d[1],category:d[2],icon:d[3],favorite:d[4],price:null,hidden:false,sort:i})); }
+  function newSession(prices, name=defaultName()) { return {id:makeId(),name,startedAt:nowISO(),events:[],billAmount:null,prices:{...prices}}; }
+  function newWBon(number=1) { return {id:makeId(),kind:'wbon',name:'W-bon '+number,startedAt:nowISO(),events:[],billAmount:null,prices:{},paidAt:null}; }
+  function ensureWBons(data) {
+    if(!Array.isArray(data.wBons)) data.wBons=[];
+    data.wBons=data.wBons.filter(w=>w && typeof w.id==='string' && Array.isArray(w.events));
+    if(!data.wBons.length) data.wBons.push(newWBon(1));
+    for(const w of data.wBons) {
+      w.kind='wbon';
+      if(typeof w.name!=='string')w.name='Doorlopende W-bon';
+      if(typeof w.startedAt!=='string')w.startedAt=nowISO();
+      if(!w.prices || typeof w.prices!=='object')w.prices={};
+      if(w.billAmount===undefined)w.billAmount=null;
+      if(typeof w.paidAt!=='string')w.paidAt=null;
+    }
+    if(!data.wBons.some(w=>w.id===data.activeWBonId))data.activeWBonId=data.wBons[data.wBons.length-1].id;
+  }
+  function initialState() { const drinks=makeDrinks(), first=newSession(Object.fromEntries(drinks.map(d=>[d.id,d.price]))),w=newWBon(1); return {version:1,drinks,sessions:[first],activeId:first.id,wBons:[w],activeWBonId:w.id,lastImport:null}; }
+  function loadState() {
+    try {
+      const raw=localStorage.getItem(KEY);
+      if(!raw) return initialState();
+      const val=JSON.parse(raw);
+      if(!validState(val)) return initialState();
+      // Nieuwe standaarddrankjes toevoegen zonder bestaande gegevens te wissen.
+      const oldIds=new Set(val.drinks.map(d=>d.id));
+      makeDrinks().forEach(d=>{if(!oldIds.has(d.id)) val.drinks.push(d);});
+      for(const s of val.sessions) { if(!s.prices || typeof s.prices!=='object') s.prices={}; if(!Array.isArray(s.events)) s.events=[]; }
+      ensureWBons(val);  // Oude opgeslagen tellingen behouden; W-bon toevoegen zonder dataverlies.
+      return val;
+    } catch(e) { console.warn('Laden lokale gegevens mislukt',e); return initialState(); }
+  }
+  function validState(s) { return s && s.version===1 && Array.isArray(s.drinks) && Array.isArray(s.sessions) && s.sessions.length && s.drinks.every(d=>typeof d.id==='string' && typeof d.name==='string') && s.sessions.every(x=>typeof x.id==='string' && Array.isArray(x.events)) && typeof s.activeId==='string'; }
+  let state=loadState(), currentView='teller', activeCategory='Alles', search='', wActiveCategory='Alles', wSearch='', toastTimer=null, pendingImport=null;
+  let lastUndoSessionId=null, wCelebrateTimer=null;
+  function persist() { try { localStorage.setItem(KEY,JSON.stringify(state)); } catch(e) { warnStorage(); } }
+  let warnedStorage=false;
+  function warnStorage() { if(!warnedStorage) { warnedStorage=true; showToast('Opslaan lukt niet. Download een back-up via Avonden.',false,6000); } }
+  function activeSession() { let s=state.sessions.find(x=>x.id===state.activeId); if(!s) { s=state.sessions[0]; state.activeId=s.id; } return s; }
+  function activeWBon() { let s=state.wBons.find(x=>x.id===state.activeWBonId); if(!s){s=state.wBons[state.wBons.length-1];state.activeWBonId=s.id;} return s; }
+  const findDrink = id => state.drinks.find(d=>d.id===id);
+  // De doorlopende bon gebruikt steeds de actuele ingevoerde prijslijst.
+  const currentPrice = (d,s=activeSession()) => s.kind==='wbon'
+    ? (s.paidAt && Object.prototype.hasOwnProperty.call(s.prices,d.id) ? s.prices[d.id] : d.price)
+    : (Object.prototype.hasOwnProperty.call(s.prices,d.id) ? s.prices[d.id] : d.price);
+  function countsFor(s) {
+    const result={};
+    for(const e of s.events) {
+      if(!e)continue;
+      const delta=e.delta===-1 ? -1 : 1;
+      const ids=e.kind==='setje' ? ['vaasje','wit'] : (typeof e.id==='string' ? [e.id] : []);
+      for(const id of ids) result[id]=Math.max(0,(result[id]||0)+delta);
+    }
+    return result;
+  }
+  function setjesFor(s) { return Math.max(0,s.events.reduce((n,e)=>n+(e && e.kind==='setje' ? (e.delta===-1?-1:1) : 0),0)); }
+  function totalUsage() { const r={}; for(const s of [...state.sessions,...state.wBons]){ const cs=countsFor(s); for(const [id,n] of Object.entries(cs))r[id]=(r[id]||0)+n; } return r; }
+  function totalsFor(s=activeSession()) {
+    const counts=countsFor(s);
+    let count=0,total=0,missingCount=0,missingTypes=0;
+    for(const [id,n] of Object.entries(counts)) {
+      if(n<=0) continue;
+      count+=n;
+      const d=findDrink(id); if(!d) { missingCount+=n; missingTypes++; continue; }
+      const p=currentPrice(d,s);
+      if(p===null || p===undefined || !Number.isFinite(Number(p))) { missingCount+=n; missingTypes++; }
+      else total+=n*Number(p);
+    }
+    return {counts,count,total:Math.round(total*100)/100,missingCount,missingTypes,complete:missingCount===0};
+  }
+  function showToast(msg,undo=false,timeout=2600) {
+    $('#toastMessage').textContent=msg;
+    $('#toastUndo').classList.toggle('hide',!undo);
+    $('#toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),timeout);
+  }
+  function vibrate() { if(navigator.vibrate)try{navigator.vibrate(12);}catch(e){} }
+  function showWCelebration(wins) {
+    const pop=$('#wCelebrate');
+    $('#wCelebrateText').textContent=wins===1?'Dan weet je het! De eerste € 200 is gehaald.':`Dan weet je het! Dit is W-tje nummer ${wins}.`;
+    pop.classList.add('show');
+    clearTimeout(wCelebrateTimer);
+    wCelebrateTimer=setTimeout(()=>pop.classList.remove('show'),2400);
+  }
+  function modifyCount(id,delta,scope='teller') {
+    const s=scope==='wbon'?activeWBon():activeSession(),d=findDrink(id);
+    if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
+    if(!d || (delta<0 && (countsFor(s)[id]||0)<1)) return;
+    const oldW=scope==='wbon'?Math.floor(totalsFor(s).total/200):0;
+    s.events.push({id,delta,at:nowISO()});
+    if(!Object.prototype.hasOwnProperty.call(s.prices,id)) s.prices[id]=d.price;
+    lastUndoSessionId=s.id;
+    persist();
+    if(delta>0)vibrate();
+    if(scope==='wbon') { renderWBon(); const newW=Math.floor(totalsFor(s).total/200); if(newW>oldW)showWCelebration(newW); }
+    else renderTeller();
+    showToast(delta>0 ? d.name+' toegevoegd (+1)' : d.name+' teruggezet (−1)',true);
+  }
+  function modifySetje(delta=1,scope='wbon') {
+    const s=scope==='wbon'?activeWBon():activeSession(),cs=countsFor(s);
+    if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
+    if(!findDrink('vaasje')||!findDrink('wit'))return showToast('Vaasje of witte wijn ontbreekt in de prijslijst.',false,3500);
+    if(delta<0 && (!setjesFor(s) || !cs.vaasje || !cs.wit))return;
+    const oldW=scope==='wbon'?Math.floor(totalsFor(s).total/200):0;
+    s.events.push({kind:'setje',delta,at:nowISO()});
+    for(const id of ['vaasje','wit'])if(!Object.prototype.hasOwnProperty.call(s.prices,id))s.prices[id]=findDrink(id).price;
+    lastUndoSessionId=s.id;
+    persist();
+    if(delta>0)vibrate();
+    if(scope==='wbon') { renderWBon(); const newW=Math.floor(totalsFor(s).total/200); if(newW>oldW)showWCelebration(newW); }
+    else renderTeller();
+    showToast(delta>0?'Setje toegevoegd: vaasje + witte wijn (+2)':'Setje teruggezet (−2)',true,3400);
+  }
+  function undoLast() {
+    const s=[...state.sessions,...state.wBons].find(x=>x.id===lastUndoSessionId) || (currentView==='wbon'?activeWBon():activeSession());
+    if(!s.events.length||s.paidAt)return;
+    s.events.pop();lastUndoSessionId=null;persist();renderAll();
+    showToast('Laatste tik hersteld.',false);
+  }
+  function setView(view) {
+    if(!['teller','wbon','bon','prijzen','avonden'].includes(view)) return;
+    currentView=view;
+    $$('.tab').forEach(t=>{const selected=t.dataset.view===view;t.classList.toggle('active',selected);t.setAttribute('aria-selected',String(selected));});
+    $$('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));
+    $('#stickyTotal').classList.toggle('hidden',!['teller','wbon'].includes(view));
+    if(view==='bon') renderBon();
+    if(view==='prijzen') renderPrices();
+    if(view==='avonden') renderSessions();
+    if(view==='teller') renderTeller();
+    if(view==='wbon') renderWBon();
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+  function renderChips() {
+    $('#categoryChips').innerHTML=['Alles',...CATEGORY].map(c=>`<button type="button" class="chip ${c===activeCategory?'selected':''}" data-category="${escAttr(c)}">${escapeHTML(c)}</button>`).join('');
+    $('#wCategoryChips').innerHTML=['Alles',...CATEGORY].map(c=>`<button type="button" class="chip ${c===wActiveCategory?'selected':''}" data-w-category="${escAttr(c)}">${escapeHTML(c)}</button>`).join('');
+  }
+  function cardHTML(d,counts,scope='teller') {
+    const n=counts[d.id]||0,p=currentPrice(d,scope==='wbon'?activeWBon():activeSession()),subtotal=p==null?'':money(p*n);
+    return `<article class="drink-card ${n?'has-count':''}" data-add="${escAttr(d.id)}" data-scope="${scope}" role="button" tabindex="0" aria-label="Voeg ${escAttr(d.name)} toe ${scope==='wbon'?'aan W-bon':'aan avond'}, nu ${n}">
+      <button type="button" class="minus" data-subtract="${escAttr(d.id)}" data-scope="${scope}" ${n?'':'disabled'} aria-label="${escAttr(d.name)} eentje minder">−</button>
+      <div class="drink-card-top"><div class="drink-icon" aria-hidden="true">${escapeHTML(d.icon||iconFor(d.category))}</div><div class="drink-name">${escapeHTML(d.name)}</div></div>
+      <div class="drink-info">${p==null?'Prijs nog invullen':money(p)+' per stuk'}</div>
+      <div class="drink-lower"><div class="qty">${n}<small>geteld</small></div><div class="drink-amount"><div class="line-total">${n ? (p==null?'—':subtotal) : '&nbsp;'}</div></div></div>
+    </article>`;
+  }
+  function renderTeller() {
+    const s=activeSession(), sum=totalsFor(s), usage=totalUsage();
+    $('#currentEvening').textContent=s.name;
+    $('#heroCount').textContent=String(sum.count);
+    $('#heroTotal').textContent=money(sum.total);
+    const card=$('#heroPriceStatusCard');
+    card.classList.toggle('warning',sum.missingCount>0);
+    const priced=state.drinks.filter(d=>d.price!==null && d.price!==undefined).length;
+    $('#heroPriceStatus').textContent=sum.missingCount ? `${sum.missingCount} zonder prijs` : (!sum.count && !priced ? 'Prijzen nog leeg' : (!sum.count ? 'Klaar om te tellen' : 'Alles geprijsd ✓'));
+    $('#mobileHeadline').textContent=`${sum.count} ${sum.count===1?'drankje':'drankjes'} · ${money(sum.total)}${sum.missingCount?'*':''}`;
+    $('#mobileSub').textContent=sum.missingCount?`${sum.missingCount} drankjes zonder prijs`:sum.count?'Houd de bon bij de hand':'Tik om je drankjes te tellen';
+    if(currentView==='teller')$('#mobileReceipt').textContent='Boncheck →';
+    if($('#nightSetjeMinus')) $('#nightSetjeMinus').disabled=setjesFor(s)<1 || (sum.counts.vaasje||0)<1 || (sum.counts.wit||0)<1;
+    $('#missingHint').innerHTML=sum.missingCount
+      ? `⚠ Er ${sum.missingCount===1?'is':'zijn'} <strong>${sum.missingCount} ${sum.missingCount===1?'geteld drankje':'getelde drankjes'}</strong> zonder prijs. Het getoonde totaal is daardoor nog niet volledig. <button class="text-action" data-go="prijzen" type="button">Prijzen invullen →</button>`
+      : (sum.count ? '✓ Alle getelde drankjes hebben een prijs. Je kunt nu je <button class="text-action" data-go="bon" type="button">bon controleren →</button>' : 'Tip: eerst prijzen uploaden hoeft niet. Je kunt direct beginnen met tellen en later de prijzen invullen.');
+    const filtered=state.drinks.filter(d=>!d.hidden && (activeCategory==='Alles'||d.category===activeCategory) && (!search||normalize(d.name).includes(normalize(search))));
+    const ranked=filtered.sort((a,b)=>{
+      const ca=(sum.counts[a.id]||0),cb=(sum.counts[b.id]||0);
+      const score=d=>(usage[d.id]||0)*6+(sum.counts[d.id]||0)*3+(d.favorite?18:0);
+      return score(b)-score(a)||(a.sort??999)-(b.sort??999)||a.name.localeCompare(b.name,'nl');
+    });
+    const quick=ranked.slice(0,6), rest=ranked.slice(6);
+    $('#quickGrid').innerHTML=quick.map(d=>cardHTML(d,sum.counts)).join('');
+    $('#otherGrid').innerHTML=rest.map(d=>cardHTML(d,sum.counts)).join('');
+    $('#quickSection').classList.toggle('hide',!quick.length);
+    $('#otherSection').classList.toggle('hide',!rest.length);
+    $('#tellerEmpty').classList.toggle('hide',Boolean(ranked.length));
+    $('#otherSection .section-title .tiny').textContent = ranked.length>6 ? `${rest.length} andere opties` : 'Tik op een kaart om +1 toe te voegen';
+  }
+  function renderWBon() {
+    const s=activeWBon(),sum=totalsFor(s),usage=totalUsage(),isPaid=Boolean(s.paidAt);
+    const wins=Math.floor((Math.round(sum.total*100)+0.00001)/20000);
+    const progressCents=Math.round(sum.total*100)%20000;
+    const needed=(20000-progressCents)/100;
+    const remaining=needed<.005?200:needed;
+    $('#wBonCount').textContent=String(sum.count);
+    $('#wBonTotal').textContent=money(sum.total)+(sum.missingCount?'*':'');
+    $('#wBonWins').textContent=String(wins);
+    $('#wBadge').classList.toggle('achieved',wins>0);
+    $('#wBadgeLabel').textContent=wins>0?`${wins} ${wins===1?'W-TJE':'W-TJES'}!`:'BIJ € 200';
+    $('#wProgressTitle').textContent=wins?`Op weg naar W-tje ${wins+1}`:'Op weg naar het eerste W-tje';
+    $('#wProgressRemaining').textContent=`Nog ${money(remaining)}`;
+    $('#wProgressFill').style.width=(100*progressCents/20000)+'%';
+    $('#wProgressTrack').setAttribute('aria-valuenow',String(Math.round(progressCents/100)));
+    $('#wMissingHint').classList.toggle('hide',!sum.missingCount);
+    $('#wMissingHint').textContent=sum.missingCount?`⚠ ${sum.missingCount} ${sum.missingCount===1?'drankje heeft':'drankjes hebben'} nog geen prijs. Het bedrag en het aantal W-tjes kunnen hoger uitvallen.`:'';
+    $('#wPayActions').classList.toggle('hide',isPaid);
+    $('#markWBonPaid').disabled=isPaid || sum.count===0;
+    $('#wPaidInfo').classList.toggle('hide',!isPaid);
+    $('#wPaidDate').textContent=isPaid?'Afgerond op '+new Date(s.paidAt).toLocaleString('nl-NL',{dateStyle:'short',timeStyle:'short'}):'';
+    $('#goCurrentWBon').disabled=!state.wBons.some(w=>!w.paidAt && w.id!==s.id);
+    $('#wSetjeFeature').classList.toggle('hide',isPaid);
+    $('#wDrinkPicker').classList.toggle('hide',isPaid);
+    $('#wNewActions').classList.toggle('hide',isPaid);
+    $('#wBonHelp').textContent=isPaid?'Deze betaalde W-bon is opgeslagen en kan niet meer worden aangepast. Ga naar de lopende W-bon om verder te tellen.':'Afgerekend? Tik bovenaan op ✓ Betaald. Je teller gaat dan op nul en de betaalde W-bon blijft onder Avonden bewaard. Een losse avond beginnen heeft geen invloed op de W-bon.';
+    $('#wBillAmount').readOnly=isPaid;
+    $('#wSetje').disabled=isPaid;
+    $('#wSetjeMinus').disabled=isPaid ||setjesFor(s)<1 || (sum.counts.vaasje||0)<1 || (sum.counts.wit||0)<1;
+    const pa=currentPrice(findDrink('vaasje'),s),pb=currentPrice(findDrink('wit'),s);
+    $('#wSetjePrice').textContent=pa==null||pb==null?'· prijs nog invullen':'· '+money(Number(pa)+Number(pb));
+    const filtered=state.drinks.filter(d=>!d.hidden && (wActiveCategory==='Alles'||d.category===wActiveCategory) && (!wSearch||normalize(d.name).includes(normalize(wSearch))));
+    const ranked=filtered.sort((a,b)=>{
+      const score=d=>(usage[d.id]||0)*6+(sum.counts[d.id]||0)*3+(d.favorite?18:0);
+      return score(b)-score(a)||(a.sort??999)-(b.sort??999)||a.name.localeCompare(b.name,'nl');
+    });
+    const quick=ranked.slice(0,6),rest=ranked.slice(6);
+    $('#wQuickGrid').innerHTML=quick.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
+    $('#wOtherGrid').innerHTML=rest.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
+    $('#wQuickSection').classList.toggle('hide',isPaid || !quick.length);
+    $('#wOtherSection').classList.toggle('hide',isPaid || !rest.length);
+    $('#wTellerEmpty').classList.toggle('hide',isPaid || Boolean(ranked.length));
+    $('#wOtherSection .section-title .tiny').textContent=ranked.length>6?`${rest.length} andere opties`:'Tik om toe te voegen';
+    $('#wOrderList').innerHTML=orderListHTML(s,sum);
+    $('#wOrderSummary').innerHTML=`<span>Totaal${sum.missingCount?' (onvolledig)':''}</span><span>${money(sum.total)}</span>`;
+    $('#wBillAmount').value=s.billAmount==null?'':moneyNumber(s.billAmount);
+    renderWReceiptResult();
+    if(currentView==='wbon') {
+      $('#mobileHeadline').textContent=`W-bon · ${sum.count} · ${money(sum.total)}${sum.missingCount?'*':''}`;
+      $('#mobileSub').textContent=wins?`🎱 ${wins} W-${wins===1?'tje':'tjes'} verdiend`:`Nog ${money(remaining)} tot de W`;
+      $('#mobileReceipt').textContent='Overzicht ↓';
+    }
+  }
+  function orderListHTML(s,sum) {
+    const ordered=Object.entries(sum.counts).filter(([,v])=>v>0).map(([id,n])=>({drink:findDrink(id),id,n})).sort((a,b)=>b.n-a.n||(a.drink?.name||'').localeCompare(b.drink?.name||''));
+    return ordered.length?ordered.map(({drink:d,n})=>{
+      const p=d?currentPrice(d,s):null;
+      return `<li><div class="label">${escapeHTML(d?.name||'Onbekend drankje')}<div class="unit">${p==null?'Prijs niet ingevuld':money(p)+' p/st'}</div></div><div class="times">× ${n}</div><div class="val">${p==null?'—':money(p*n)}</div></li>`;
+    }).join(''):'<li style="display:block;color:#a9b8a5">Er staan nog geen drankjes op deze bon.</li>';
+  }
+  function renderWReceiptResult() {
+    const s=activeWBon(),sum=totalsFor(s),status=$('#wReceiptStatus'),diff=$('#wReceiptDiff');
+    $('#wReceiptTotal').textContent=money(sum.total)+(sum.missingCount?' (deels)':'');
+    status.className='receipt-state info';
+    if(sum.missingCount){diff.textContent='—';status.textContent=`Nog ${sum.missingCount} ${sum.missingCount===1?'drankje':'drankjes'} zonder prijs. Eerst prijzen invullen voor een betrouwbare vergelijking.`;return;}
+    if(s.billAmount==null){diff.textContent='—';status.textContent=s.paidAt?'✓ Deze W-bon is betaald en opgeslagen.':'Vul het bedrag op de rekening in om te vergelijken.';if(s.paidAt)status.className='receipt-state good';return;}
+    const delta=Math.round((s.billAmount-sum.total)*100)/100;
+    diff.textContent=(delta>0?'+':delta<0?'−':'')+money(Math.abs(delta));
+    if(Math.abs(delta)<.01){status.className='receipt-state good';status.textContent='✓ Helemaal gelijk! Jullie W-bon klopt.';}
+    else if(delta>0){status.className='receipt-state bad';status.textContent=`⚠ De rekening is ${money(delta)} hoger dan jullie eigen telling.`;}
+    else{status.className='receipt-state good';status.textContent=`De rekening is ${money(Math.abs(delta))} lager dan jullie eigen telling. Controleer of alles is aangeslagen.`;}
+  }
+  function openFreshWBon() {
+    const w=newWBon(state.wBons.length+1);
+    state.wBons.push(w);state.activeWBonId=w.id;lastUndoSessionId=null;
+    wSearch='';wActiveCategory='Alles';$('#wDrinkSearch').value='';
+    clearTimeout(wCelebrateTimer);$('#wCelebrate').classList.remove('show');
+    persist();renderAll();setView('wbon');
+  }
+  function startNewWBon() {
+    if(!confirm('Een nieuwe doorlopende W-bon starten? De huidige W-bon wordt bewaard onder Avonden. Je losse avondtellingen blijven ongewijzigd.'))return;
+    openFreshWBon();
+    showToast('Nieuwe W-bon gestart. De vorige is opgeslagen. 🎱',false,4300);
+  }
+  function markWBonPaid() {
+    const bon=activeWBon(),sum=totalsFor(bon);
+    if(bon.paidAt || !sum.count)return;
+    const incomplete=sum.missingCount ? `\nLet op: ${sum.missingCount} getelde drankjes hebben nog geen prijs.` : '';
+    if(!confirm(`W-bon van ${money(sum.total)} als BETAALD markeren?${incomplete}\n\nDe W-bon begint weer op € 0,00. De betaalde bon blijft onder Avonden bewaard; je losse avonden en de prijslijst veranderen niet.`))return;
+    // Prijzen vastzetten zodat een betaalde bon later niet wijzigt door prijslijstaanpassingen.
+    bon.prices=Object.fromEntries(state.drinks.map(d=>[d.id,d.price]));
+    bon.paidAt=nowISO();
+    bon.paidTotal=sum.total;
+    openFreshWBon();
+    showToast(`✓ Betaald! ${money(sum.total)} is bewaard. Nieuwe W-bon: € 0,00.`,false,5000);
+  }
+  function openCurrentWBon() {
+    const bon=state.wBons.slice().reverse().find(w=>!w.paidAt);
+    if(!bon)return;
+    state.activeWBonId=bon.id;
+    persist();renderAll();setView('wbon');
+  }
+
+  function receiptResult() {
+    const s=activeSession(), sum=totalsFor(s);
+    $('#receiptDate').textContent=`${s.name} · ${shortDate(s.startedAt)}`;
+    $('#receiptCount').textContent=sum.count+' '+(sum.count===1?'drankje':'drankjes');
+    $('#receiptTotal').textContent=sum.complete?money(sum.total):money(sum.total)+' (deels)';
+    const status=$('#receiptStatus');
+    status.className='receipt-state info';
+    const diff=$('#receiptDiff');
+    if(sum.missingCount) {
+      diff.textContent='—';
+      status.textContent=`Nog ${sum.missingCount} ${sum.missingCount===1?'drankje':'drankjes'} zonder prijs. Vul de prijzen in voor een betrouwbare vergelijking.`;
+      return;
+    }
+    if(s.billAmount===null || s.billAmount===undefined) {
+      diff.textContent='—'; status.textContent='Vul hierboven het totaalbedrag van je bon in.'; return;
+    }
+    const delta=Math.round((Number(s.billAmount)-sum.total)*100)/100;
+    diff.textContent=(delta>0?'+':delta<0?'−':'')+money(Math.abs(delta));
+    if(Math.abs(delta)<.01) { status.className='receipt-state good';status.textContent='✓ Helemaal gelijk! Je bon klopt met je telling.'; }
+    else if(delta>0) {status.className='receipt-state bad';status.textContent=`⚠ De bon is ${money(delta)} hoger dan je eigen telling.`;}
+    else {status.className='receipt-state good';status.textContent=`De bon is ${money(Math.abs(delta))} lager dan je eigen telling. Controleer of alle drankjes zijn aangeslagen.`;}
+  }
+  function renderBon() {
+    const s=activeSession(),sum=totalsFor(s);
+    $('#billAmount').value=s.billAmount===null||s.billAmount===undefined?'':moneyNumber(s.billAmount);
+    $('#orderList').innerHTML=orderListHTML(s,sum);
+    $('#orderSummary').innerHTML=`<span>Totaal${sum.missingCount?' (nog onvolledig)':''}</span><span>${money(sum.total)}</span>`;
+    receiptResult();
+  }
+  function renderPrices() {
+    const s=activeSession();
+    $('#importMeta').textContent=state.lastImport?`Laatst geïmporteerd: ${state.lastImport.filename} · ${new Date(state.lastImport.at).toLocaleString('nl-NL',{dateStyle:'short',timeStyle:'short'})}`:'Nog geen prijslijst geïmporteerd';
+    const visible=state.drinks.filter(d=>!d.hidden);
+    $('#priceStats').innerHTML=`<span class="statpill">${visible.length} zichtbaar</span><span class="statpill">${visible.filter(d=>currentPrice(d,s)==null).length} zonder prijs</span>`;
+    const header='<div class="price-row header"><span>Drankje</span><span>Categorie</span><span>Prijs per stuk (€)</span><span>Top</span><span>Zichtbaar</span></div>';
+    $('#pricingTable').innerHTML=header+state.drinks.slice().sort((a,b)=>(a.hidden?1:0)-(b.hidden?1:0)||(a.sort??999)-(b.sort??999)).map(d=>{
+      const p=currentPrice(d,s), hidden=d.hidden;
+      return `<div class="price-row ${hidden?'faded':''}">
+        <div class="price-name"><span>${escapeHTML(d.name)}${hidden?' <small>(verborgen)</small>':''}</span></div>
+        <select class="input category-select" aria-label="Categorie ${escAttr(d.name)}" data-cat-price="${escAttr(d.id)}">${CATEGORY.map(c=>`<option ${c===d.category?'selected':''} value="${escAttr(c)}">${escapeHTML(c)}</option>`).join('')}</select>
+        <input class="input price-input" type="text" inputmode="decimal" aria-label="Prijs ${escAttr(d.name)}" data-price="${escAttr(d.id)}" placeholder="—" value="${p==null?'':escAttr(moneyNumber(p))}" />
+        <button class="row-icon star-btn ${d.favorite?'on':''}" data-star="${escAttr(d.id)}" aria-label="${d.favorite?'Verwijder voorkeursster':'Geef voorkeursster'} ${escAttr(d.name)}" title="Voorkeursdrankje">${d.favorite?'★':'☆'}</button>
+        <button class="row-icon hide-btn ${!hidden?'on':''}" data-hide="${escAttr(d.id)}" aria-label="${hidden?'Toon':'Verberg'} ${escAttr(d.name)}" title="${hidden?'Toon':'Verberg'} in teller">${hidden?'◌':'◉'}</button>
+      </div>`;
+    }).join('');
+  }
+  function renderSessions() {
+    $('#sessionList').innerHTML=state.sessions.slice().reverse().map(s=>{
+      const sum=totalsFor(s);
+      return `<button type="button" class="session-row ${state.activeId===s.id?'current':''}" data-session="${escAttr(s.id)}"><div><div class="name">${escapeHTML(s.name)} ${state.activeId===s.id?'· <span style="color:var(--gold)">geopend</span>':''}</div><div class="sub">${nlDate(s.startedAt)} · ${sum.count} drankjes</div></div><div class="side">${money(sum.total)}${sum.missingCount?'*':''}<small>${s.billAmount==null?'Bon nog niet ingevuld':'Bon: '+money(s.billAmount)}</small></div></button>`;
+    }).join('');
+    $('#deleteNight').disabled=state.sessions.length<=1;
+    $('#wBonList').innerHTML=state.wBons.slice().reverse().map(w=>{
+      const sum=totalsFor(w),wins=Math.floor(sum.total/200),isPaid=Boolean(w.paidAt);
+      return `<button type="button" class="session-row ${state.activeWBonId===w.id?'current':''}" data-wbon-session="${escAttr(w.id)}"><div><div class="name">${escapeHTML(w.name)} ${isPaid?'<span class="wbon-paid-tag">✓ Betaald</span>':''} ${state.activeWBonId===w.id?'· <span style="color:var(--gold)">geopend</span>':''}</div><div class="sub">${sum.count} drankjes · ${isPaid?'betaald '+shortDate(w.paidAt):'doorlopende bon'}</div></div><div class="side">${money(sum.total)}${sum.missingCount?'*':''}<small>${wins?'🎱 '+wins+' W-tje'+(wins===1?'':'s'):'Nog geen W'}</small></div></button>`;
+    }).join('');
+  }
+  function renderAll() {renderChips();renderTeller();if(currentView==='wbon')renderWBon();if(currentView==='bon')renderBon();if(currentView==='prijzen')renderPrices();if(currentView==='avonden')renderSessions();}
+  function editPrice(id,value) {
+    const d=findDrink(id);if(!d)return;
+    const price=parseAmount(value);
+    if(String(value).trim()!=='' && price===null) { showToast('Ongeldige prijs; gebruik bijvoorbeeld 3,50.',false,3600); renderPrices(); return; }
+    d.price=price; activeSession().prices[id]=price;
+    persist();renderPrices();renderTeller();
+  }
+  function startNight() {
+    openModal(`<div class="modal-top"><div><p class="eyebrow">NIEUWE AVOND</p><h2>Nieuwe telling starten</h2><p>De huidige telling blijft onder ‘Avonden’ bewaard.</p></div><button class="x-btn" data-close aria-label="Sluiten">×</button></div>
+      <form id="newNightForm"><label class="fieldlabel" for="nightName">Naam van de avond</label><input class="input" id="nightName" maxlength="90" required value="${escAttr(defaultName())}" />
+      <div class="modal-actions"><button class="btn btn-outline" data-close type="button">Annuleren</button><button class="btn btn-gold" type="submit">Start nieuwe avond →</button></div></form>`);
+    $('#nightName').focus();$('#nightName').select();
+  }
+  function openModal(html) { $('#modalBody').innerHTML=html;$('#modalWrap').classList.add('open');document.body.style.overflow='hidden'; }
+  function closeModal(){ $('#modalWrap').classList.remove('open');$('#modalBody').innerHTML='';document.body.style.overflow='';pendingImport=null; }
+  function safeFileName(s) { return String(s).replace(/[^\w\- ]/g,'').trim().replace(/\s+/g,'_').slice(0,65)||'avond'; }
+  function downloadFile(filename,content,type='text/plain;charset=utf-8') {
+    const blob=content instanceof Blob ? content : new Blob([content],{type});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),12000);
+  }
+  function csvEscape(v) { const str=String(v??'');return (/[;"\r\n]/.test(str) ? '"'+str.replace(/"/g,'""')+'"' : str); }
+  function makeCsv(lines) {return '\ufeff'+lines.map(row=>row.map(csvEscape).join(';')).join('\r\n')+'\r\n';}
+  function getOrderCSV(s=activeSession()) {
+    const cs=countsFor(s),rows=[['Drankje','Categorie','Aantal','Prijs per stuk (EUR)','Subtotaal (EUR)']];
+    state.drinks.filter(d=>(cs[d.id]||0)>0).forEach(d=>{const n=cs[d.id],p=currentPrice(d,s);rows.push([d.name,d.category,n,p==null?'':moneyNumber(p),p==null?'':moneyNumber(n*p)]);});
+    const sum=totalsFor(s);rows.push(['TOTAAL','',sum.count,'',sum.missingCount?'ONVOLLEDIG':moneyNumber(sum.total)]);
+    rows.push(['BONBEDRAG','','','',s.billAmount==null?'':moneyNumber(s.billAmount)]);
+    if(s.paidAt)rows.push(['BETAALD OP','','','',new Date(s.paidAt).toLocaleString('nl-NL')]);
+    return makeCsv(rows);
+  }
+  function plainOverview(s=activeSession()) {
+    const cs=countsFor(s),sum=totalsFor(s);
+    const lines=[`KARROESEL · ${s.kind==='wbon'?'Doorlopende W-bon':s.name}`,''];
+    for(const d of state.drinks) { const n=cs[d.id]||0; if(!n)continue;const p=currentPrice(d,s);lines.push(`${n}x ${d.name} — ${p==null?'prijs onbekend':money(n*p)}`); }
+    lines.push('');lines.push(`Zelf geteld: ${sum.count} drankjes`);lines.push(`Berekend: ${money(sum.total)}${sum.missingCount?' (onvolledig)':''}`);
+    if(s.billAmount!=null)lines.push(`Op bon: ${money(s.billAmount)}`);
+    if(s.paidAt)lines.push(`✓ Betaald op: ${new Date(s.paidAt).toLocaleString('nl-NL')}`);
+    return lines.join('\n');
+  }
+  async function copyOverview(s=activeSession()){
+    const txt=plainOverview(s);
+    try {await navigator.clipboard.writeText(txt);showToast('Overzicht gekopieerd.',false);} catch(e){
+      const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+      const success=document.execCommand('copy');ta.remove();showToast(success?'Overzicht gekopieerd.':'Kopiëren wordt door deze browser geblokkeerd.',false,3600);
+    }
+  }
+  function exportBackup() {downloadFile('Karroesel_backup_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({...state,exportedAt:nowISO()},null,2),'application/json');showToast('Back-up gedownload.',false);}
+  async function importBackup(file) {
+    try {
+      const data=JSON.parse(await file.text());
+      if(!validState(data)||data.drinks.length>2500||data.sessions.length>1000)throw new Error('Bestand is geen geldige Kroegteller-back-up.');
+      const okay=confirm('Back-up terugzetten? Alle tellingen en prijzen in deze browser worden hierdoor vervangen.');
+      if(!okay)return;
+      state=data;
+      for(const s of state.sessions){s.prices=s.prices&&typeof s.prices==='object'?s.prices:{};}
+      ensureWBons(state);
+      lastUndoSessionId=null;
+      persist();renderAll();setView('teller');showToast('Back-up teruggezet.',false,4000);
+    } catch(e) {alert('Back-up kon niet worden geopend: '+e.message);}
+  }
+
+  // CSV/TSV met aanhalingstekens, komma's in getallen en regeleinden in cellen.
+  function guessDelimiter(text) {
+    const sample=text.split(/\r?\n/).filter(Boolean).slice(0,7).join('\n');
+    const count=delimiter=>{
+      let hits=0,inQuote=false;
+      for(let i=0;i<sample.length;i++){if(sample[i]==='"'){if(inQuote&&sample[i+1]==='"')i++;else inQuote=!inQuote;}else if(!inQuote&&sample[i]===delimiter)hits++;}
+      return hits;
+    };
+    const types=['\t',';',','];types.sort((a,b)=>count(b)-count(a));return types[0];
+  }
+  function parseDelimited(content) {
+    const txt=content.replace(/^\ufeff/,'');const delim=guessDelimiter(txt);const rows=[];let cell='',row=[],quoted=false;
+    for(let i=0;i<txt.length;i++){
+      const c=txt[i];if(c==='"') { if(quoted&&txt[i+1]==='"') {cell+='"';i++;} else quoted=!quoted; }
+      else if(c===delim&&!quoted){row.push(cell);cell='';}
+      else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&txt[i+1]==='\n')i++;row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);cell='';row=[];}
+      else cell+=c;
+    }
+    row.push(cell);if(row.some(v=>String(v).trim()))rows.push(row);
+    return rows.slice(0,20000);
+  }
+  const XML_NS='*';
+  function xmlChildren(node,localName){return Array.from(node.getElementsByTagNameNS(XML_NS,localName));}
+  function xmlParse(source){const doc=new DOMParser().parseFromString(source,'application/xml');if(doc.querySelector('parsererror'))throw new Error('Excel-XML kan niet worden gelezen.');return doc;}
+  function colIndex(ref){let c=0;for(const x of String(ref).match(/^[A-Z]+/i)?.[0]?.toUpperCase()||''){c=c*26+(x.charCodeAt(0)-64);}return c-1;}
+  function normalizeZipPath(s){const out=[];for(const t of s.split('/')){if(t==='..')out.pop();else if(t!=='.'&&t!=='')out.push(t);}return out.join('/');}
+  class TinyXlsxReader {
+    constructor(ab){this.bytes=new Uint8Array(ab);this.dv=new DataView(ab);this.entries=new Map();this.readCentralDirectory();}
+    readCentralDirectory(){
+      const dv=this.dv,bytes=this.bytes;let tail=-1;
+      for(let i=bytes.length-22;i>=Math.max(0,bytes.length-65557);i--){if(dv.getUint32(i,true)===0x06054b50){tail=i;break;}}
+      if(tail<0)throw new Error('Dit is geen geldig .xlsx-bestand (ZIP).');
+      const count=dv.getUint16(tail+10,true),start=dv.getUint32(tail+16,true);
+      let at=start;
+      for(let i=0;i<count;i++){
+        if(dv.getUint32(at,true)!==0x02014b50)throw new Error('Excel-ZIP inhoud is beschadigd.');
+        const method=dv.getUint16(at+10,true),compressed=dv.getUint32(at+20,true),filenameLen=dv.getUint16(at+28,true),extraLen=dv.getUint16(at+30,true),commentLen=dv.getUint16(at+32,true),localOff=dv.getUint32(at+42,true);
+        const filename=new TextDecoder().decode(bytes.slice(at+46,at+46+filenameLen));
+        this.entries.set(normalizeZipPath(filename),{method,compressed,localOff});
+        at+=46+filenameLen+extraLen+commentLen;
+      }
+    }
+    async file(filename){
+      const e=this.entries.get(normalizeZipPath(filename));if(!e) return null;
+      const dv=this.dv;
+      if(dv.getUint32(e.localOff,true)!==0x04034b50)throw new Error('Excel bevat een ongeldig ZIP-deel.');
+      const start=e.localOff+30+dv.getUint16(e.localOff+26,true)+dv.getUint16(e.localOff+28,true);
+      const raw=this.bytes.slice(start,start+e.compressed);
+      if(e.method===0)return new TextDecoder().decode(raw);
+      if(e.method!==8)throw new Error('Deze Excel-compressie wordt niet ondersteund.');
+      if(typeof DecompressionStream==='undefined')throw new Error('Je browser ondersteunt het lokaal uitlezen van Excel niet. Gebruik CSV of een recente browser.');
+      const stream=new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+      return new TextDecoder().decode(await new Response(stream).arrayBuffer());
+    }
+    async read(){
+      const wbText=await this.file('xl/workbook.xml');
+      if(!wbText)throw new Error('Excel bevat geen werkbladgegevens.');
+      const wb=xmlParse(wbText),relsText=await this.file('xl/_rels/workbook.xml.rels');
+      const rels=new Map();
+      if(relsText)for(const r of xmlChildren(xmlParse(relsText),'Relationship')) rels.set(r.getAttribute('Id'),r.getAttribute('Target'));
+      const sharedText=await this.file('xl/sharedStrings.xml');
+      const strings=sharedText?xmlChildren(xmlParse(sharedText),'si').map(si=>xmlChildren(si,'t').map(t=>t.textContent).join('')):[];
+      const sheets=[];
+      const defs=xmlChildren(wb,'sheet');
+      for(let i=0;i<defs.length;i++) {
+        const sh=defs[i],id=sh.getAttribute('r:id')||sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
+        const target=rels.get(id)||'worksheets/sheet'+(i+1)+'.xml';
+        const path=target.startsWith('/')?target.slice(1):normalizeZipPath('xl/'+target);
+        const xml=await this.file(path);
+        if(!xml)continue;
+        const sheet=xmlParse(xml),rows=[];
+        for(const rowEl of xmlChildren(sheet,'row').slice(0,20010)) {
+          const row=[];
+          for(const c of xmlChildren(rowEl,'c')) {
+            const ci=colIndex(c.getAttribute('r')||'A');if(ci<0||ci>150)continue;
+            const type=c.getAttribute('t'),v=xmlChildren(c,'v')[0]?.textContent;
+            if(type==='s')row[ci]=strings[Number(v)]??'';
+            else if(type==='inlineStr')row[ci]=xmlChildren(c,'t').map(x=>x.textContent).join('');
+            else if(type==='b')row[ci]=v==='1'?'JA':'NEE';
+            else row[ci]=v??'';
+          }
+          if(row.some(v=>String(v??'').trim())) rows.push(Array.from({length:row.length},(_,j)=>row[j]??''));
+        }
+        sheets.push({name:sh.getAttribute('name')||'Blad '+(i+1),rows});
+      }
+      return sheets;
+    }
+  }
+  function sniffColumns(rows) {
+    if(!rows.length)return {headerRow:0,nameCol:0,priceCol:1,categoryCol:-1,headers:[]};
+    let best={score:-1,row:0};
+    for(let i=0;i<Math.min(12,rows.length);i++){
+      const row=rows[i].map(v=>normalize(v));
+      let score=0;
+      if(row.some(v=>/(drank|artikel|product|omschrijving|benaming|naam|item|description|naamartikel)/.test(v)))score+=4;
+      if(row.some(v=>/(prijs|price|bedrag|verkoopprijs|inclbtw)/.test(v)))score+=5;
+      if(row.some(v=>/(groep|categorie|soort|category)/.test(v)))score+=1;
+      if(score>best.score)best={score,row:i};
+    }
+    let hdr=best.score>0?best.row:0;
+    const first=rows[hdr].map(v=>String(v??'').trim());
+    let name=first.findIndex(v=>/^(drank|drankje|artikelnaam|productnaam|product|naam|artikel|omschrijving|benaming|item|description|naamartikel)$/i.test(v));
+    if(name<0)name=first.findIndex(v=>/(drank|product|omschrijving|naam|description)/i.test(v));
+    let price=first.findIndex(v=>/(verkoopprijs|prijsinclbtw|consumentenprijs)/i.test(normalize(v)));
+    if(price<0)price=first.findIndex(v=>/(prijs|price|bedrag)/i.test(normalize(v)));
+    let category=first.findIndex(v=>/(categorie|groep|soort|category)/i.test(normalize(v)));
+    if(name<0)name=0;if(price<0)price=name===0?1:0;
+    if(best.score<=0) hdr=-1;
+    const maxCols=Math.min(30,Math.max(2,...rows.slice(0,20).map(r=>r.length)));
+    const headers=Array.from({length:maxCols},(_,i)=>hdr>=0?(first[i]||`Kolom ${i+1}`):`Kolom ${i+1}`);
+    return {headerRow:hdr,nameCol:name,priceCol:price,categoryCol:category,headers};
+  }
+  function normalizeImportedName(name) {
+    const n=normalize(name);
+    const alias={
+      vaas:'vaasje',vaasje:'vaasje',vaaspils:'vaasje',vaasjebier:'vaasje',bierklein:'vaasje',
+      glaswittewijn:'wit',wittewijn:'wit',witwijn:'wit',wijnwit:'wit',
+      bokbier:'bok',bokje:'bok',bockbier:'bok',herfstbok:'bok',
+      rose:'rose',glasrose:'rose',rosewijn:'rose',wijnrose:'rose',
+      rodewijn:'rood',glasrodewijn:'rood',wijnrood:'rood',roodwijn:'rood',
+      fluit:'fluitje',fluitje:'fluitje',
+      colalight:'colazero',colazero:'colazero',
+      spa:'spa-blauw',spablauw:'spa-blauw',sparood:'spa-rood',
+      ginandtonic:'gin-tonic',gintonic:'gin-tonic',
+      alcoholvrijbier:'bier00',bier0:'bier00',bier00:'bier00'
+    };
+    const id=alias[n];if(id)return id;
+    const exact=state.drinks.find(d=>normalize(d.name)===n);
+    return exact?.id||null;
+  }
+  function categoryMatch(raw,name='') {
+    const c=normalize(raw),n=normalize(name);
+    if(/bier|pils|radler|bock/.test(c))return 'Bier';
+    if(/wijn|rose|prosecco/.test(c))return 'Wijn';
+    if(/fris|limonade|sap|water/.test(c))return 'Fris';
+    if(/mix|cocktail/.test(c))return 'Mix';
+    if(/sterk|shot|gedistilleerd/.test(c))return 'Sterk';
+    if(/alcohol/.test(c))return 'Overig';
+    if(/wijn|rose|prosecco/.test(n))return 'Wijn';
+    if(/bier|pils|vaasje|fluitje|radler/.test(n))return 'Bier';
+    if(/cola|sinas|sprite|tonic|spa|appelsap/.test(n))return 'Fris';
+    if(/spritz|mojito|gin|tonic|bacardi|wodka/.test(n))return 'Mix';
+    if(/jenever|whisky|rum|cognac/.test(n))return 'Sterk';
+    return 'Overig';
+  }
+  function mappedData(p) {
+    const {rows}=p.sheets[p.sheetIndex],head=p.headerRow,nameCol=p.nameCol,priceCol=p.priceCol,categoryCol=p.categoryCol;
+    let results=[],noPrice=0;
+    for(let i=Math.max(0,head+1);i<rows.length;i++){
+      const row=rows[i],name=String(row[nameCol]??'').trim().replace(/\s+/g,' ');
+      if(!name||name.length>110)continue;
+      const price=parseAmount(row[priceCol]);
+      if(price===null) {noPrice++;continue;}
+      if(name===String(row[priceCol]??'').trim()) continue;
+      results.push({name,price,category:categoryMatch(categoryCol>=0?row[categoryCol]:'',name),sourceRow:i+1});
+    }
+    // Bij dubbele regels geldt de laatste prijs voor dezelfde dranknaam.
+    const uniq=new Map();for(const r of results)uniq.set(normalize(r.name),r);
+    return {results:[...uniq.values()],noPrice};
+  }
+  function importPreviewHTML(p) {
+    const sheet=p.sheets[p.sheetIndex],rows=sheet.rows;
+    const mkOpts=(selected,none=false)=>`${none?'<option value="-1">— Geen —</option>':''}${p.headers.map((h,i)=>`<option value="${i}" ${i===selected?'selected':''}>${escapeHTML(h)}</option>`).join('')}`;
+    const mapped=mappedData(p),ex=mapped.results.slice(0,12);
+    return `<div class="modal-top"><div><p class="eyebrow">PRIJSLIJST IMPORTEEREN</p><h2>Controleer de kolommen</h2><p>${escapeHTML(p.filename)} · ${rows.length} regels op dit blad</p></div><button class="x-btn" data-close aria-label="Sluiten">×</button></div>
+      ${p.sheets.length>1?`<label class="fieldlabel" for="importSheet">Excel-werkblad</label><select id="importSheet" class="input">${p.sheets.map((s,i)=>`<option value="${i}" ${i===p.sheetIndex?'selected':''}>${escapeHTML(s.name)} (${s.rows.length} rijen)</option>`).join('')}</select>`:''}
+      <div class="modal-labels"><label><span class="fieldlabel">Dranknaam</span><select id="importName" class="input">${mkOpts(p.nameCol)}</select></label>
+      <label><span class="fieldlabel">Prijs</span><select id="importPrice" class="input">${mkOpts(p.priceCol)}</select></label>
+      <label><span class="fieldlabel">Categorie (optioneel)</span><select id="importCategory" class="input">${mkOpts(p.categoryCol,true)}</select></label></div>
+      <div class="statsbar"><span class="statpill">${mapped.results.length} prijzen gevonden</span><span class="statpill">${mapped.noPrice} regels zonder bruikbare prijs</span></div>
+      <div class="preview-box"><table class="preview-table"><thead><tr><th>Drankje</th><th>Prijs</th><th>Categorie</th></tr></thead><tbody>${ex.length?ex.map(v=>`<tr><td>${escapeHTML(v.name)}</td><td>${money(v.price)}</td><td>${escapeHTML(v.category)}</td></tr>`).join(''):'<tr><td colspan="3">Geen prijzen gevonden. Controleer de kolommen hierboven.</td></tr>'}</tbody></table></div>
+      <p class="details">Bestaande drankjes worden herkend op naam en waar mogelijk bijgewerkt. Nieuwe namen worden toegevoegd. Lege prijzen worden overgeslagen. Reeds getelde drankjes worden opnieuw berekend met de nieuwe prijs.</p>
+      <div class="modal-actions"><button class="btn btn-outline" data-close type="button">Annuleren</button><button id="applyImport" class="btn btn-gold" type="button" ${mapped.results.length?'':'disabled'}>Importeer ${mapped.results.length} prijzen →</button></div>`;
+  }
+  function showImportPreview(){
+    if(!pendingImport)return;
+    const s=pendingImport.sheets[pendingImport.sheetIndex];
+    Object.assign(pendingImport,sniffColumns(s.rows));
+    openModal(importPreviewHTML(pendingImport));
+  }
+  function refreshImportPreview(){
+    if(!pendingImport)return;
+    pendingImport.nameCol=Number($('#importName')?.value??0);
+    pendingImport.priceCol=Number($('#importPrice')?.value??1);
+    pendingImport.categoryCol=Number($('#importCategory')?.value??-1);
+    const data=mappedData(pendingImport),ex=data.results.slice(0,12);
+    $('.preview-box tbody').innerHTML=ex.length?ex.map(v=>`<tr><td>${escapeHTML(v.name)}</td><td>${money(v.price)}</td><td>${escapeHTML(v.category)}</td></tr>`).join(''):'<tr><td colspan="3">Geen prijzen gevonden. Controleer de kolommen.</td></tr>';
+    $('.modal .statsbar').innerHTML=`<span class="statpill">${data.results.length} prijzen gevonden</span><span class="statpill">${data.noPrice} regels zonder bruikbare prijs</span>`;
+    $('#applyImport').disabled=!data.results.length;
+    $('#applyImport').textContent=`Importeer ${data.results.length} prijzen →`;
+  }
+  async function readPriceFile(file) {
+    if(!file)return;
+    try {
+      if(file.size>10*1024*1024)throw new Error('Bestand te groot (maximaal 10 MB).');
+      const ext=file.name.split('.').pop().toLowerCase();let sheets=[];
+      if(ext==='xlsx') sheets=await new TinyXlsxReader(await file.arrayBuffer()).read();
+      else if(['csv','tsv','txt'].includes(ext)) sheets=[{name:'Prijslijst',rows:parseDelimited(await file.text())}];
+      else if(ext==='xls')throw new Error('Oud Excel-formaat .xls is niet ondersteund. Sla het op als .xlsx of .csv.');
+      else throw new Error('Gebruik een Excel-bestand (.xlsx) of tekstbestand (.csv/.tsv).');
+      if(!sheets.length||!sheets.some(x=>x.rows.length))throw new Error('Er zijn geen rijen met prijzen gevonden.');
+      pendingImport={filename:file.name,sheets,sheetIndex:Math.max(0,sheets.findIndex(s=>s.rows.length>1))};
+      showImportPreview();
+    } catch(err){alert('Prijslijst kon niet worden gelezen: '+err.message);}
+  }
+  function applyPriceImport() {
+    if(!pendingImport)return;
+    const {results}=mappedData(pendingImport);
+    if(!results.length)return;
+    let updated=0,added=0;
+    for(const r of results) {
+      const id=normalizeImportedName(r.name);
+      if(id) {
+        const d=findDrink(id);if(!d)continue;
+        d.price=r.price; activeSession().prices[id]=r.price; updated++;
+      } else {
+        const d={id:makeId(),name:r.name,category:r.category,icon:iconFor(r.category),favorite:false,price:r.price,hidden:false,sort:state.drinks.length+50};
+        state.drinks.push(d);activeSession().prices[d.id]=r.price;added++;
+      }
+    }
+    state.lastImport={filename:pendingImport.filename,at:nowISO(),updated,added};
+    persist();closeModal();renderAll();setView('prijzen');
+    showToast(`${updated} prijzen bijgewerkt · ${added} drankjes toegevoegd`,false,5500);
+  }
+  function downloadSampleCSV() {
+    const rows=[['Drankje','Categorie','Prijs']];
+    state.drinks.filter(x=>!x.hidden).forEach(d=>{const p=currentPrice(d);rows.push([d.name,d.category,p==null?'':moneyNumber(p)]);});
+    downloadFile('Karroesel_voorbeeld_prijslijst.csv',makeCsv(rows),'text/csv;charset=utf-8');
+  }
+  function addDrink(e) {
+    e.preventDefault();const name=$('#newDrinkName').value.trim().replace(/\s+/g,' '),cat=$('#newDrinkCategory').value,raw=$('#newDrinkPrice').value.trim(),price=parseAmount(raw);
+    if(!name)return;
+    if(raw && price===null){showToast('Ongeldige prijs; gebruik bijvoorbeeld 4,25.',false);return;}
+    if(state.drinks.some(d=>normalize(d.name)===normalize(name))){showToast('Dit drankje bestaat al. Pas de prijs hierboven aan.',false,4500);return;}
+    const d={id:makeId(),name,category:cat,icon:iconFor(cat),favorite:false,price,hidden:false,sort:state.drinks.length+50};
+    state.drinks.push(d);activeSession().prices[d.id]=price;
+    persist();$('#addDrinkForm').reset();renderPrices();renderTeller();showToast(`${name} toegevoegd.`,false);
+  }
+  function renameNight() {
+    const s=activeSession();const name=prompt('Nieuwe naam voor deze avond:',s.name);
+    if(name===null)return;
+    if(!name.trim())return showToast('De naam mag niet leeg zijn.',false);
+    s.name=name.trim().slice(0,90);persist();renderAll();showToast('Naam aangepast.',false);
+  }
+  function deleteNight() {
+    if(state.sessions.length<2)return;
+    const s=activeSession();if(!confirm(`Weet je zeker dat je '${s.name}' met alle bestellingen wilt verwijderen?`))return;
+    state.sessions=state.sessions.filter(x=>x.id!==s.id);state.activeId=state.sessions[state.sessions.length-1].id;persist();renderAll();showToast('Avond verwijderd.',false);
+  }
+
+  document.addEventListener('click', e=>{
+    const tab=e.target.closest('[data-view]');if(tab){setView(tab.dataset.view);return;}
+    const go=e.target.closest('[data-go]');if(go){setView(go.dataset.go);return;}
+    const category=e.target.closest('[data-category]');if(category){activeCategory=category.dataset.category;renderChips();renderTeller();return;}
+    const wcat=e.target.closest('[data-w-category]');if(wcat){wActiveCategory=wcat.dataset.wCategory;renderChips();renderWBon();return;}
+    const sub=e.target.closest('[data-subtract]');if(sub){e.stopPropagation();modifyCount(sub.dataset.subtract,-1,sub.dataset.scope||'teller');return;}
+    const add=e.target.closest('[data-add]');if(add){modifyCount(add.dataset.add,1,add.dataset.scope||'teller');return;}
+    const star=e.target.closest('[data-star]');if(star){const d=findDrink(star.dataset.star);if(d){d.favorite=!d.favorite;persist();renderPrices();renderTeller();}return;}
+    const hide=e.target.closest('[data-hide]');if(hide){const d=findDrink(hide.dataset.hide);if(d){d.hidden=!d.hidden;persist();renderPrices();renderTeller();}return;}
+    const sess=e.target.closest('[data-session]');if(sess){state.activeId=sess.dataset.session;persist();renderAll();setView('teller');showToast('Telling geopend.',false);return;}
+    const wbon=e.target.closest('[data-wbon-session]');if(wbon){state.activeWBonId=wbon.dataset.wbonSession;persist();renderAll();setView('wbon');showToast('Doorlopende W-bon geopend.',false);return;}
+    if(e.target.closest('[data-close]')){closeModal();return;}
+    if(e.target===$('#modalWrap')) closeModal();
+  });
+  for(const scope of ['teller','wbon'])$('#view-'+scope).addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-add]')){e.preventDefault();modifyCount(e.target.dataset.add,1,scope);}});
+  $$('.tab').forEach(tab=>tab.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft'].includes(e.key))return;const tabs=$$('.tab'),i=tabs.indexOf(e.currentTarget),next=tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];next.focus();setView(next.dataset.view);}));
+  $('#drinkSearch').addEventListener('input',e=>{search=e.target.value;renderTeller();});
+  $('#wDrinkSearch').addEventListener('input',e=>{wSearch=e.target.value;renderWBon();});
+  $('#wSetje').addEventListener('click',()=>modifySetje(1,'wbon'));
+  $('#wSetjeMinus').addEventListener('click',()=>modifySetje(-1,'wbon'));
+  $('#markWBonPaid').addEventListener('click',markWBonPaid);
+  $('#goCurrentWBon').addEventListener('click',openCurrentWBon);
+  $('#startWBon').addEventListener('click',startNewWBon);
+  $('#startWBonFromAvonden').addEventListener('click',startNewWBon);
+  $('#wBillAmount').addEventListener('input',e=>{
+    const raw=e.target.value.trim();
+    if(activeWBon().paidAt)return;
+    if(raw===''||parseAmount(raw)!=null){activeWBon().billAmount=raw===''?null:parseAmount(raw);persist();renderWReceiptResult();}
+  });
+  $('#wCopyOrder').addEventListener('click',()=>copyOverview(activeWBon()));
+  $('#wDownloadOrder').addEventListener('click',()=>downloadFile('Karroesel_'+safeFileName(activeWBon().name)+'.csv',getOrderCSV(activeWBon()),'text/csv;charset=utf-8'));
+  $('#heroNewNight').addEventListener('click',startNight);
+  $('#startNight').addEventListener('click',startNight);
+  $('#toastUndo').addEventListener('click',undoLast);
+  $('#mobileReceipt').addEventListener('click',()=>{
+    if(currentView==='wbon')$('#wBonReceipt').scrollIntoView({behavior:'smooth',block:'start'});
+    else setView('bon');
+  });
+  $('#billAmount').addEventListener('input',e=>{
+    const val=e.target.value.trim();
+    if(val===''||parseAmount(val)!=null){activeSession().billAmount=val===''?null:parseAmount(val);persist();receiptResult();}
+  });
+  $('#copyOrder').addEventListener('click',copyOverview);
+  $('#downloadOrder').addEventListener('click',()=>downloadFile('Karroesel_'+safeFileName(activeSession().name)+'.csv',getOrderCSV(),'text/csv;charset=utf-8'));
+  $('#selectPriceFile').addEventListener('click',()=>$('#priceFile').click());
+  $('#priceFile').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';await readPriceFile(file);});
+  $('#sampleCSV').addEventListener('click',downloadSampleCSV);
+  $('#addDrinkForm').addEventListener('submit',addDrink);
+  $('#pricingTable').addEventListener('change',e=>{
+    if(e.target.matches('[data-price]'))editPrice(e.target.dataset.price,e.target.value);
+    else if(e.target.matches('[data-cat-price]')){const d=findDrink(e.target.dataset.catPrice);if(d){d.category=e.target.value;d.icon=iconFor(d.category);persist();renderPrices();renderTeller();}}
+  });
+  $('#renameNight').addEventListener('click',renameNight);
+  $('#deleteNight').addEventListener('click',deleteNight);
+  $('#exportBackup').addEventListener('click',exportBackup);
+  $('#selectBackup').addEventListener('click',()=>$('#backupFile').click());
+  $('#backupFile').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';if(file)await importBackup(file);});
+  $('#modalBody').addEventListener('submit',e=>{
+    if(e.target.id==='newNightForm'){
+      e.preventDefault();const name=$('#nightName').value.trim()||defaultName();
+      const prices=Object.fromEntries(state.drinks.map(d=>[d.id,d.price]));
+      const sess=newSession(prices,name.slice(0,90));state.sessions.push(sess);state.activeId=sess.id;
+      persist();closeModal();activeCategory='Alles';search='';$('#drinkSearch').value='';renderAll();setView('teller');showToast('Nieuwe avond gestart. Proost! 🍻',false);
+    }
+  });
+  $('#modalBody').addEventListener('change',e=>{
+    if(e.target.id==='importSheet'){pendingImport.sheetIndex=Number(e.target.value);showImportPreview();}
+    else if(['importName','importPrice','importCategory'].includes(e.target.id))refreshImportPreview();
+  });
+  $('#modalBody').addEventListener('click',e=>{if(e.target.id==='applyImport')applyPriceImport();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modalWrap').classList.contains('open'))closeModal();});
+  $('#newDrinkCategory').innerHTML=CATEGORY.map(c=>`<option value="${c}">${c}</option>`).join('');
+  renderAll();persist();
+})();
+</script>
+</body>
+</html>
