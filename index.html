@@ -383,6 +383,52 @@
     .price-readonly { opacity:.82; }
     .cloud-loading { opacity:.6; }
     @media(max-width:640px){ .cloud-panel{margin:-3px 0 12px;} .cloud-copy strong{font-size:11px;} .cloud-login label { flex-basis:100%; } .cloud-login>.btn{width:100%} .cloud-account-info .btn{flex-shrink:0} }
+    /* KROEGTELLER_SPLIT_ML_RONDJES_V1 */
+    #view-wbon .drink-card { padding:12px 10px 13px; min-height:156px; cursor:default; touch-action:auto; }
+    #view-wbon .drink-card::after { content:none; display:none; }
+    #view-wbon .drink-card:hover { border-color:#3c5340; background:linear-gradient(145deg,#25382a,#1c2c21); }
+    #view-wbon .drink-card:active { transform:none; }
+    #view-wbon .drink-card-top { flex-direction:row; align-items:center; gap:7px; padding-right:0; min-height:34px; }
+    #view-wbon .drink-icon { height:30px; width:30px; flex:none; font-size:17px; }
+    #view-wbon .drink-name { min-height:0; font-size:14px; line-height:1.15; overflow-wrap:anywhere; }
+    #view-wbon .split-counters { margin-top:12px; display:grid; gap:8px; }
+    #view-wbon .split-row { display:grid; grid-template-columns:minmax(32px,1fr) 20px 29px 34px; align-items:center; gap:4px; min-width:0; }
+    #view-wbon .split-label { font-weight:800; font-size:11px; line-height:1.05; white-space:nowrap; color:#ead9b9; }
+    #view-wbon .split-row[data-group="rounds"] .split-label { color:#bac7b7; font-size:10px; }
+    #view-wbon .split-qty { font:700 19px/1 Georgia,serif; color:var(--paper); text-align:center; font-variant-numeric:tabular-nums; }
+    #view-wbon .split-minus, #view-wbon .split-plus { width:100%; min-width:0; min-height:34px; border-radius:9px; padding:0; font-size:22px; font-weight:900; line-height:1; }
+    #view-wbon .split-minus { background:#314336; color:#e8d5b5; border:1px solid #4a644e; }
+    #view-wbon .split-minus:disabled { opacity:.20; }
+    #view-wbon .split-plus { background:var(--gold); border:1px solid var(--gold); color:#29251c; }
+    #view-wbon .split-plus:active, #view-wbon .split-minus:active { filter:brightness(1.14); transform:scale(.97); }
+    #view-teller .drink-card { min-height:116px; }
+    #view-teller .drink-lower { margin-top:17px; }
+    #view-teller .drink-card .qty { font-size:32px; }
+    #view-wbon .setje-feature { display:block; margin-top:17px; padding:12px 14px 14px; border:1px solid #d6ad67; border-radius:16px; background:linear-gradient(115deg,#594025,#342c20 54%,#293723); }
+    #view-wbon .setje-head { display:flex; gap:10px; align-items:center; }
+    #view-wbon .setje-head .setje-emoji { font-size:28px; line-height:1; }
+    #view-wbon .setje-head strong { display:block; font:bold 24px/1.1 Georgia,serif; color:#fff1d7; }
+    #view-wbon .setje-head small { display:block; margin-top:3px; font-size:12px; color:#e5d4b6; }
+    #view-wbon .setje-split-row { display:grid; grid-template-columns:minmax(77px,1fr) 34px 46px 57px; align-items:center; gap:8px; margin-top:8px; }
+    #view-wbon .setje-split-label { font-size:13px; font-weight:800; color:#f5e5c8; }
+    #view-wbon .setje-split-row.rounds .setje-split-label { color:#c3cfbf; }
+    #view-wbon .setje-split-qty { color:var(--paper); font:bold 21px Georgia,serif; text-align:center; }
+    #view-wbon .setje-split-row button { min-height:41px; border-radius:10px; font-size:20px; font-weight:900; }
+    #view-wbon .setje-split-row .setje-minus { min-width:0; max-width:none; padding:0; background:#324034; color:#f0d5aa; border:1px solid rgba(220,180,108,.45); }
+    #view-wbon .setje-split-row .setje-plus { background:var(--gold); color:#29241b; border:1px solid var(--gold); }
+    #view-wbon .setje-split-row button:disabled { opacity:.22; }
+    .w-split-summary { display:flex; flex-wrap:wrap; gap:7px 16px; margin:12px 0; padding:10px 11px; border-radius:11px; border:1px solid rgba(229,185,103,.16); background:rgba(233,185,103,.06); color:#e5d5b7; font-size:12px; }
+    .w-split-summary strong { color:var(--paper); }
+    @media(max-width:420px) {
+      #view-wbon .setje-feature { padding:10px 12px 12px; }
+      #view-wbon .setje-split-row { grid-template-columns:minmax(66px,1fr) 27px 40px 52px; gap:6px; }
+      #view-wbon .drink-card { padding:12px 9px; }
+      #view-wbon .split-row { grid-template-columns:minmax(29px,1fr) 19px 27px 32px; gap:3px; }
+      #view-wbon .split-label { font-size:10px; }
+      #view-wbon .split-row[data-group="rounds"] .split-label { font-size:9px; }
+      #view-wbon .split-qty { font-size:18px; }
+      #view-wbon .split-minus, #view-wbon .split-plus { min-height:33px; }
+    }
   </style>
 </head>
 <body>
@@ -468,11 +514,19 @@
         </div>
       </div>
       <div id="wSetjeFeature" class="setje-feature">
-        <button id="wSetje" type="button" class="setje-btn" aria-label="Voeg een setje toe: één vaasje en één glas witte wijn">
-          <span class="setje-emoji" aria-hidden="true">🍺🥂</span><span><strong>Setje</strong><small>1 vaasje + 1 witte wijn <span id="wSetjePrice"></span></small></span><span class="setje-plus">＋ 2</span>
-        </button>
-        <button id="wSetjeMinus" type="button" class="setje-minus" aria-label="Een setje terugdraaien">− Setje</button>
+        <div class="setje-head"><span class="setje-emoji" aria-hidden="true">🍺🥂</span><span><strong>Setje</strong><small>1 vaasje + 1 witte wijn</small></span></div>
+        <div class="setje-split-row">
+          <span class="setje-split-label">M&L</span><span id="wSetjeCountML" class="setje-split-qty">0</span>
+          <button id="wSetjeMinus" type="button" class="setje-minus" aria-label="M&L: setje minder">−</button>
+          <button id="wSetje" type="button" class="setje-plus" aria-label="M&L: setje erbij (twee drankjes)">+2</button>
+        </div>
+        <div class="setje-split-row rounds">
+          <span class="setje-split-label">Rondjes</span><span id="wSetjeCountRondjes" class="setje-split-qty">0</span>
+          <button id="wSetjeRondjesMinus" type="button" class="setje-minus" aria-label="Rondjes: setje minder">−</button>
+          <button id="wSetjeRondjes" type="button" class="setje-plus" aria-label="Rondjes: setje erbij (twee drankjes)">+2</button>
+        </div>
       </div>
+
       <div id="wDrinkPicker" class="search-row">
         <label class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="wDrinkSearch" type="search" placeholder="Zoek een drankje…" autocomplete="off" aria-label="Drankje zoeken op de W-bon" /></label>
         <div id="wCategoryChips" class="category-chips" aria-label="Drankcategorieën W-bon"></div>
@@ -482,7 +536,7 @@
       <div id="wTellerEmpty" class="empty-search hide">Geen drankje gevonden. <button class="text-action" data-go="prijzen" type="button">Drankje toevoegen →</button></div>
       <div class="cols wbon-receipt" id="wBonReceipt">
         <div class="panel"><p class="eyebrow">DOORLOPEND OVERZICHT</p><h2>Wat staat op de W-bon?</h2><p class="hint">De telling loopt onafhankelijk van je losse avonden.</p>
-          <ul id="wOrderList" class="orderlist"></ul><div id="wOrderSummary" class="sumline"></div>
+          <ul id="wOrderList" class="orderlist"></ul><div id="wSplitSummary" class="w-split-summary"></div><div id="wOrderSummary" class="sumline"></div>
           <div class="secondary-actions"><button type="button" id="wCopyOrder" class="btn btn-outline btn-sm">⎘ Kopieer overzicht</button><button id="wDownloadOrder" type="button" class="btn btn-outline btn-sm">↓ Exporteer CSV</button></div>
         </div>
         <div class="panel"><p class="eyebrow">ALS JE GAAT AFREKENEN</p><h2>W-bon controleren</h2><p class="hint">Vul eventueel het bedrag op de rekening in en vergelijk.</p>
@@ -524,7 +578,7 @@
       <div class="cols"><div class="panel"><h2>Eerdere tellingen</h2><div id="sessionList" class="session-list"></div><div class="secondary-actions"><button id="renameNight" class="btn btn-outline btn-sm">✎ Naam wijzigen</button><button id="deleteNight" class="btn btn-danger btn-sm">Verwijder geopende avond</button></div></div><div><div class="panel" style="margin-bottom:15px"><h2>Bewaar je gegevens</h2><p>De losse avondtellingen blijven op dit apparaat. Bij actieve online koppeling staan de prijslijst en W-bonnen centraal in Firebase. De back-up hieronder bewaart je lokale avonden; hij overschrijft de gedeelde W-bon niet.</p><div class="secondary-actions"><button id="exportBackup" class="btn btn-gold">↓ Back-up downloaden</button><button id="selectBackup" class="btn btn-outline">↑ Back-up terugzetten</button><input id="backupFile" type="file" accept=".json,application/json" hidden /></div></div><div class="info-card"><h3>🎱 Zo werkt de Kroegteller</h3><p>Eén tik telt één drankje. Met min corrigeer je een fout. De meeste getelde drankjes komen bovenaan. Met Boncheck vergelijk je de avond met de rekening. De W-bon telt apart door over meerdere avonden. Elke € 200 levert een W-tje op. ‘Setje’ telt meteen een vaasje én witte wijn. De knop Betaald sluit de W-bon af, bewaart hem en begint een nieuwe teller op nul. Bij een online koppeling worden de gedeelde prijslijst en W-bon opgeslagen in Firebase; losse avonden blijven lokaal.</p></div></div></div>
     </section>
   </main>
-  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.4 · Gedeelde W-bon met beveiligde toegang</footer>
+  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.5 · Gedeelde W-bon met beveiligde toegang</footer>
 </div>
 
 <div id="stickyTotal" class="sticky-total" aria-live="off"><div><div id="mobileHeadline" class="first">0 drankjes · € 0,00</div><div id="mobileSub" class="second">Tik om je drankjes te tellen</div></div><button id="mobileReceipt" type="button" class="btn btn-gold btn-sm">Boncheck →</button></div>
@@ -770,6 +824,30 @@
     }
     return result;
   }
+  // Ongemarkeerde oude events zijn M&L; bestaande aantallen en bedragen blijven behouden.
+  const wGroupOf=e=>e?.group==='rounds'?'rounds':'ml';
+  function countsForGroup(s,group) {
+    const c={};
+    for(const e of (s?.events||[])) {
+      if(!e || wGroupOf(e)!==group)continue;
+      const delta=e.delta===-1?-1:1;
+      const ids=e.kind==='setje'?['vaasje','wit']:(typeof e.id==='string'?[e.id]:[]);
+      for(const id of ids)c[id]=Math.max(0,(c[id]||0)+delta);
+    }
+    return c;
+  }
+  function setjesForGroup(s,group) {
+    return Math.max(0,(s?.events||[]).reduce((n,e)=>n+(e && e.kind==='setje' && wGroupOf(e)===group?(e.delta===-1?-1:1):0),0));
+  }
+  function totalsForGroup(s,group) {
+    const cs=countsForGroup(s,group);let count=0,total=0,missing=0;
+    for(const [id,n] of Object.entries(cs))if(n>0) {
+      count+=n;const d=findDrink(id),p=d?currentPrice(d,s):null;
+      if(p==null || !Number.isFinite(Number(p)))missing+=n;
+      else total+=n*Number(p);
+    }
+    return {count,total:Math.round(total*100)/100,missing};
+  }
   function setjesFor(s) { return Math.max(0,s.events.reduce((n,e)=>n+(e && e.kind==='setje' ? (e.delta===-1?-1:1) : 0),0)); }
   function totalUsage() { const r={}; for(const s of [...state.sessions,...state.wBons]){ const cs=countsFor(s); for(const [id,n] of Object.entries(cs))r[id]=(r[id]||0)+n; } return r; }
   function totalsFor(s=activeSession()) {
@@ -800,41 +878,41 @@
     clearTimeout(wCelebrateTimer);
     wCelebrateTimer=setTimeout(()=>pop.classList.remove('show'),2400);
   }
-  function modifyCount(id,delta,scope='teller') {
-    if(scope==='wbon' && cloud.enabled){
+  function modifyCount(id,delta,scope='teller',group='ml') {
+    group=group==='rounds'?'rounds':'ml';
+    if(scope==='wbon' && cloud.enabled) {
       const d=findDrink(id);if(!d)return;
-      remoteWAction('addDrink',{id,delta},delta>0?d.name+' aan gedeelde bon toegevoegd':d.name+' teruggezet',true);
+      remoteWAction('addDrink',{id,delta,group},(group==='ml'?'M&L':'Rondjes')+': '+d.name+(delta>0?' toegevoegd':' teruggezet'),true);
       return;
     }
     const s=scope==='wbon'?activeWBon():activeSession(),d=findDrink(id);
-    if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
-    if(!d || (delta<0 && (countsFor(s)[id]||0)<1)) return;
+    if(s.paidAt)return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
+    if(!d || (delta<0 && ((scope==='wbon'?countsForGroup(s,group):countsFor(s))[id]||0)<1))return;
     const oldW=scope==='wbon'?Math.floor(totalsFor(s).total/200):0;
-    s.events.push({id,delta,at:nowISO()});
-    if(!Object.prototype.hasOwnProperty.call(s.prices,id)) s.prices[id]=d.price;
-    lastUndoSessionId=s.id;
-    persist();
-    if(delta>0)vibrate();
-    if(scope==='wbon') { renderWBon(); const newW=Math.floor(totalsFor(s).total/200); if(newW>oldW)showWCelebration(newW); }
+    s.events.push(scope==='wbon'?{id,delta,group,at:nowISO()}:{id,delta,at:nowISO()});
+    if(!Object.prototype.hasOwnProperty.call(s.prices,id))s.prices[id]=d.price;
+    lastUndoSessionId=s.id;persist();if(delta>0)vibrate();
+    if(scope==='wbon'){renderWBon();const newW=Math.floor(totalsFor(s).total/200);if(newW>oldW)showWCelebration(newW);}
     else renderTeller();
-    showToast(delta>0 ? d.name+' toegevoegd (+1)' : d.name+' teruggezet (−1)',true);
+    showToast((scope==='wbon'?(group==='ml'?'M&L · ':'Rondjes · '):'')+d.name+(delta>0?' toegevoegd (+1)':' teruggezet (−1)'),true);
   }
-  function modifySetje(delta=1,scope='wbon') {
-    if(scope==='wbon' && cloud.enabled){remoteWAction('addSetje',{delta},delta>0?'Setje toegevoegd aan jullie W-bon':'Setje teruggezet',true);return;}
-    const s=scope==='wbon'?activeWBon():activeSession(),cs=countsFor(s);
-    if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
+  function modifySetje(delta=1,scope='wbon',group='ml') {
+    group=group==='rounds'?'rounds':'ml';
+    if(scope==='wbon' && cloud.enabled){remoteWAction('addSetje',{delta,group},(group==='ml'?'M&L':'Rondjes')+(delta>0?': setje toegevoegd':': setje teruggezet'),true);return;}
+    const s=scope==='wbon'?activeWBon():activeSession();
+    if(s.paidAt)return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
     if(!findDrink('vaasje')||!findDrink('wit'))return showToast('Vaasje of witte wijn ontbreekt in de prijslijst.',false,3500);
-    if(delta<0 && (!setjesFor(s) || !cs.vaasje || !cs.wit))return;
+    const cs=scope==='wbon'?countsForGroup(s,group):countsFor(s),setjes=scope==='wbon'?setjesForGroup(s,group):setjesFor(s);
+    if(delta<0 && (!setjes||!cs.vaasje||!cs.wit))return;
     const oldW=scope==='wbon'?Math.floor(totalsFor(s).total/200):0;
-    s.events.push({kind:'setje',delta,at:nowISO()});
+    s.events.push(scope==='wbon'?{kind:'setje',delta,group,at:nowISO()}:{kind:'setje',delta,at:nowISO()});
     for(const id of ['vaasje','wit'])if(!Object.prototype.hasOwnProperty.call(s.prices,id))s.prices[id]=findDrink(id).price;
-    lastUndoSessionId=s.id;
-    persist();
-    if(delta>0)vibrate();
-    if(scope==='wbon') { renderWBon(); const newW=Math.floor(totalsFor(s).total/200); if(newW>oldW)showWCelebration(newW); }
+    lastUndoSessionId=s.id;persist();if(delta>0)vibrate();
+    if(scope==='wbon'){renderWBon();const newW=Math.floor(totalsFor(s).total/200);if(newW>oldW)showWCelebration(newW);}
     else renderTeller();
-    showToast(delta>0?'Setje toegevoegd: vaasje + witte wijn (+2)':'Setje teruggezet (−2)',true,3400);
+    showToast((scope==='wbon'?(group==='ml'?'M&L · ':'Rondjes · '):'')+(delta>0?'Setje toegevoegd (+2)':'Setje teruggezet (−2)'),true,3400);
   }
+
   function undoLast() {
     if(cloud.enabled && lastUndoSessionId==='CLOUD'){
       lastUndoSessionId=null;remoteWAction('undo',{},'Laatste tik op de gedeelde bon hersteld.');return;
@@ -861,15 +939,27 @@
     $('#categoryChips').innerHTML=['Alles',...CATEGORY].map(c=>`<button type="button" class="chip ${c===activeCategory?'selected':''}" data-category="${escAttr(c)}">${escapeHTML(c)}</button>`).join('');
     $('#wCategoryChips').innerHTML=['Alles',...CATEGORY].map(c=>`<button type="button" class="chip ${c===wActiveCategory?'selected':''}" data-w-category="${escAttr(c)}">${escapeHTML(c)}</button>`).join('');
   }
-  function cardHTML(d,counts,scope='teller') {
-    const n=counts[d.id]||0,p=currentPrice(d,scope==='wbon'?activeWBon():activeSession()),subtotal=p==null?'':money(p*n);
-    return `<article class="drink-card ${n?'has-count':''}" data-add="${escAttr(d.id)}" data-scope="${scope}" role="button" tabindex="0" aria-label="Voeg ${escAttr(d.name)} toe ${scope==='wbon'?'aan W-bon':'aan avond'}, nu ${n}">
-      <button type="button" class="minus" data-subtract="${escAttr(d.id)}" data-scope="${scope}" ${n?'':'disabled'} aria-label="${escAttr(d.name)} eentje minder">−</button>
+  function cardHTML(d,counts,scope='teller',grouped=null) {
+    const n=counts[d.id]||0;
+    if(scope==='wbon') {
+      const own=grouped?.ml?.[d.id]||0,rounds=grouped?.rounds?.[d.id]||0;
+      const lines=[['ml','M&L',own],['rounds','Rondjes',rounds]];
+      return `<article class="drink-card ${n?'has-count':''}">
+        <div class="drink-card-top"><div class="drink-icon" aria-hidden="true">${escapeHTML(d.icon||iconFor(d.category))}</div><div class="drink-name">${escapeHTML(d.name)}</div></div>
+        <div class="split-counters">${lines.map(([group,label,value])=>`<div class="split-row" data-group="${group}">
+          <span class="split-label">${label}</span><span class="split-qty">${value}</span>
+          <button type="button" class="split-minus" data-subtract="${escAttr(d.id)}" data-scope="wbon" data-group="${group}" ${value?'':'disabled'} aria-label="${escAttr(d.name)}, ${label}: min één">−</button>
+          <button type="button" class="split-plus" data-add="${escAttr(d.id)}" data-scope="wbon" data-group="${group}" aria-label="${escAttr(d.name)}, ${label}: plus één">+</button>
+        </div>`).join('')}</div>
+      </article>`;
+    }
+    return `<article class="drink-card ${n?'has-count':''}" data-add="${escAttr(d.id)}" data-scope="teller" role="button" tabindex="0" aria-label="Voeg ${escAttr(d.name)} toe aan avond, nu ${n}">
+      <button type="button" class="minus" data-subtract="${escAttr(d.id)}" data-scope="teller" ${n?'':'disabled'} aria-label="${escAttr(d.name)} eentje minder">−</button>
       <div class="drink-card-top"><div class="drink-icon" aria-hidden="true">${escapeHTML(d.icon||iconFor(d.category))}</div><div class="drink-name">${escapeHTML(d.name)}</div></div>
-      <div class="drink-info">${p==null?'Prijs nog invullen':money(p)+' per stuk'}</div>
-      <div class="drink-lower"><div class="qty">${n}<small>geteld</small></div><div class="drink-amount"><div class="line-total">${n ? (p==null?'—':subtotal) : '&nbsp;'}</div></div></div>
+      <div class="drink-lower"><div class="qty">${n}</div></div>
     </article>`;
   }
+
   function renderTeller() {
     const s=activeSession(), sum=totalsFor(s), usage=totalUsage();
     $('#currentEvening').textContent=s.name;
@@ -902,6 +992,7 @@
   }
   function renderWBon() {
     const s=activeWBon(),sum=totalsFor(s),usage=totalUsage(),isPaid=Boolean(s.paidAt),isArchived=Boolean(s.closedAt),readOnly=isPaid || isArchived || (cloud.enabled && (!cloud.ready || s.id!==cloud.remoteActive));
+    const grouped={ml:countsForGroup(s,'ml'),rounds:countsForGroup(s,'rounds')};
     const wins=Math.floor((Math.round(sum.total*100)+0.00001)/20000);
     const progressCents=Math.round(sum.total*100)%20000;
     const needed=(20000-progressCents)/100;
@@ -928,22 +1019,26 @@
     $('#wBonHelp').textContent=isArchived?'Deze oude W-bon is gesloten zonder betaling en kan niet meer worden gewijzigd.':isPaid?'Deze betaalde W-bon is opgeslagen en kan niet meer worden aangepast. Ga naar de lopende W-bon om verder te tellen.':'Afgerekend? Tik bovenaan op ✓ Betaald. Je teller gaat dan op nul en de betaalde W-bon blijft onder Avonden bewaard. Een losse avond beginnen heeft geen invloed op de W-bon.';
     $('#wBillAmount').readOnly=readOnly;
     $('#wSetje').disabled=readOnly;
-    $('#wSetjeMinus').disabled=readOnly ||setjesFor(s)<1 || (sum.counts.vaasje||0)<1 || (sum.counts.wit||0)<1;
-    const pa=currentPrice(findDrink('vaasje'),s),pb=currentPrice(findDrink('wit'),s);
-    $('#wSetjePrice').textContent=pa==null||pb==null?'· prijs nog invullen':'· '+money(Number(pa)+Number(pb));
+    $('#wSetjeMinus').disabled=readOnly || setjesForGroup(s,'ml')<1 || (grouped.ml.vaasje||0)<1 || (grouped.ml.wit||0)<1;
+    $('#wSetjeRondjes').disabled=readOnly;
+    $('#wSetjeRondjesMinus').disabled=readOnly || setjesForGroup(s,'rounds')<1 || (grouped.rounds.vaasje||0)<1 || (grouped.rounds.wit||0)<1;
+    $('#wSetjeCountML').textContent=String(setjesForGroup(s,'ml'));
+    $('#wSetjeCountRondjes').textContent=String(setjesForGroup(s,'rounds'));
     const filtered=state.drinks.filter(d=>!d.hidden && (wActiveCategory==='Alles'||d.category===wActiveCategory) && (!wSearch||normalize(d.name).includes(normalize(wSearch))));
     const ranked=filtered.sort((a,b)=>{
       const score=d=>(usage[d.id]||0)*6+(sum.counts[d.id]||0)*3+(d.favorite?18:0);
       return score(b)-score(a)||(a.sort??999)-(b.sort??999)||a.name.localeCompare(b.name,'nl');
     });
     const quick=ranked.slice(0,6),rest=ranked.slice(6);
-    $('#wQuickGrid').innerHTML=quick.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
-    $('#wOtherGrid').innerHTML=rest.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
+    $('#wQuickGrid').innerHTML=quick.map(d=>cardHTML(d,sum.counts,'wbon',grouped)).join('');
+    $('#wOtherGrid').innerHTML=rest.map(d=>cardHTML(d,sum.counts,'wbon',grouped)).join('');
     $('#wQuickSection').classList.toggle('hide',readOnly || !quick.length);
     $('#wOtherSection').classList.toggle('hide',readOnly || !rest.length);
     $('#wTellerEmpty').classList.toggle('hide',readOnly || Boolean(ranked.length));
     $('#wOtherSection .section-title .tiny').textContent=ranked.length>6?`${rest.length} andere opties`:'Tik om toe te voegen';
     $('#wOrderList').innerHTML=orderListHTML(s,sum);
+    const mlTotals=totalsForGroup(s,'ml'),rTotals=totalsForGroup(s,'rounds');
+    $('#wSplitSummary').innerHTML='<span><strong>M&L</strong> · '+mlTotals.count+' · '+money(mlTotals.total)+(mlTotals.missing?'*':'')+'</span><span><strong>Rondjes</strong> · '+rTotals.count+' · '+money(rTotals.total)+(rTotals.missing?'*':'')+'</span>';
     $('#wOrderSummary').innerHTML=`<span>Totaal${sum.missingCount?' (onvolledig)':''}</span><span>${money(sum.total)}</span>`;
     $('#wBillAmount').value=s.billAmount==null?'':moneyNumber(s.billAmount);
     renderWReceiptResult();
@@ -955,11 +1050,13 @@
   }
   function orderListHTML(s,sum) {
     const ordered=Object.entries(sum.counts).filter(([,v])=>v>0).map(([id,n])=>({drink:findDrink(id),id,n})).sort((a,b)=>b.n-a.n||(a.drink?.name||'').localeCompare(b.drink?.name||''));
-    return ordered.length?ordered.map(({drink:d,n})=>{
+    const ml=countsForGroup(s,'ml'),rounds=countsForGroup(s,'rounds');
+    return ordered.length?ordered.map(({drink:d,id,n})=>{
       const p=d?currentPrice(d,s):null;
-      return `<li><div class="label">${escapeHTML(d?.name||'Onbekend drankje')}<div class="unit">${p==null?'Prijs niet ingevuld':money(p)+' p/st'}</div></div><div class="times">× ${n}</div><div class="val">${p==null?'—':money(p*n)}</div></li>`;
+      return `<li><div class="label">${escapeHTML(d?.name||'Onbekend drankje')}<div class="unit">${p==null?'Prijs niet ingevuld':money(p)+' p/st'} · M&L ${ml[id]||0} · Rondjes ${rounds[id]||0}</div></div><div class="times">× ${n}</div><div class="val">${p==null?'—':money(p*n)}</div></li>`;
     }).join(''):'<li style="display:block;color:#a9b8a5">Er staan nog geen drankjes op deze bon.</li>';
   }
+
   function renderWReceiptResult() {
     const s=activeWBon(),sum=totalsFor(s),status=$('#wReceiptStatus'),diff=$('#wReceiptDiff');
     $('#wReceiptTotal').textContent=money(sum.total)+(sum.missingCount?' (deels)':'');
@@ -1102,22 +1199,38 @@
   function csvEscape(v) { const str=String(v??'');return (/[;"\r\n]/.test(str) ? '"'+str.replace(/"/g,'""')+'"' : str); }
   function makeCsv(lines) {return '\ufeff'+lines.map(row=>row.map(csvEscape).join(';')).join('\r\n')+'\r\n';}
   function getOrderCSV(s=activeSession()) {
-    const cs=countsFor(s),rows=[['Drankje','Categorie','Aantal','Prijs per stuk (EUR)','Subtotaal (EUR)']];
-    state.drinks.filter(d=>(cs[d.id]||0)>0).forEach(d=>{const n=cs[d.id],p=currentPrice(d,s);rows.push([d.name,d.category,n,p==null?'':moneyNumber(p),p==null?'':moneyNumber(n*p)]);});
-    const sum=totalsFor(s);rows.push(['TOTAAL','',sum.count,'',sum.missingCount?'ONVOLLEDIG':moneyNumber(sum.total)]);
-    rows.push(['BONBEDRAG','','','',s.billAmount==null?'':moneyNumber(s.billAmount)]);
-    if(s.paidAt)rows.push(['BETAALD OP','','','',new Date(s.paidAt).toLocaleString('nl-NL')]);
+    const cs=countsFor(s),isW=s.kind==='wbon';
+    const rows=[isW?['Drankje','Categorie','M&L','Rondjes','Totaal aantal','Prijs per stuk (EUR)','Subtotaal (EUR)']:['Drankje','Categorie','Aantal','Prijs per stuk (EUR)','Subtotaal (EUR)']];
+    const ml=isW?countsForGroup(s,'ml'):{},rounds=isW?countsForGroup(s,'rounds'):{};
+    state.drinks.filter(d=>(cs[d.id]||0)>0).forEach(d=>{
+      const n=cs[d.id],p=currentPrice(d,s),price=p==null?'':moneyNumber(p),line=p==null?'':moneyNumber(n*p);
+      rows.push(isW?[d.name,d.category,ml[d.id]||0,rounds[d.id]||0,n,price,line]:[d.name,d.category,n,price,line]);
+    });
+    const sum=totalsFor(s);
+    rows.push(isW?['TOTAAL','',totalsForGroup(s,'ml').count,totalsForGroup(s,'rounds').count,sum.count,'',sum.missingCount?'ONVOLLEDIG':moneyNumber(sum.total)]:['TOTAAL','',sum.count,'',sum.missingCount?'ONVOLLEDIG':moneyNumber(sum.total)]);
+    rows.push(isW?['BONBEDRAG','','','','','',s.billAmount==null?'':moneyNumber(s.billAmount)]:['BONBEDRAG','','','',s.billAmount==null?'':moneyNumber(s.billAmount)]);
+    if(s.paidAt)rows.push(isW?['BETAALD OP','','','','','',new Date(s.paidAt).toLocaleString('nl-NL')]:['BETAALD OP','','','',new Date(s.paidAt).toLocaleString('nl-NL')]);
     return makeCsv(rows);
   }
   function plainOverview(s=activeSession()) {
-    const cs=countsFor(s),sum=totalsFor(s);
-    const lines=[`KARROESEL · ${s.kind==='wbon'?'Doorlopende W-bon':s.name}`,''];
-    for(const d of state.drinks) { const n=cs[d.id]||0; if(!n)continue;const p=currentPrice(d,s);lines.push(`${n}x ${d.name} — ${p==null?'prijs onbekend':money(n*p)}`); }
+    const cs=countsFor(s),sum=totalsFor(s),isW=s.kind==='wbon';
+    const ml=isW?countsForGroup(s,'ml'):{},rounds=isW?countsForGroup(s,'rounds'):{};
+    const lines=[`KARROESEL · ${isW?'Doorlopende W-bon':s.name}`,''];
+    for(const d of state.drinks) {
+      const n=cs[d.id]||0;if(!n)continue;
+      const p=currentPrice(d,s),extra=isW?` [M&L ${ml[d.id]||0}, Rondjes ${rounds[d.id]||0}]`:'';
+      lines.push(`${n}x ${d.name}${extra} — ${p==null?'prijs onbekend':money(n*p)}`);
+    }
+    if(isW) {
+      const a=totalsForGroup(s,'ml'),b=totalsForGroup(s,'rounds');
+      lines.push('',`M&L: ${a.count} drankjes · ${money(a.total)}`,`Rondjes: ${b.count} drankjes · ${money(b.total)}`);
+    }
     lines.push('');lines.push(`Zelf geteld: ${sum.count} drankjes`);lines.push(`Berekend: ${money(sum.total)}${sum.missingCount?' (onvolledig)':''}`);
     if(s.billAmount!=null)lines.push(`Op bon: ${money(s.billAmount)}`);
     if(s.paidAt)lines.push(`✓ Betaald op: ${new Date(s.paidAt).toLocaleString('nl-NL')}`);
     return lines.join('\n');
   }
+
   async function copyOverview(s=activeSession()){
     const txt=plainOverview(s);
     try {await navigator.clipboard.writeText(txt);showToast('Overzicht gekopieerd.',false);} catch(e){
@@ -1396,8 +1509,8 @@
     const go=e.target.closest('[data-go]');if(go){setView(go.dataset.go);return;}
     const category=e.target.closest('[data-category]');if(category){activeCategory=category.dataset.category;renderChips();renderTeller();return;}
     const wcat=e.target.closest('[data-w-category]');if(wcat){wActiveCategory=wcat.dataset.wCategory;renderChips();renderWBon();return;}
-    const sub=e.target.closest('[data-subtract]');if(sub){e.stopPropagation();modifyCount(sub.dataset.subtract,-1,sub.dataset.scope||'teller');return;}
-    const add=e.target.closest('[data-add]');if(add){modifyCount(add.dataset.add,1,add.dataset.scope||'teller');return;}
+    const sub=e.target.closest('[data-subtract]');if(sub){e.stopPropagation();modifyCount(sub.dataset.subtract,-1,sub.dataset.scope||'teller',sub.dataset.group||'ml');return;}
+    const add=e.target.closest('[data-add]');if(add){e.stopPropagation();modifyCount(add.dataset.add,1,add.dataset.scope||'teller',add.dataset.group||'ml');return;}
     const star=e.target.closest('[data-star]');if(star){if(!canEditCentralPrices())return;const d=findDrink(star.dataset.star);if(d){d.favorite=!d.favorite;persist();renderPrices();renderTeller();syncCentralPrices();}return;}
     const hide=e.target.closest('[data-hide]');if(hide){if(!canEditCentralPrices())return;const d=findDrink(hide.dataset.hide);if(d){d.hidden=!d.hidden;persist();renderPrices();renderTeller();syncCentralPrices();}return;}
     const sess=e.target.closest('[data-session]');if(sess){state.activeId=sess.dataset.session;persist();renderAll();setView('teller');showToast('Telling geopend.',false);return;}
@@ -1405,12 +1518,14 @@
     if(e.target.closest('[data-close]')){closeModal();return;}
     if(e.target===$('#modalWrap')) closeModal();
   });
-  for(const scope of ['teller','wbon'])$('#view-'+scope).addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-add]')){e.preventDefault();modifyCount(e.target.dataset.add,1,scope);}});
+  for(const scope of ['teller','wbon'])$('#view-'+scope).addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('article.drink-card[data-add]')){e.preventDefault();modifyCount(e.target.dataset.add,1,scope);}});
   $$('.tab').forEach(tab=>tab.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft'].includes(e.key))return;const tabs=$$('.tab'),i=tabs.indexOf(e.currentTarget),next=tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];next.focus();setView(next.dataset.view);}));
   $('#drinkSearch').addEventListener('input',e=>{search=e.target.value;renderTeller();});
   $('#wDrinkSearch').addEventListener('input',e=>{wSearch=e.target.value;renderWBon();});
-  $('#wSetje').addEventListener('click',()=>modifySetje(1,'wbon'));
-  $('#wSetjeMinus').addEventListener('click',()=>modifySetje(-1,'wbon'));
+  $('#wSetje').addEventListener('click',()=>modifySetje(1,'wbon','ml'));
+  $('#wSetjeMinus').addEventListener('click',()=>modifySetje(-1,'wbon','ml'));
+  $('#wSetjeRondjes').addEventListener('click',()=>modifySetje(1,'wbon','rounds'));
+  $('#wSetjeRondjesMinus').addEventListener('click',()=>modifySetje(-1,'wbon','rounds'));
   $('#markWBonPaid').addEventListener('click',markWBonPaid);
   $('#goCurrentWBon').addEventListener('click',openCurrentWBon);
   $('#startWBon').addEventListener('click',startNewWBon);
@@ -1540,6 +1655,16 @@
     }
     return {c,setjes};
   }
+  function eventCountsGroup(events,group) {
+    const c={};let setjes=0;
+    for(const e of events||[]) {
+      if(!e || (e.group==='rounds'?'rounds':'ml')!==group)continue;
+      const delta=e.delta===-1?-1:1,ids=e.kind==='setje'?['vaasje','wit']:(typeof e.id==='string'?[e.id]:[]);
+      for(const id of ids)c[id]=Math.max(0,(c[id]||0)+delta);
+      if(e.kind==='setje')setjes=Math.max(0,setjes+delta);
+    }
+    return {c,setjes};
+  }
   function calcTotal(events, drinks) {
     const {c}=eventCounts(events), prices=Object.fromEntries(drinks.map(d=>[d.id,d.price]));
     let sum=0;
@@ -1605,22 +1730,22 @@
     });
     return result;
   }
-  async function addDrink({id,delta,expectedBonId}) {
+  async function addDrink({id,delta,group='ml',expectedBonId}) {
     const opId=randomId();
     const result=await updateCurrentBon(bon=>{
-      const {c}=eventCounts(bon.events);
-      if(delta<0 && (c[id]||0)<=0)throw new Error('Dit drankje staat niet meer op de W-bon.');
+      const validGroup=group==='rounds'?'rounds':'ml', {c}=eventCountsGroup(bon.events,validGroup);
+      if(delta<0 && (c[id]||0)<=0)throw new Error('Dit drankje staat niet meer in deze categorie op de W-bon.');
       if(!bridge.getPrices().some(d=>d.id===id))throw new Error('Onbekend drankje.');
-      return {updates:{events:[...bon.events,{id,delta:delta<0?-1:1,at:at(),actor:currentUser.uid,opId}]}};
+      return {updates:{events:[...bon.events,{id,delta:delta<0?-1:1,group:group==='rounds'?'rounds':'ml',at:at(),actor:currentUser.uid,opId}]}};
     },expectedBonId);
     lastOperation={...result,opId};
   }
-  async function addSetje({delta,expectedBonId}) {
+  async function addSetje({delta,group='ml',expectedBonId}) {
     const opId=randomId();
     const result=await updateCurrentBon(bon=>{
-      const {c,setjes}=eventCounts(bon.events);
-      if(delta<0 && (!setjes || !c.vaasje || !c.wit))throw new Error('Er staat geen volledig Setje meer op de W-bon.');
-      return {updates:{events:[...bon.events,{kind:'setje',delta:delta<0?-1:1,at:at(),actor:currentUser.uid,opId}]}};
+      const validGroup=group==='rounds'?'rounds':'ml', {c,setjes}=eventCountsGroup(bon.events,validGroup);
+      if(delta<0 && (!setjes || !c.vaasje || !c.wit))throw new Error('Er staat geen volledig Setje meer in deze categorie op de W-bon.');
+      return {updates:{events:[...bon.events,{kind:'setje',delta:delta<0?-1:1,group:group==='rounds'?'rounds':'ml',at:at(),actor:currentUser.uid,opId}]}};
     },expectedBonId);
     lastOperation={...result,opId};
   }
