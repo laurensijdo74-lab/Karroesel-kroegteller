@@ -363,6 +363,21 @@
       .toast { bottom:79px; }
     }
     @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
+    .cloud-panel { margin:-8px 0 18px; padding:12px 16px; border:1px solid rgba(233,185,103,.4); background:linear-gradient(115deg,#20372a,#19281d); border-radius:14px; }
+    .cloud-line { display:flex; align-items:center; gap:11px; }
+    .cloud-icon { flex:none; font-size:24px; }
+    .cloud-copy { flex:1; min-width:0; }
+    .cloud-copy strong { display:block; color:#f6d9a0; font-size:13px; }
+    .cloud-copy small { display:block; color:#b8cfba; font-size:11px; margin-top:2px; }
+    .cloud-login { display:flex; flex-wrap:wrap; gap:11px; padding-top:16px; align-items:flex-end; }
+    .cloud-login label { min-width:180px; flex:1; font-size:12px; color:#d2dccd; font-weight:700; }
+    .cloud-login input { display:block; width:100%; margin-top:5px; }
+    .cloud-login-error { color:#ffbdb1; margin:8px 0 0; font-size:12px; }
+    .cloud-notice { margin:0 0 16px; padding:12px 15px; border-radius:12px; border:1px solid rgba(233,185,103,.4); background:#302f20; color:#ffe5b5; font-size:13px; }
+    .cloud-notice button { margin:7px 0 0; display:block; }
+    .price-readonly { opacity:.82; }
+    .cloud-loading { opacity:.6; }
+    @media(max-width:640px){ .cloud-line { flex-wrap:wrap; } .cloud-copy{flex-basis:calc(100% - 42px)} .cloud-line>.btn{margin-left:36px} .cloud-login label { flex-basis:100%; } .cloud-login>.btn{width:100%} }
   </style>
 </head>
 <body>
@@ -376,7 +391,7 @@
         <div class="brand-sub">Hilversum · Kroegteller</div>
       </div>
     </div>
-    <div class="head-badge"><div><span class="dot"></span>Werkt ook zonder internet</div><div>Één tik = één drankje</div></div>
+    <div class="head-badge"><div><span class="dot"></span>Losse bon blijft lokaal</div><div>W-bon samen online</div></div>
   </header>
 
   <nav class="tabs" aria-label="Hoofdmenu">
@@ -386,6 +401,13 @@
     <button class="tab" data-view="prijzen" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M14.7 8.2a4.6 4.6 0 0 0-2.8-.8c-2.3 0-3.9 1.9-3.9 4.6 0 2.7 1.6 4.6 3.9 4.6a4.6 4.6 0 0 0 2.8-.8M6.4 11h6.9m-6.9 2.7h6.9"/></svg> Prijzen</button>
     <button class="tab" data-view="avonden" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h18M7 3v8M17 3v8M4 5h16v16H4V5Z"/><path d="m9 16 2 2 4-5"/></svg> Avonden</button>
   </nav>
+
+  <div id="cloudPanel" class="cloud-panel hide" role="region" aria-label="Online verbinding">
+    <div class="cloud-line"><span class="cloud-icon">☁</span><span class="cloud-copy"><strong id="cloudStatus">Online koppeling voorbereiden</strong><small id="cloudStatusDetail">De losse avondbon werkt gewoon lokaal.</small></span>
+      <button id="cloudLoginToggle" type="button" class="btn btn-gold btn-sm">Inloggen</button><button id="cloudSignOut" type="button" class="btn btn-outline btn-sm hide">Uitloggen</button></div>
+    <form id="cloudLoginForm" class="cloud-login hide" autocomplete="on"><label>E-mailadres <input id="cloudEmail" class="input" type="email" inputmode="email" autocomplete="username" required placeholder="naam@voorbeeld.nl" /></label><label>Wachtwoord <input id="cloudPassword" class="input" type="password" autocomplete="current-password" required placeholder="Wachtwoord" /></label><button id="cloudLoginSubmit" class="btn btn-gold" type="submit">Log in bij gedeelde bon</button></form>
+    <p id="cloudLoginError" class="cloud-login-error hide" role="alert"></p>
+  </div>
 
   <main>
     <section id="view-teller" class="view active" aria-label="Drankjesteller">
@@ -411,6 +433,7 @@
     </section>
 
     <section id="view-wbon" class="view" aria-label="Doorlopende W-bon">
+      <div id="wCloudNotice" class="cloud-notice hide" aria-live="polite"><span id="wCloudText">Log in om de gezamenlijke W-bon te gebruiken.</span><button id="wMigrate" class="btn btn-outline btn-sm hide" type="button">↑ Mijn oude W-bon overnemen</button></div>
       <div class="wbon-hero">
         <div class="wbon-top">
           <div>
@@ -480,8 +503,9 @@
     </section>
 
     <section id="view-prijzen" class="view" aria-label="Prijslijst beheren">
-      <div class="main-header"><div><p class="eyebrow">JOUW EIGEN KROEGPRIJZEN</p><h1>Prijslijst beheren</h1><p>Upload een prijslijst of vul de prijzen zelf in. We hebben bewust geen bedragen verzonnen: de boncheck werkt met jouw ingevoerde prijzen.</p></div></div>
-      <div class="filebox"><div class="filebox-icon">📄</div><div class="filebox-content"><h3>Upload je prijslijst</h3><p>Excel (.xlsx) of CSV / TSV, met een kolom voor dranknaam en een kolom voor prijs. Werkt rechtstreeks op dit apparaat.</p></div><button id="selectPriceFile" class="btn btn-gold" type="button">↑ Bestand kiezen</button><input id="priceFile" type="file" accept=".xlsx,.csv,.tsv,.txt,.xls" hidden /></div>
+      <div class="main-header"><div><p class="eyebrow">CENTRAAL BEHEER</p><h1>Prijslijst beheren</h1><p>De beheerder stelt de prijzen één keer in. Alle gebruikers zien vervolgens automatisch dezelfde prijslijst. We hebben geen bedragen verzonnen.</p></div></div>
+      <div id="cloudPricesNotice" class="cloud-notice hide" aria-live="polite">De prijzen worden centraal bijgewerkt via Firebase.</div>
+      <div class="filebox"><div class="filebox-icon">📄</div><div class="filebox-content"><h3>Upload je prijslijst</h3><p>Excel (.xlsx) of CSV / TSV, met een kolom voor dranknaam en een kolom voor prijs. De beheerder kan deze online voor iedereen publiceren.</p></div><button id="selectPriceFile" class="btn btn-gold" type="button">↑ Bestand kiezen</button><input id="priceFile" type="file" accept=".xlsx,.csv,.tsv,.txt,.xls" hidden /></div>
       <div class="helper-row"><span id="importMeta">Nog geen prijslijst geïmporteerd</span><button id="sampleCSV" type="button" class="text-action">Download voorbeeldprijslijst</button></div>
       <div class="panel" style="margin-bottom:20px"><h2>Drankje toevoegen</h2><form id="addDrinkForm" class="add-form"><label class="new-name"><span class="fieldlabel">Naam</span><input id="newDrinkName" class="input" type="text" maxlength="80" placeholder="Bijv. Aperol Spritz" required /></label><label><span class="fieldlabel">Categorie</span><select id="newDrinkCategory" class="input"></select></label><label><span class="fieldlabel">Prijs (€)</span><input id="newDrinkPrice" class="input" type="text" inputmode="decimal" placeholder="Bijv. 6,50" /></label><button type="submit" class="btn btn-gold">＋ Toevoegen</button></form></div>
       <div class="panel"><div class="pricing-header"><div><h2 style="margin-bottom:5px">Alle drankjes & prijzen</h2><span class="legend">Ster = voorrang bij sneltellers · Oogje = tonen of verbergen</span></div><div class="statsbar" id="priceStats" style="margin:0"></div></div><div id="pricingTable" class="pricing-table"></div></div>
@@ -490,10 +514,10 @@
     <section id="view-avonden" class="view" aria-label="Avonden en gegevens">
       <div class="main-header"><div><p class="eyebrow">EEN NIEUWE RONDE</p><h1>Je avonden</h1><p>Begin een nieuwe kroegavond zonder je vorige telling kwijt te raken. Eerdere avonden zijn opnieuw te openen.</p></div><button id="startNight" class="btn btn-gold">＋ Nieuwe avond</button></div>
       <div class="panel" style="margin-bottom:17px"><div class="section-title" style="margin-top:0"><div><h2 style="margin:0">Doorlopende W-bonnen</h2><div class="details">Je betaalde W-bonnen blijven bewaard. Klik om ze in te zien.</div></div><button id="startWBonFromAvonden" class="btn btn-gold btn-sm" type="button">＋ Nieuwe W-bon</button></div><div id="wBonList" class="session-list"></div></div>
-      <div class="cols"><div class="panel"><h2>Eerdere tellingen</h2><div id="sessionList" class="session-list"></div><div class="secondary-actions"><button id="renameNight" class="btn btn-outline btn-sm">✎ Naam wijzigen</button><button id="deleteNight" class="btn btn-danger btn-sm">Verwijder geopende avond</button></div></div><div><div class="panel" style="margin-bottom:15px"><h2>Bewaar je gegevens</h2><p>Je tellingen en prijzen worden alleen op dit apparaat in deze browser bewaard. Maak af en toe een back-up, vooral voordat je van telefoon of browser wisselt.</p><div class="secondary-actions"><button id="exportBackup" class="btn btn-gold">↓ Back-up downloaden</button><button id="selectBackup" class="btn btn-outline">↑ Back-up terugzetten</button><input id="backupFile" type="file" accept=".json,application/json" hidden /></div></div><div class="info-card"><h3>🎱 Zo werkt de Kroegteller</h3><p>Eén tik telt één drankje. Met min corrigeer je een fout. De meeste getelde drankjes komen bovenaan. Met Boncheck vergelijk je de avond met de rekening. De W-bon telt apart door over meerdere avonden. Elke € 200 levert een W-tje op. ‘Setje’ telt meteen een vaasje én witte wijn. De knop Betaald sluit de W-bon af, bewaart hem en begint een nieuwe teller op nul. Er gaan geen gegevens naar een server.</p></div></div></div>
+      <div class="cols"><div class="panel"><h2>Eerdere tellingen</h2><div id="sessionList" class="session-list"></div><div class="secondary-actions"><button id="renameNight" class="btn btn-outline btn-sm">✎ Naam wijzigen</button><button id="deleteNight" class="btn btn-danger btn-sm">Verwijder geopende avond</button></div></div><div><div class="panel" style="margin-bottom:15px"><h2>Bewaar je gegevens</h2><p>De losse avondtellingen blijven op dit apparaat. Bij actieve online koppeling staan de prijslijst en W-bonnen centraal in Firebase. De back-up hieronder bewaart je lokale avonden; hij overschrijft de gedeelde W-bon niet.</p><div class="secondary-actions"><button id="exportBackup" class="btn btn-gold">↓ Back-up downloaden</button><button id="selectBackup" class="btn btn-outline">↑ Back-up terugzetten</button><input id="backupFile" type="file" accept=".json,application/json" hidden /></div></div><div class="info-card"><h3>🎱 Zo werkt de Kroegteller</h3><p>Eén tik telt één drankje. Met min corrigeer je een fout. De meeste getelde drankjes komen bovenaan. Met Boncheck vergelijk je de avond met de rekening. De W-bon telt apart door over meerdere avonden. Elke € 200 levert een W-tje op. ‘Setje’ telt meteen een vaasje én witte wijn. De knop Betaald sluit de W-bon af, bewaart hem en begint een nieuwe teller op nul. Bij een online koppeling worden de gedeelde prijslijst en W-bon opgeslagen in Firebase; losse avonden blijven lokaal.</p></div></div></div>
     </section>
   </main>
-  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.2 · Privé, lokaal en zonder account</footer>
+  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.3 · Gedeelde W-bon met beveiligde toegang</footer>
 </div>
 
 <div id="stickyTotal" class="sticky-total" aria-live="off"><div><div id="mobileHeadline" class="first">0 drankjes · € 0,00</div><div id="mobileSub" class="second">Tik om je drankjes te tellen</div></div><button id="mobileReceipt" type="button" class="btn btn-gold btn-sm">Boncheck →</button></div>
@@ -502,10 +526,11 @@
 
 <div id="modalWrap" class="modal-wrap" role="presentation"><div id="modalBody" class="modal" role="dialog" aria-modal="true" aria-label="Venster"></div></div>
 
+<script src="./firebase-config.js"></script>
 <script>
 'use strict';
 (() => {
-  // Alles in dit HTML-bestand: geen externe scripts en geen server nodig.
+  // De gewone avondtelling blijft lokaal. Optioneel: de centrale prijslijst en W-bon via Firebase.
   const KEY = 'karroesel_kroegteller_v1';
   const CATEGORY = ['Bier','Wijn','Fris','Mix','Sterk','Overig'];
   const DEFAULTS = [
@@ -604,6 +629,108 @@
   function validState(s) { return s && s.version===1 && Array.isArray(s.drinks) && Array.isArray(s.sessions) && s.sessions.length && s.drinks.every(d=>typeof d.id==='string' && typeof d.name==='string') && s.sessions.every(x=>typeof x.id==='string' && Array.isArray(x.events)) && typeof s.activeId==='string'; }
   let state=loadState(), currentView='teller', activeCategory='Alles', search='', wActiveCategory='Alles', wSearch='', toastTimer=null, pendingImport=null;
   let lastUndoSessionId=null, wCelebrateTimer=null;
+  const OLD_WBON_KEY = 'karroesel_oude_wbon_voor_online';
+  const cloud = {enabled:false,ready:false,pricesReady:false,signedIn:false,owner:false,email:'',remoteActive:null,notice:''};
+  function localWBonForImport() {
+    try { const saved=JSON.parse(localStorage.getItem(OLD_WBON_KEY)||'null'); return saved && Array.isArray(saved.events) && saved.events.length ? saved : null; }
+    catch(e){return null;}
+  }
+  function cloudReadyOrMessage(){
+    if(!cloud.enabled)return true;
+    if(!cloud.signedIn){showToast('Log eerst in om jullie gezamenlijke W-bon te gebruiken.',false,4500);return false;}
+    if(!cloud.ready){showToast('De gedeelde W-bon is nog niet verbonden. Probeer het zo opnieuw.',false,4200);return false;}
+    if(navigator.onLine===false){showToast('Offline: de gedeelde W-bon kan niet worden aangepast.',false,4300);return false;}
+    return true;
+  }
+  function canEditCentralPrices(){
+    if(!cloud.enabled)return true;
+    if(!cloud.owner || !cloud.pricesReady){showToast('Alleen de ingelogde beheerder kan de centrale prijzen wijzigen.',false,4600);return false;}
+    return true;
+  }
+  function syncCentralPrices(){
+    if(!cloud.enabled)return;
+    const actions=window.KarroeselOnlineActions;
+    if(!actions?.savePrices){showToast('De online koppeling is nog niet beschikbaar.',false,4000);return;}
+    actions.savePrices(state.drinks.map(d=>({...d}))).catch(err=>showToast('Centrale prijslijst niet opgeslagen: '+(err.message||'verbindingsprobleem'),false,5500));
+  }
+  function remoteWAction(type,data,toastText,undo=false){
+    if(!cloudReadyOrMessage())return;
+    const action=window.KarroeselOnlineActions?.[type];
+    if(!action){showToast('De verbinding wordt nog opgebouwd.',false);return;}
+    Promise.resolve(action({...data,expectedBonId:cloud.remoteActive})).then(()=>{
+      if(undo)lastUndoSessionId='CLOUD';
+      if(toastText)showToast(toastText,undo,3100);
+      if(toastText)vibrate();
+    }).catch(err=>showToast('Niet bijgewerkt: '+(err.message||'controleer de verbinding'),false,5500));
+  }
+  function refreshCloudUI(){
+    $('#cloudPanel').classList.toggle('hide',!cloud.enabled);
+    if(!cloud.enabled)return;
+    $('#cloudLoginToggle').classList.toggle('hide',cloud.signedIn);
+    $('#cloudSignOut').classList.toggle('hide',!cloud.signedIn);
+    $('#cloudStatus').textContent=cloud.notice || (cloud.signedIn?(cloud.ready?'✓ Gezamenlijke W-bon verbonden':'W-bon verbinden…'):'Centrale prijslijst · aanmelden voor W-bon');
+    $('#cloudStatusDetail').textContent=cloud.signedIn ? `${cloud.email||'Ingelogd'} · ${cloud.owner?'beheerder':'medegebruiker'} · ${cloud.ready?'live synchronisatie':'verbinden...'}` : 'Prijzen voor iedereen beschikbaar · W-bon alleen voor jullie twee';
+    const banner=$('#wCloudNotice');banner.classList.remove('hide');
+    $('#wCloudText').textContent=cloud.ready?'✓ Dit is jullie gezamenlijke W-bon. Bestellingen worden direct met beide telefoons gedeeld.':cloud.signedIn?'De gezamenlijke W-bon wordt geladen. Tellen is tijdelijk geblokkeerd.':'Log hierboven in om jullie gezamenlijke W-bon te bekijken en bij te werken. Zonder login kun je wel je eigen avondbon tellen.';
+    const previous=localWBonForImport(),now=state.wBons.find(w=>w.id===cloud.remoteActive);
+    $('#wMigrate').classList.toggle('hide',!(cloud.ready && previous && now && state.wBons.length===1 && !now.events.length && !now.paidAt));
+    $('#cloudPricesNotice').classList.remove('hide');
+    $('#cloudPricesNotice').textContent=cloud.pricesReady?(cloud.owner?'✓ Prijslijst wordt centraal gedeeld. Jouw wijzigingen verschijnen bij iedereen.': '✓ Dit is de gezamenlijke prijslijst. Alleen de beheerder kan prijzen aanpassen.'): 'De centrale prijslijst wordt geladen. De beheerder kan prijzen instellen zodra deze is verbonden.';
+    const canEdit=cloud.owner && cloud.pricesReady;
+    $('#selectPriceFile').disabled=!canEdit;
+    $$('#addDrinkForm input, #addDrinkForm select, #addDrinkForm button').forEach(el=>el.disabled=!canEdit);
+    $$('#pricingTable [data-price], #pricingTable [data-cat-price], #pricingTable [data-star], #pricingTable [data-hide]').forEach(el=>el.disabled=!canEdit);
+  }
+  window.KarroeselCloud={
+    configure() {
+      cloud.enabled=true;cloud.ready=false;
+      if(!state.cloudActivatedBefore && !localWBonForImport()) {
+        const w=state.wBons.find(x=>x.id===state.activeWBonId);
+        if(w && !w.paidAt && w.events.length)try{localStorage.setItem(OLD_WBON_KEY,JSON.stringify(w));}catch(e){}
+      }
+      state.cloudActivatedBefore=true;persist();refreshCloudUI();renderWBon();
+    },
+    auth(user,owner=false){
+      cloud.signedIn=!!user;cloud.owner=!!(user && owner);cloud.email=user?.email||'';
+      cloud.ready=false;cloud.notice='';
+      if(!user){cloud.remoteActive=null;state.wBons=[newWBon(1)];state.activeWBonId=state.wBons[0].id;}
+      renderAll();refreshCloudUI();
+    },
+    status(text){cloud.notice=text||'';refreshCloudUI();},
+    prices(drinks){
+      cloud.pricesReady=true;
+      if(Array.isArray(drinks) && drinks.length){
+        const validated=drinks.filter(d=>d && typeof d.id==='string' && typeof d.name==='string' && d.id.length<90 && d.name.length<160 && (d.price===null || d.price===undefined || (typeof d.price==='number' && Number.isFinite(d.price) && d.price>=0 && d.price<=1000000))).slice(0,300);
+        if(validated.length){
+          state.drinks=validated.map((d,i)=>({id:d.id,name:d.name,category:CATEGORY.includes(d.category)?d.category:'Overig',icon:d.icon||iconFor(d.category),favorite:!!d.favorite,hidden:!!d.hidden,price:d.price??null,sort:d.sort??i}));
+          const active=activeSession();for(const d of state.drinks)active.prices[d.id]=d.price;
+          state.lastImport={filename:'Centrale prijslijst (Firebase)',at:nowISO()};
+          persist();
+        }
+      }
+      renderAll();refreshCloudUI();
+    },
+    bons(bons,activeId){
+      if(!cloud.signedIn || !Array.isArray(bons) || !bons.length || !bons.some(w=>w.id===activeId))return;
+      const previousActive=cloud.remoteActive, previous=state.wBons.find(w=>w.id===activeId),prevWins=previous?Math.floor(totalsFor(previous).total/200):0;
+      const currentlyViewing=state.activeWBonId;
+      state.wBons=bons.sort((a,b)=>String(a.startedAt||'').localeCompare(String(b.startedAt||'')));
+      const shouldSwitch=!cloud.ready || currentlyViewing===previousActive || !state.wBons.some(w=>w.id===currentlyViewing);
+      if(shouldSwitch)state.activeWBonId=activeId;
+      cloud.remoteActive=activeId;cloud.ready=true;cloud.notice='';
+      persist();renderAll();refreshCloudUI();
+      const newer=state.wBons.find(w=>w.id===activeId);
+      if(previousActive===activeId && previous && newer){
+        const newWins=Math.floor(totalsFor(newer).total/200);
+        if(newWins>prevWins && currentView==='wbon')showWCelebration(newWins);
+      }
+    },
+    getPrices(){return state.drinks.map(d=>({...d}));},
+    getOriginalWBon(){return localWBonForImport();},
+    migrated(){try{localStorage.removeItem(OLD_WBON_KEY);}catch(e){}refreshCloudUI();},
+    alert(msg){showToast(msg,false,4800);},
+    onAuthError(msg){$('#cloudLoginError').textContent=msg;$('#cloudLoginError').classList.remove('hide');}
+  };
   function persist() { try { localStorage.setItem(KEY,JSON.stringify(state)); } catch(e) { warnStorage(); } }
   let warnedStorage=false;
   function warnStorage() { if(!warnedStorage) { warnedStorage=true; showToast('Opslaan lukt niet. Download een back-up via Avonden.',false,6000); } }
@@ -655,6 +782,11 @@
     wCelebrateTimer=setTimeout(()=>pop.classList.remove('show'),2400);
   }
   function modifyCount(id,delta,scope='teller') {
+    if(scope==='wbon' && cloud.enabled){
+      const d=findDrink(id);if(!d)return;
+      remoteWAction('addDrink',{id,delta},delta>0?d.name+' aan gedeelde bon toegevoegd':d.name+' teruggezet',true);
+      return;
+    }
     const s=scope==='wbon'?activeWBon():activeSession(),d=findDrink(id);
     if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
     if(!d || (delta<0 && (countsFor(s)[id]||0)<1)) return;
@@ -669,6 +801,7 @@
     showToast(delta>0 ? d.name+' toegevoegd (+1)' : d.name+' teruggezet (−1)',true);
   }
   function modifySetje(delta=1,scope='wbon') {
+    if(scope==='wbon' && cloud.enabled){remoteWAction('addSetje',{delta},delta>0?'Setje toegevoegd aan jullie W-bon':'Setje teruggezet',true);return;}
     const s=scope==='wbon'?activeWBon():activeSession(),cs=countsFor(s);
     if(s.paidAt) return showToast('Deze W-bon is al betaald en kan niet meer worden aangepast.',false,3300);
     if(!findDrink('vaasje')||!findDrink('wit'))return showToast('Vaasje of witte wijn ontbreekt in de prijslijst.',false,3500);
@@ -684,6 +817,9 @@
     showToast(delta>0?'Setje toegevoegd: vaasje + witte wijn (+2)':'Setje teruggezet (−2)',true,3400);
   }
   function undoLast() {
+    if(cloud.enabled && lastUndoSessionId==='CLOUD'){
+      lastUndoSessionId=null;remoteWAction('undo',{},'Laatste tik op de gedeelde bon hersteld.');return;
+    }
     const s=[...state.sessions,...state.wBons].find(x=>x.id===lastUndoSessionId) || (currentView==='wbon'?activeWBon():activeSession());
     if(!s.events.length||s.paidAt)return;
     s.events.pop();lastUndoSessionId=null;persist();renderAll();
@@ -746,7 +882,7 @@
     $('#otherSection .section-title .tiny').textContent = ranked.length>6 ? `${rest.length} andere opties` : 'Tik op een kaart om +1 toe te voegen';
   }
   function renderWBon() {
-    const s=activeWBon(),sum=totalsFor(s),usage=totalUsage(),isPaid=Boolean(s.paidAt);
+    const s=activeWBon(),sum=totalsFor(s),usage=totalUsage(),isPaid=Boolean(s.paidAt),isArchived=Boolean(s.closedAt),readOnly=isPaid || isArchived || (cloud.enabled && (!cloud.ready || s.id!==cloud.remoteActive));
     const wins=Math.floor((Math.round(sum.total*100)+0.00001)/20000);
     const progressCents=Math.round(sum.total*100)%20000;
     const needed=(20000-progressCents)/100;
@@ -762,18 +898,18 @@
     $('#wProgressTrack').setAttribute('aria-valuenow',String(Math.round(progressCents/100)));
     $('#wMissingHint').classList.toggle('hide',!sum.missingCount);
     $('#wMissingHint').textContent=sum.missingCount?`⚠ ${sum.missingCount} ${sum.missingCount===1?'drankje heeft':'drankjes hebben'} nog geen prijs. Het bedrag en het aantal W-tjes kunnen hoger uitvallen.`:'';
-    $('#wPayActions').classList.toggle('hide',isPaid);
-    $('#markWBonPaid').disabled=isPaid || sum.count===0;
+    $('#wPayActions').classList.toggle('hide',readOnly);
+    $('#markWBonPaid').disabled=readOnly || sum.count===0;
     $('#wPaidInfo').classList.toggle('hide',!isPaid);
     $('#wPaidDate').textContent=isPaid?'Afgerond op '+new Date(s.paidAt).toLocaleString('nl-NL',{dateStyle:'short',timeStyle:'short'}):'';
-    $('#goCurrentWBon').disabled=!state.wBons.some(w=>!w.paidAt && w.id!==s.id);
-    $('#wSetjeFeature').classList.toggle('hide',isPaid);
-    $('#wDrinkPicker').classList.toggle('hide',isPaid);
-    $('#wNewActions').classList.toggle('hide',isPaid);
-    $('#wBonHelp').textContent=isPaid?'Deze betaalde W-bon is opgeslagen en kan niet meer worden aangepast. Ga naar de lopende W-bon om verder te tellen.':'Afgerekend? Tik bovenaan op ✓ Betaald. Je teller gaat dan op nul en de betaalde W-bon blijft onder Avonden bewaard. Een losse avond beginnen heeft geen invloed op de W-bon.';
-    $('#wBillAmount').readOnly=isPaid;
-    $('#wSetje').disabled=isPaid;
-    $('#wSetjeMinus').disabled=isPaid ||setjesFor(s)<1 || (sum.counts.vaasje||0)<1 || (sum.counts.wit||0)<1;
+    $('#goCurrentWBon').disabled=cloud.enabled?!cloud.ready:!state.wBons.some(w=>!w.paidAt && w.id!==s.id);
+    $('#wSetjeFeature').classList.toggle('hide',readOnly);
+    $('#wDrinkPicker').classList.toggle('hide',readOnly);
+    $('#wNewActions').classList.toggle('hide',readOnly);
+    $('#wBonHelp').textContent=isArchived?'Deze oude W-bon is gesloten zonder betaling en kan niet meer worden gewijzigd.':isPaid?'Deze betaalde W-bon is opgeslagen en kan niet meer worden aangepast. Ga naar de lopende W-bon om verder te tellen.':'Afgerekend? Tik bovenaan op ✓ Betaald. Je teller gaat dan op nul en de betaalde W-bon blijft onder Avonden bewaard. Een losse avond beginnen heeft geen invloed op de W-bon.';
+    $('#wBillAmount').readOnly=readOnly;
+    $('#wSetje').disabled=readOnly;
+    $('#wSetjeMinus').disabled=readOnly ||setjesFor(s)<1 || (sum.counts.vaasje||0)<1 || (sum.counts.wit||0)<1;
     const pa=currentPrice(findDrink('vaasje'),s),pb=currentPrice(findDrink('wit'),s);
     $('#wSetjePrice').textContent=pa==null||pb==null?'· prijs nog invullen':'· '+money(Number(pa)+Number(pb));
     const filtered=state.drinks.filter(d=>!d.hidden && (wActiveCategory==='Alles'||d.category===wActiveCategory) && (!wSearch||normalize(d.name).includes(normalize(wSearch))));
@@ -784,9 +920,9 @@
     const quick=ranked.slice(0,6),rest=ranked.slice(6);
     $('#wQuickGrid').innerHTML=quick.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
     $('#wOtherGrid').innerHTML=rest.map(d=>cardHTML(d,sum.counts,'wbon')).join('');
-    $('#wQuickSection').classList.toggle('hide',isPaid || !quick.length);
-    $('#wOtherSection').classList.toggle('hide',isPaid || !rest.length);
-    $('#wTellerEmpty').classList.toggle('hide',isPaid || Boolean(ranked.length));
+    $('#wQuickSection').classList.toggle('hide',readOnly || !quick.length);
+    $('#wOtherSection').classList.toggle('hide',readOnly || !rest.length);
+    $('#wTellerEmpty').classList.toggle('hide',readOnly || Boolean(ranked.length));
     $('#wOtherSection .section-title .tiny').textContent=ranked.length>6?`${rest.length} andere opties`:'Tik om toe te voegen';
     $('#wOrderList').innerHTML=orderListHTML(s,sum);
     $('#wOrderSummary').innerHTML=`<span>Totaal${sum.missingCount?' (onvolledig)':''}</span><span>${money(sum.total)}</span>`;
@@ -818,6 +954,7 @@
     else{status.className='receipt-state good';status.textContent=`De rekening is ${money(Math.abs(delta))} lager dan jullie eigen telling. Controleer of alles is aangeslagen.`;}
   }
   function openFreshWBon() {
+    if(cloud.enabled){showToast('Gebruik Nieuwe W-bon; deze wordt samen online gestart.',false);return;}
     const w=newWBon(state.wBons.length+1);
     state.wBons.push(w);state.activeWBonId=w.id;lastUndoSessionId=null;
     wSearch='';wActiveCategory='Alles';$('#wDrinkSearch').value='';
@@ -825,11 +962,24 @@
     persist();renderAll();setView('wbon');
   }
   function startNewWBon() {
+    if(cloud.enabled){
+      if(!cloudReadyOrMessage())return;
+      if(!confirm('De huidige gezamenlijke W-bon zonder betaling afsluiten en een nieuwe beginnen? Beide telefoons schakelen automatisch over.'))return;
+      remoteWAction('newBon',{},'Nieuwe gezamenlijke W-bon gestart.');return;
+    }
     if(!confirm('Een nieuwe doorlopende W-bon starten? De huidige W-bon wordt bewaard onder Avonden. Je losse avondtellingen blijven ongewijzigd.'))return;
     openFreshWBon();
     showToast('Nieuwe W-bon gestart. De vorige is opgeslagen. 🎱',false,4300);
   }
   function markWBonPaid() {
+    if(cloud.enabled){
+      if(!cloudReadyOrMessage())return;
+      const bon=activeWBon(),sum=totalsFor(bon);
+      if(bon.id!==cloud.remoteActive)return showToast('Open eerst de lopende W-bon om deze te betalen.',false,4500);
+      if(!sum.count)return;
+      if(!confirm(`Jullie W-bon van ${money(sum.total)} als BETAALD afsluiten?${sum.missingCount?'\nLET OP: niet alle drankjes hebben een prijs.':''}\n\nOp beide telefoons begint daarna automatisch een nieuwe W-bon op € 0,00.`))return;
+      remoteWAction('pay',{},'✓ Betaald! Beide telefoons krijgen een nieuwe W-bon.');return;
+    }
     const bon=activeWBon(),sum=totalsFor(bon);
     if(bon.paidAt || !sum.count)return;
     const incomplete=sum.missingCount ? `\nLet op: ${sum.missingCount} getelde drankjes hebben nog geen prijs.` : '';
@@ -842,6 +992,7 @@
     showToast(`✓ Betaald! ${money(sum.total)} is bewaard. Nieuwe W-bon: € 0,00.`,false,5000);
   }
   function openCurrentWBon() {
+    if(cloud.enabled && cloud.ready){state.activeWBonId=cloud.remoteActive;persist();renderAll();setView('wbon');return;}
     const bon=state.wBons.slice().reverse().find(w=>!w.paidAt);
     if(!bon)return;
     state.activeWBonId=bon.id;
@@ -893,6 +1044,7 @@
         <button class="row-icon hide-btn ${!hidden?'on':''}" data-hide="${escAttr(d.id)}" aria-label="${hidden?'Toon':'Verberg'} ${escAttr(d.name)}" title="${hidden?'Toon':'Verberg'} in teller">${hidden?'◌':'◉'}</button>
       </div>`;
     }).join('');
+    refreshCloudUI();
   }
   function renderSessions() {
     $('#sessionList').innerHTML=state.sessions.slice().reverse().map(s=>{
@@ -902,16 +1054,17 @@
     $('#deleteNight').disabled=state.sessions.length<=1;
     $('#wBonList').innerHTML=state.wBons.slice().reverse().map(w=>{
       const sum=totalsFor(w),wins=Math.floor(sum.total/200),isPaid=Boolean(w.paidAt);
-      return `<button type="button" class="session-row ${state.activeWBonId===w.id?'current':''}" data-wbon-session="${escAttr(w.id)}"><div><div class="name">${escapeHTML(w.name)} ${isPaid?'<span class="wbon-paid-tag">✓ Betaald</span>':''} ${state.activeWBonId===w.id?'· <span style="color:var(--gold)">geopend</span>':''}</div><div class="sub">${sum.count} drankjes · ${isPaid?'betaald '+shortDate(w.paidAt):'doorlopende bon'}</div></div><div class="side">${money(sum.total)}${sum.missingCount?'*':''}<small>${wins?'🎱 '+wins+' W-tje'+(wins===1?'':'s'):'Nog geen W'}</small></div></button>`;
+      return `<button type="button" class="session-row ${state.activeWBonId===w.id?'current':''}" data-wbon-session="${escAttr(w.id)}"><div><div class="name">${escapeHTML(w.name)} ${isPaid?'<span class="wbon-paid-tag">✓ Betaald</span>':w.closedAt?'<span class="wbon-paid-tag">Afgesloten</span>':''} ${state.activeWBonId===w.id?'· <span style="color:var(--gold)">geopend</span>':''}</div><div class="sub">${sum.count} drankjes · ${isPaid?'betaald '+shortDate(w.paidAt):'doorlopende bon'}</div></div><div class="side">${money(sum.total)}${sum.missingCount?'*':''}<small>${wins?'🎱 '+wins+' W-tje'+(wins===1?'':'s'):'Nog geen W'}</small></div></button>`;
     }).join('');
   }
   function renderAll() {renderChips();renderTeller();if(currentView==='wbon')renderWBon();if(currentView==='bon')renderBon();if(currentView==='prijzen')renderPrices();if(currentView==='avonden')renderSessions();}
   function editPrice(id,value) {
+    if(!canEditCentralPrices())return;
     const d=findDrink(id);if(!d)return;
     const price=parseAmount(value);
     if(String(value).trim()!=='' && price===null) { showToast('Ongeldige prijs; gebruik bijvoorbeeld 3,50.',false,3600); renderPrices(); return; }
     d.price=price; activeSession().prices[id]=price;
-    persist();renderPrices();renderTeller();
+    persist();renderPrices();renderTeller();syncCentralPrices();
   }
   function startNight() {
     openModal(`<div class="modal-top"><div><p class="eyebrow">NIEUWE AVOND</p><h2>Nieuwe telling starten</h2><p>De huidige telling blijft onder ‘Avonden’ bewaard.</p></div><button class="x-btn" data-close aria-label="Sluiten">×</button></div>
@@ -953,14 +1106,15 @@
       const success=document.execCommand('copy');ta.remove();showToast(success?'Overzicht gekopieerd.':'Kopiëren wordt door deze browser geblokkeerd.',false,3600);
     }
   }
-  function exportBackup() {downloadFile('Karroesel_backup_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({...state,exportedAt:nowISO()},null,2),'application/json');showToast('Back-up gedownload.',false);}
+  function exportBackup() {const data=cloud.enabled?{...state,wBons:[],activeWBonId:null,backupScope:'lokale-avonden'}:state;downloadFile('Karroesel_backup_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify({...data,exportedAt:nowISO()},null,2),'application/json');showToast(cloud.enabled?'Lokale avondtellingen opgeslagen. Gedeelde W-bon staat online.':'Back-up gedownload.',false);}
   async function importBackup(file) {
     try {
       const data=JSON.parse(await file.text());
       if(!validState(data)||data.drinks.length>2500||data.sessions.length>1000)throw new Error('Bestand is geen geldige Kroegteller-back-up.');
       const okay=confirm('Back-up terugzetten? Alle tellingen en prijzen in deze browser worden hierdoor vervangen.');
       if(!okay)return;
-      state=data;
+      if(cloud.enabled){const remoteDrinks=state.drinks,remoteWBons=state.wBons,remoteActive=state.activeWBonId,remoteImport=state.lastImport;state={...data,drinks:remoteDrinks,wBons:remoteWBons,activeWBonId:remoteActive,lastImport:remoteImport};}
+      else state=data;
       for(const s of state.sessions){s.prices=s.prices&&typeof s.prices==='object'?s.prices:{};}
       ensureWBons(state);
       lastUndoSessionId=null;
@@ -1174,7 +1328,7 @@
     } catch(err){alert('Prijslijst kon niet worden gelezen: '+err.message);}
   }
   function applyPriceImport() {
-    if(!pendingImport)return;
+    if(!pendingImport || !canEditCentralPrices())return;
     const {results}=mappedData(pendingImport);
     if(!results.length)return;
     let updated=0,added=0;
@@ -1189,7 +1343,7 @@
       }
     }
     state.lastImport={filename:pendingImport.filename,at:nowISO(),updated,added};
-    persist();closeModal();renderAll();setView('prijzen');
+    persist();closeModal();renderAll();setView('prijzen');syncCentralPrices();
     showToast(`${updated} prijzen bijgewerkt · ${added} drankjes toegevoegd`,false,5500);
   }
   function downloadSampleCSV() {
@@ -1198,13 +1352,13 @@
     downloadFile('Karroesel_voorbeeld_prijslijst.csv',makeCsv(rows),'text/csv;charset=utf-8');
   }
   function addDrink(e) {
-    e.preventDefault();const name=$('#newDrinkName').value.trim().replace(/\s+/g,' '),cat=$('#newDrinkCategory').value,raw=$('#newDrinkPrice').value.trim(),price=parseAmount(raw);
+    e.preventDefault();if(!canEditCentralPrices())return;const name=$('#newDrinkName').value.trim().replace(/\s+/g,' '),cat=$('#newDrinkCategory').value,raw=$('#newDrinkPrice').value.trim(),price=parseAmount(raw);
     if(!name)return;
     if(raw && price===null){showToast('Ongeldige prijs; gebruik bijvoorbeeld 4,25.',false);return;}
     if(state.drinks.some(d=>normalize(d.name)===normalize(name))){showToast('Dit drankje bestaat al. Pas de prijs hierboven aan.',false,4500);return;}
     const d={id:makeId(),name,category:cat,icon:iconFor(cat),favorite:false,price,hidden:false,sort:state.drinks.length+50};
     state.drinks.push(d);activeSession().prices[d.id]=price;
-    persist();$('#addDrinkForm').reset();renderPrices();renderTeller();showToast(`${name} toegevoegd.`,false);
+    persist();$('#addDrinkForm').reset();renderPrices();renderTeller();syncCentralPrices();showToast(`${name} toegevoegd.`,false);
   }
   function renameNight() {
     const s=activeSession();const name=prompt('Nieuwe naam voor deze avond:',s.name);
@@ -1225,8 +1379,8 @@
     const wcat=e.target.closest('[data-w-category]');if(wcat){wActiveCategory=wcat.dataset.wCategory;renderChips();renderWBon();return;}
     const sub=e.target.closest('[data-subtract]');if(sub){e.stopPropagation();modifyCount(sub.dataset.subtract,-1,sub.dataset.scope||'teller');return;}
     const add=e.target.closest('[data-add]');if(add){modifyCount(add.dataset.add,1,add.dataset.scope||'teller');return;}
-    const star=e.target.closest('[data-star]');if(star){const d=findDrink(star.dataset.star);if(d){d.favorite=!d.favorite;persist();renderPrices();renderTeller();}return;}
-    const hide=e.target.closest('[data-hide]');if(hide){const d=findDrink(hide.dataset.hide);if(d){d.hidden=!d.hidden;persist();renderPrices();renderTeller();}return;}
+    const star=e.target.closest('[data-star]');if(star){if(!canEditCentralPrices())return;const d=findDrink(star.dataset.star);if(d){d.favorite=!d.favorite;persist();renderPrices();renderTeller();syncCentralPrices();}return;}
+    const hide=e.target.closest('[data-hide]');if(hide){if(!canEditCentralPrices())return;const d=findDrink(hide.dataset.hide);if(d){d.hidden=!d.hidden;persist();renderPrices();renderTeller();syncCentralPrices();}return;}
     const sess=e.target.closest('[data-session]');if(sess){state.activeId=sess.dataset.session;persist();renderAll();setView('teller');showToast('Telling geopend.',false);return;}
     const wbon=e.target.closest('[data-wbon-session]');if(wbon){state.activeWBonId=wbon.dataset.wbonSession;persist();renderAll();setView('wbon');showToast('Doorlopende W-bon geopend.',false);return;}
     if(e.target.closest('[data-close]')){closeModal();return;}
@@ -1245,6 +1399,7 @@
   $('#wBillAmount').addEventListener('input',e=>{
     const raw=e.target.value.trim();
     if(activeWBon().paidAt)return;
+    if(cloud.enabled){if(cloudReadyOrMessage()&&(raw===''||parseAmount(raw)!=null))window.KarroeselOnlineActions?.bill(raw===''?null:parseAmount(raw),cloud.remoteActive);return;}
     if(raw===''||parseAmount(raw)!=null){activeWBon().billAmount=raw===''?null:parseAmount(raw);persist();renderWReceiptResult();}
   });
   $('#wCopyOrder').addEventListener('click',()=>copyOverview(activeWBon()));
@@ -1268,7 +1423,7 @@
   $('#addDrinkForm').addEventListener('submit',addDrink);
   $('#pricingTable').addEventListener('change',e=>{
     if(e.target.matches('[data-price]'))editPrice(e.target.dataset.price,e.target.value);
-    else if(e.target.matches('[data-cat-price]')){const d=findDrink(e.target.dataset.catPrice);if(d){d.category=e.target.value;d.icon=iconFor(d.category);persist();renderPrices();renderTeller();}}
+    else if(e.target.matches('[data-cat-price]')){if(!canEditCentralPrices())return;const d=findDrink(e.target.dataset.catPrice);if(d){d.category=e.target.value;d.icon=iconFor(d.category);persist();renderPrices();renderTeller();syncCentralPrices();}}
   });
   $('#renameNight').addEventListener('click',renameNight);
   $('#deleteNight').addEventListener('click',deleteNight);
@@ -1290,8 +1445,251 @@
   $('#modalBody').addEventListener('click',e=>{if(e.target.id==='applyImport')applyPriceImport();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modalWrap').classList.contains('open'))closeModal();});
   $('#newDrinkCategory').innerHTML=CATEGORY.map(c=>`<option value="${c}">${c}</option>`).join('');
+  $('#cloudLoginToggle').addEventListener('click',()=>{$('#cloudLoginForm').classList.toggle('hide');$('#cloudLoginError').classList.add('hide');});
+  $('#wMigrate').addEventListener('click',()=>{
+    const original=localWBonForImport();if(!original || !cloudReadyOrMessage())return;
+    if(!confirm('Je eerder lokaal getelde W-bon online zetten? Dit kan alleen als de gezamenlijke W-bon nog leeg is.'))return;
+    remoteWAction('migrate',{original},'Oude W-bon succesvol centraal overgenomen.');
+  });
   renderAll();persist();
 })();
+</script>
+<script type="module">
+// Online uitbreiding Karroesel: Firebase Auth + Firestore.
+// Dit script wordt in index.html opgenomen en gebruikt alleen de publieke Firebase webconfiguratie.
+(async () => {
+  'use strict';
+  const config = window.KARROESEL_FIREBASE_CONFIG;
+  if (!config || !config.apiKey || !config.projectId || !config.appId || !config.authDomain || String(config.apiKey).startsWith('VUL_')) return;
+  const bridge = window.KarroeselCloud;
+  if (!bridge) return;
+  bridge.configure();
+  bridge.status('Firebase laden…');
+  const sdkBase = 'https://www.gstatic.com/firebasejs/12.5.0/';
+  let appSDK, authSDK, dbSDK;
+  try {
+    [appSDK, authSDK, dbSDK] = await Promise.all([
+      import(sdkBase + 'firebase-app.js'),
+      import(sdkBase + 'firebase-auth.js'),
+      import(sdkBase + 'firebase-firestore.js')
+    ]);
+  } catch(err) {
+    console.error('Firebase SDK niet geladen:', err);
+    bridge.status('⚠ Online koppeling niet beschikbaar. Controleer internet en Firebase.');
+    return;
+  }
+  const {initializeApp} = appSDK;
+  const {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} = authSDK;
+  const {getFirestore,collection,doc,onSnapshot,runTransaction,setDoc,serverTimestamp} = dbSDK;
+  const app = initializeApp(config);
+  const auth = getAuth(app), db = getFirestore(app);
+  const roomRef = doc(db, 'rooms', 'karroesel');
+  const bonsRef = collection(db, 'rooms', 'karroesel', 'wbons');
+  const priceRef = doc(db, 'rooms', 'karroesel', 'settings', 'prices');
+  let unsubscribeRoom=null, unsubscribeBons=null;
+  let currentUser=null, room=null, bons=[], gotRoom=false, gotBons=false;
+  let priceQueue=Promise.resolve(), lastOperation=null, billTimer=null;
+  const ownerUid=String(window.KARROESEL_OWNER_UID||'').trim();
+  const at=()=>new Date().toISOString();
+  const randomId=()=>crypto.randomUUID ? crypto.randomUUID() : (Date.now()+'-'+Math.random());
+
+  function errorMessage(error) {
+    const code=String(error?.code||'');
+    if(code.includes('permission-denied'))return 'Geen toegang: controleer de UID’s in de Firestore-beveiligingsregels.';
+    if(code.includes('unavailable') || code.includes('offline'))return 'Geen verbinding met Firebase. Probeer het opnieuw zodra je online bent.';
+    if(code.includes('auth/invalid-credential') || code.includes('auth/wrong-password') || code.includes('auth/user-not-found'))return 'E-mailadres of wachtwoord niet herkend.';
+    if(code.includes('auth/too-many-requests'))return 'Te vaak geprobeerd. Probeer later opnieuw.';
+    return String(error?.message||'onbekende fout').slice(0,180);
+  }
+  function requireUser(){if(!currentUser)throw new Error('Log eerst in.');if(navigator.onLine===false)throw new Error('Je bent offline.');}
+  function newBon(serial=1,id=randomId()) {
+    return {id,kind:'wbon',name:'W-bon '+serial,startedAt:at(),events:[],billAmount:null,paidAt:null,closedAt:null,prices:{}};
+  }
+  function eventCounts(events) {
+    const c={};let setjes=0;
+    for(const e of events||[]) {
+      if(!e)continue;
+      const delta=e.delta===-1?-1:1,ids=e.kind==='setje'?['vaasje','wit']:(typeof e.id==='string'?[e.id]:[]);
+      for(const id of ids)c[id]=Math.max(0,(c[id]||0)+delta);
+      if(e.kind==='setje')setjes=Math.max(0,setjes+delta);
+    }
+    return {c,setjes};
+  }
+  function calcTotal(events, drinks) {
+    const {c}=eventCounts(events), prices=Object.fromEntries(drinks.map(d=>[d.id,d.price]));
+    let sum=0;
+    for(const [id,n] of Object.entries(c))if(typeof prices[id]==='number')sum+=prices[id]*n;
+    return Math.round(sum*100)/100;
+  }
+  async function initializeRoom() {
+    requireUser();
+    const firstRef=doc(bonsRef), first=newBon(1,firstRef.id);
+    await runTransaction(db,async tx=>{
+      const info=await tx.get(roomRef);
+      if(info.exists())return;
+      tx.set(firstRef,first);
+      tx.set(roomRef,{activeBonId:first.id,nextSerial:2,createdAt:at()});
+    });
+  }
+  function publishRoom() {
+    if(!gotBons || !gotRoom || !room || !room.activeBonId || !bons.some(b=>b.id===room.activeBonId))return;
+    bridge.bons(bons.map(b=>({...b,events:Array.isArray(b.events)?b.events:[]})),room.activeBonId);
+  }
+  function stopListeners() {
+    if(unsubscribeRoom)unsubscribeRoom();if(unsubscribeBons)unsubscribeBons();
+    unsubscribeRoom=null;unsubscribeBons=null;room=null;bons=[];gotRoom=false;gotBons=false;
+    clearTimeout(billTimer);
+  }
+  async function connectForUser(user) {
+    stopListeners();
+    const connUid=user.uid;
+    bridge.status('Gezamenlijke W-bon verbinden…');
+    try {
+      await initializeRoom();
+      if(!auth.currentUser || auth.currentUser.uid!==connUid)return;
+      unsubscribeRoom=onSnapshot(roomRef,snap=>{
+        room=snap.exists()?snap.data():null;gotRoom=true;publishRoom();
+      },err=>{console.error('Room listener',err);bridge.status('⚠ '+errorMessage(err));});
+      unsubscribeBons=onSnapshot(bonsRef,snap=>{
+        bons=snap.docs.map(x=>({...x.data(),id:x.id})).filter(x=>Array.isArray(x.events));
+        gotBons=true;publishRoom();
+      },err=>{console.error('Bonnen listener',err);bridge.status('⚠ '+errorMessage(err));});
+    } catch(err){console.error('Kan gedeelde W-bon niet starten',err);bridge.status('⚠ '+errorMessage(err));}
+  }
+  // Iedereen met de openbare GitHub-link mag de centrale prijzen lezen; alleen de beheerder mag wijzigen.
+  onSnapshot(priceRef,snap=>{
+    const data=snap.exists()?snap.data():null;
+    bridge.prices(Array.isArray(data?.drinks)?data.drinks:null,!!data);
+  },err=>{console.error('Prijslijst listener',err);bridge.status('⚠ Prijslijst niet bereikbaar. Controleer Firestore Rules.');});
+
+  async function updateCurrentBon(changer,expectedBonId) {
+    requireUser();
+    const result=await runTransaction(db,async tx=>{
+      const metaSnap=await tx.get(roomRef);
+      if(!metaSnap.exists())throw new Error('Gedeelde W-bon bestaat nog niet.');
+      const meta=metaSnap.data();
+      if(expectedBonId && meta.activeBonId!==expectedBonId)throw new Error('De W-bon is ondertussen op de andere telefoon afgesloten.');
+      const ref=doc(bonsRef,meta.activeBonId);
+      const snap=await tx.get(ref);
+      if(!snap.exists())throw new Error('Actieve W-bon ontbreekt.');
+      const bon=snap.data();
+      if(bon.paidAt || bon.closedAt)throw new Error('De W-bon is inmiddels afgesloten.');
+      const result=changer(bon,meta);
+      tx.update(ref,result.updates);
+      return {bonId:ref.id,...(result.output||{})};
+    });
+    return result;
+  }
+  async function addDrink({id,delta,expectedBonId}) {
+    const opId=randomId();
+    const result=await updateCurrentBon(bon=>{
+      const {c}=eventCounts(bon.events);
+      if(delta<0 && (c[id]||0)<=0)throw new Error('Dit drankje staat niet meer op de W-bon.');
+      if(!bridge.getPrices().some(d=>d.id===id))throw new Error('Onbekend drankje.');
+      return {updates:{events:[...bon.events,{id,delta:delta<0?-1:1,at:at(),actor:currentUser.uid,opId}]}};
+    },expectedBonId);
+    lastOperation={...result,opId};
+  }
+  async function addSetje({delta,expectedBonId}) {
+    const opId=randomId();
+    const result=await updateCurrentBon(bon=>{
+      const {c,setjes}=eventCounts(bon.events);
+      if(delta<0 && (!setjes || !c.vaasje || !c.wit))throw new Error('Er staat geen volledig Setje meer op de W-bon.');
+      return {updates:{events:[...bon.events,{kind:'setje',delta:delta<0?-1:1,at:at(),actor:currentUser.uid,opId}]}};
+    },expectedBonId);
+    lastOperation={...result,opId};
+  }
+  async function undo({expectedBonId}={}) {
+    if(!lastOperation)throw new Error('Geen eigen tik om te herstellen.');
+    const toUndo=lastOperation;
+    await updateCurrentBon((bon,meta)=>{
+      if(meta.activeBonId!==toUndo.bonId)throw new Error('De oude bon is inmiddels afgesloten.');
+      const last=bon.events.at(-1);
+      if(!last || last.opId!==toUndo.opId || last.actor!==currentUser.uid)throw new Error('Er is inmiddels een andere bestelling toegevoegd. Gebruik de minknop om te corrigeren.');
+      return {updates:{events:bon.events.slice(0,-1)}};
+    },expectedBonId);
+    lastOperation=null;
+  }
+  async function closeBon(paid,expectedBonId) {
+    requireUser();
+    const freshRef=doc(bonsRef),closeAt=at();
+    await runTransaction(db,async tx=>{
+      const mSnap=await tx.get(roomRef);
+      if(!mSnap.exists())throw new Error('Gedeelde bon bestaat niet.');
+      const meta=mSnap.data();
+      if(expectedBonId && meta.activeBonId!==expectedBonId)throw new Error('Deze bon is net op de andere telefoon afgesloten.');
+      const bonRef=doc(bonsRef,meta.activeBonId),bSnap=await tx.get(bonRef);
+      if(!bSnap.exists())throw new Error('W-bon niet gevonden.');
+      const bon=bSnap.data();
+      if(bon.paidAt || bon.closedAt)throw new Error('W-bon is al afgesloten.');
+      let prices=bridge.getPrices();
+      if(paid){
+        const priceSnap=await tx.get(priceRef);
+        if(priceSnap.exists() && Array.isArray(priceSnap.data().drinks))prices=priceSnap.data().drinks;
+      }
+      if(paid && Object.values(eventCounts(bon.events).c).reduce((a,b)=>a+b,0)===0)throw new Error('W-bon is leeg.');
+      const nextSerial=Number(meta.nextSerial)||2;
+      const snapshotPrices=Object.fromEntries(prices.map(x=>[x.id,x.price??null]));
+      const updates=paid?{paidAt:closeAt,paidTotal:calcTotal(bon.events,prices),prices:snapshotPrices}:{closedAt:closeAt};
+      tx.update(bonRef,updates);
+      tx.set(freshRef,newBon(nextSerial,freshRef.id));
+      tx.update(roomRef,{activeBonId:freshRef.id,nextSerial:nextSerial+1,updatedAt:closeAt});
+    });
+    lastOperation=null;
+  }
+  async function migrate(original) {
+    requireUser();
+    if(!original || !Array.isArray(original.events) || !original.events.length)throw new Error('Er is geen oude W-bon om over te nemen.');
+    if(original.events.length>1800)throw new Error('Te veel regels om in één keer over te nemen.');
+    await runTransaction(db,async tx=>{
+      const metaSnap=await tx.get(roomRef);
+      if(!metaSnap.exists())throw new Error('Gedeelde bon bestaat nog niet.');
+      const meta=metaSnap.data(),ref=doc(bonsRef,meta.activeBonId),snap=await tx.get(ref);
+      if(!snap.exists())throw new Error('Actieve bon ontbreekt.');
+      const bon=snap.data();
+      if(bon.paidAt || bon.closedAt || bon.events.length)throw new Error('De gezamenlijke bon is niet meer leeg. Oude bon daarom niet samengevoegd.');
+      const migrated=original.events.filter(e=>e && (e.kind==='setje'||typeof e.id==='string')).map(e=>({...e,opId:randomId(),actor:currentUser.uid}));
+      tx.update(ref,{events:migrated,billAmount:typeof original.billAmount==='number'?original.billAmount:null,importedAt:at(),importedBy:currentUser.uid});
+    });
+    bridge.migrated();
+  }
+  function bill(amount,expectedBonId) {
+    clearTimeout(billTimer);
+    billTimer=setTimeout(async()=>{
+      try {await updateCurrentBon(()=>({updates:{billAmount:amount}}),expectedBonId);}
+      catch(err){bridge.alert('Bonbedrag kon niet worden bijgewerkt: '+errorMessage(err));}
+    },650);
+  }
+  function savePrices(drinks) {
+    if(!currentUser || !ownerUid || currentUser.uid!==ownerUid)return Promise.reject(new Error('Alleen de beheerder mag prijzen wijzigen.'));
+    if(!Array.isArray(drinks) || drinks.length>300)return Promise.reject(new Error('Ongeldige prijslijst.'));
+    const clean=drinks.map(d=>({id:d.id,name:d.name,category:d.category,icon:d.icon||'🍺',favorite:!!d.favorite,hidden:!!d.hidden,price:d.price??null,sort:d.sort??999}));
+    priceQueue=priceQueue.catch(()=>{}).then(()=>setDoc(priceRef,{drinks:clean,updatedAt:serverTimestamp(),updatedBy:currentUser.uid}));
+    return priceQueue;
+  }
+  window.KarroeselOnlineActions={addDrink,addSetje,undo,pay:({expectedBonId})=>closeBon(true,expectedBonId),newBon:({expectedBonId})=>closeBon(false,expectedBonId),bill,savePrices,migrate:({original})=>migrate(original)};
+
+  onAuthStateChanged(auth,user=>{
+    currentUser=user;
+    lastOperation=null;
+    bridge.auth(user,user?.uid===ownerUid);
+    if(user){document.querySelector('#cloudLoginForm').classList.add('hide');document.querySelector('#cloudPassword').value='';void connectForUser(user);}
+    else stopListeners();
+  },err=>bridge.status('⚠ Aanmelden mislukt: '+errorMessage(err)));
+
+  document.querySelector('#cloudLoginForm').addEventListener('submit',async event=>{
+    event.preventDefault();
+    const button=document.querySelector('#cloudLoginSubmit');button.disabled=true;
+    document.querySelector('#cloudLoginError').classList.add('hide');
+    try {await signInWithEmailAndPassword(auth,document.querySelector('#cloudEmail').value.trim(),document.querySelector('#cloudPassword').value);}
+    catch(err){bridge.onAuthError(errorMessage(err));}
+    finally{button.disabled=false;}
+  });
+  document.querySelector('#cloudSignOut').addEventListener('click',async()=>{
+    try{await signOut(auth);}catch(err){bridge.alert(errorMessage(err));}
+  });
+})();
+
 </script>
 </body>
 </html>
