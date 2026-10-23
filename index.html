@@ -363,21 +363,26 @@
       .toast { bottom:79px; }
     }
     @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
-    .cloud-panel { margin:-8px 0 18px; padding:12px 16px; border:1px solid rgba(233,185,103,.4); background:linear-gradient(115deg,#20372a,#19281d); border-radius:14px; }
-    .cloud-line { display:flex; align-items:center; gap:11px; }
-    .cloud-icon { flex:none; font-size:24px; }
+    /* Compacte verbindingsstatus: de W-bon blijft direct boven de vouw zichtbaar. */
+    .cloud-panel { margin:-8px 0 12px; padding:7px 11px; border:1px solid rgba(233,185,103,.23); background:rgba(26,46,32,.65); border-radius:11px; }
+    .cloud-line { display:flex; align-items:center; gap:9px; min-height:28px; }
+    .cloud-icon { flex:none; width:8px; height:8px; background:#e9b967; border-radius:50%; box-shadow:0 0 0 3px rgba(233,185,103,.13); }
+    .cloud-panel.online .cloud-icon { background:#83cca0; box-shadow:0 0 0 3px rgba(131,204,160,.13); }
+    .cloud-panel.offline .cloud-icon { background:#e99a7b; }
     .cloud-copy { flex:1; min-width:0; }
-    .cloud-copy strong { display:block; color:#f6d9a0; font-size:13px; }
-    .cloud-copy small { display:block; color:#b8cfba; font-size:11px; margin-top:2px; }
-    .cloud-login { display:flex; flex-wrap:wrap; gap:11px; padding-top:16px; align-items:flex-end; }
+    .cloud-copy strong { display:block; color:#cbdcc9; font-size:12px; font-weight:650; line-height:1.35; }
+    .cloud-account-toggle { font-size:11px; min-height:27px; padding:4px 8px; color:#cbd8c5; border-color:transparent; }
+    .cloud-account-info { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:7px; padding:9px 2px 2px; border-top:1px solid rgba(237,222,184,.12); }
+    .cloud-account-info small { color:#c3d1bd; font-size:11px; overflow-wrap:anywhere; }
+    .cloud-login { display:flex; flex-wrap:wrap; gap:11px; padding:12px 0 4px; align-items:flex-end; border-top:1px solid rgba(237,222,184,.12); margin-top:6px; }
     .cloud-login label { min-width:180px; flex:1; font-size:12px; color:#d2dccd; font-weight:700; }
     .cloud-login input { display:block; width:100%; margin-top:5px; }
     .cloud-login-error { color:#ffbdb1; margin:8px 0 0; font-size:12px; }
-    .cloud-notice { margin:0 0 16px; padding:12px 15px; border-radius:12px; border:1px solid rgba(233,185,103,.4); background:#302f20; color:#ffe5b5; font-size:13px; }
+    .cloud-notice { margin:0 0 12px; padding:10px 13px; border-radius:11px; border:1px solid rgba(233,185,103,.4); background:#302f20; color:#ffe5b5; font-size:12px; }
     .cloud-notice button { margin:7px 0 0; display:block; }
     .price-readonly { opacity:.82; }
     .cloud-loading { opacity:.6; }
-    @media(max-width:640px){ .cloud-line { flex-wrap:wrap; } .cloud-copy{flex-basis:calc(100% - 42px)} .cloud-line>.btn{margin-left:36px} .cloud-login label { flex-basis:100%; } .cloud-login>.btn{width:100%} }
+    @media(max-width:640px){ .cloud-panel{margin:-3px 0 12px;} .cloud-copy strong{font-size:11px;} .cloud-login label { flex-basis:100%; } .cloud-login>.btn{width:100%} .cloud-account-info .btn{flex-shrink:0} }
   </style>
 </head>
 <body>
@@ -395,22 +400,24 @@
   </header>
 
   <nav class="tabs" aria-label="Hoofdmenu">
-    <button class="tab active" data-view="teller" type="button" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14l-2 17H7L5 3Z"/><path d="M6 9h12"/></svg> Teller</button>
-    <button class="tab" data-view="wbon" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m6.5 8 2.5 8 3-6 3 6 2.5-8"/></svg> W-bon</button>
+    <button class="tab active" data-view="wbon" type="button" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m6.5 8 2.5 8 3-6 3 6 2.5-8"/></svg> W-bon</button>
+    <button class="tab" data-view="teller" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14l-2 17H7L5 3Z"/><path d="M6 9h12"/></svg> Teller</button>
     <button class="tab" data-view="bon" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14v19l-3-2-4 2-4-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg> Boncheck</button>
     <button class="tab" data-view="prijzen" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M14.7 8.2a4.6 4.6 0 0 0-2.8-.8c-2.3 0-3.9 1.9-3.9 4.6 0 2.7 1.6 4.6 3.9 4.6a4.6 4.6 0 0 0 2.8-.8M6.4 11h6.9m-6.9 2.7h6.9"/></svg> Prijzen</button>
     <button class="tab" data-view="avonden" type="button" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h18M7 3v8M17 3v8M4 5h16v16H4V5Z"/><path d="m9 16 2 2 4-5"/></svg> Avonden</button>
   </nav>
 
   <div id="cloudPanel" class="cloud-panel hide" role="region" aria-label="Online verbinding">
-    <div class="cloud-line"><span class="cloud-icon">☁</span><span class="cloud-copy"><strong id="cloudStatus">Online koppeling voorbereiden</strong><small id="cloudStatusDetail">De losse avondbon werkt gewoon lokaal.</small></span>
-      <button id="cloudLoginToggle" type="button" class="btn btn-gold btn-sm">Inloggen</button><button id="cloudSignOut" type="button" class="btn btn-outline btn-sm hide">Uitloggen</button></div>
+    <div class="cloud-line"><span class="cloud-icon" aria-hidden="true"></span><span class="cloud-copy"><strong id="cloudStatus" role="status">Online koppeling voorbereiden</strong></span>
+      <button id="cloudAccountToggle" type="button" class="btn btn-plain btn-sm cloud-account-toggle hide" aria-controls="cloudAccountInfo" aria-expanded="false">Account ▾</button>
+      <button id="cloudLoginToggle" type="button" class="btn btn-gold btn-sm">Inloggen</button></div>
+    <div id="cloudAccountInfo" class="cloud-account-info hide"><small id="cloudStatusDetail">De losse avondbon werkt gewoon lokaal.</small><button id="cloudSignOut" type="button" class="btn btn-outline btn-sm hide">Uitloggen</button></div>
     <form id="cloudLoginForm" class="cloud-login hide" autocomplete="on"><label>E-mailadres <input id="cloudEmail" class="input" type="email" inputmode="email" autocomplete="username" required placeholder="naam@voorbeeld.nl" /></label><label>Wachtwoord <input id="cloudPassword" class="input" type="password" autocomplete="current-password" required placeholder="Wachtwoord" /></label><button id="cloudLoginSubmit" class="btn btn-gold" type="submit">Log in bij gedeelde bon</button></form>
     <p id="cloudLoginError" class="cloud-login-error hide" role="alert"></p>
   </div>
 
   <main>
-    <section id="view-teller" class="view active" aria-label="Drankjesteller">
+    <section id="view-teller" class="view" aria-label="Drankjesteller">
       <div class="hero">
         <div class="hero-top">
           <div><p class="eyebrow">● Jouw huidige bon</p><h1 id="currentEvening">Vanavond</h1><p class="hero-sub">Besteld? Tik op het drankje. Nog eentje? Tik opnieuw.</p></div>
@@ -432,7 +439,7 @@
       <div id="missingHint" class="subtle-note"></div>
     </section>
 
-    <section id="view-wbon" class="view" aria-label="Doorlopende W-bon">
+    <section id="view-wbon" class="view active" aria-label="Doorlopende W-bon">
       <div id="wCloudNotice" class="cloud-notice hide" aria-live="polite"><span id="wCloudText">Log in om de gezamenlijke W-bon te gebruiken.</span><button id="wMigrate" class="btn btn-outline btn-sm hide" type="button">↑ Mijn oude W-bon overnemen</button></div>
       <div class="wbon-hero">
         <div class="wbon-top">
@@ -517,7 +524,7 @@
       <div class="cols"><div class="panel"><h2>Eerdere tellingen</h2><div id="sessionList" class="session-list"></div><div class="secondary-actions"><button id="renameNight" class="btn btn-outline btn-sm">✎ Naam wijzigen</button><button id="deleteNight" class="btn btn-danger btn-sm">Verwijder geopende avond</button></div></div><div><div class="panel" style="margin-bottom:15px"><h2>Bewaar je gegevens</h2><p>De losse avondtellingen blijven op dit apparaat. Bij actieve online koppeling staan de prijslijst en W-bonnen centraal in Firebase. De back-up hieronder bewaart je lokale avonden; hij overschrijft de gedeelde W-bon niet.</p><div class="secondary-actions"><button id="exportBackup" class="btn btn-gold">↓ Back-up downloaden</button><button id="selectBackup" class="btn btn-outline">↑ Back-up terugzetten</button><input id="backupFile" type="file" accept=".json,application/json" hidden /></div></div><div class="info-card"><h3>🎱 Zo werkt de Kroegteller</h3><p>Eén tik telt één drankje. Met min corrigeer je een fout. De meeste getelde drankjes komen bovenaan. Met Boncheck vergelijk je de avond met de rekening. De W-bon telt apart door over meerdere avonden. Elke € 200 levert een W-tje op. ‘Setje’ telt meteen een vaasje én witte wijn. De knop Betaald sluit de W-bon af, bewaart hem en begint een nieuwe teller op nul. Bij een online koppeling worden de gedeelde prijslijst en W-bon opgeslagen in Firebase; losse avonden blijven lokaal.</p></div></div></div>
     </section>
   </main>
-  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.3 · Gedeelde W-bon met beveiligde toegang</footer>
+  <footer class="footer">Gemaakt voor <strong>Karroesel Hilversum</strong> · Kroegteller v1.4 · Gedeelde W-bon met beveiligde toegang</footer>
 </div>
 
 <div id="stickyTotal" class="sticky-total" aria-live="off"><div><div id="mobileHeadline" class="first">0 drankjes · € 0,00</div><div id="mobileSub" class="second">Tik om je drankjes te tellen</div></div><button id="mobileReceipt" type="button" class="btn btn-gold btn-sm">Boncheck →</button></div>
@@ -627,7 +634,7 @@
     } catch(e) { console.warn('Laden lokale gegevens mislukt',e); return initialState(); }
   }
   function validState(s) { return s && s.version===1 && Array.isArray(s.drinks) && Array.isArray(s.sessions) && s.sessions.length && s.drinks.every(d=>typeof d.id==='string' && typeof d.name==='string') && s.sessions.every(x=>typeof x.id==='string' && Array.isArray(x.events)) && typeof s.activeId==='string'; }
-  let state=loadState(), currentView='teller', activeCategory='Alles', search='', wActiveCategory='Alles', wSearch='', toastTimer=null, pendingImport=null;
+  let state=loadState(), currentView='wbon', activeCategory='Alles', search='', wActiveCategory='Alles', wSearch='', toastTimer=null, pendingImport=null;
   let lastUndoSessionId=null, wCelebrateTimer=null;
   const OLD_WBON_KEY = 'karroesel_oude_wbon_voor_online';
   const cloud = {enabled:false,ready:false,pricesReady:false,signedIn:false,owner:false,email:'',remoteActive:null,notice:''};
@@ -664,16 +671,24 @@
     }).catch(err=>showToast('Niet bijgewerkt: '+(err.message||'controleer de verbinding'),false,5500));
   }
   function refreshCloudUI(){
-    $('#cloudPanel').classList.toggle('hide',!cloud.enabled);
+    const panel=$('#cloudPanel');
+    panel.classList.toggle('hide',!cloud.enabled);
     if(!cloud.enabled)return;
+    const connectionWarning=Boolean(cloud.notice && cloud.notice.startsWith('⚠'));
+    panel.classList.toggle('online',cloud.signedIn && cloud.ready && !connectionWarning);
+    panel.classList.toggle('offline',connectionWarning);
     $('#cloudLoginToggle').classList.toggle('hide',cloud.signedIn);
+    $('#cloudAccountToggle').classList.toggle('hide',!cloud.signedIn);
     $('#cloudSignOut').classList.toggle('hide',!cloud.signedIn);
-    $('#cloudStatus').textContent=cloud.notice || (cloud.signedIn?(cloud.ready?'✓ Gezamenlijke W-bon verbonden':'W-bon verbinden…'):'Centrale prijslijst · aanmelden voor W-bon');
+    $('#cloudStatus').textContent=cloud.notice || (cloud.signedIn?(cloud.ready?'Samen online · W-bon verbonden':'W-bon verbinden…'):'W-bon · inloggen om samen te tellen');
     $('#cloudStatusDetail').textContent=cloud.signedIn ? `${cloud.email||'Ingelogd'} · ${cloud.owner?'beheerder':'medegebruiker'} · ${cloud.ready?'live synchronisatie':'verbinden...'}` : 'Prijzen voor iedereen beschikbaar · W-bon alleen voor jullie twee';
-    const banner=$('#wCloudNotice');banner.classList.remove('hide');
-    $('#wCloudText').textContent=cloud.ready?'✓ Dit is jullie gezamenlijke W-bon. Bestellingen worden direct met beide telefoons gedeeld.':cloud.signedIn?'De gezamenlijke W-bon wordt geladen. Tellen is tijdelijk geblokkeerd.':'Log hierboven in om jullie gezamenlijke W-bon te bekijken en bij te werken. Zonder login kun je wel je eigen avondbon tellen.';
     const previous=localWBonForImport(),now=state.wBons.find(w=>w.id===cloud.remoteActive);
-    $('#wMigrate').classList.toggle('hide',!(cloud.ready && previous && now && state.wBons.length===1 && !now.events.length && !now.paidAt));
+    const canMigrate=Boolean(cloud.ready && previous && now && state.wBons.length===1 && !now.events.length && !now.paidAt);
+    // Geen tweede grote uitlegkaart bij een werkende online verbinding.
+    const banner=$('#wCloudNotice');
+    banner.classList.toggle('hide',cloud.ready && !canMigrate && !cloud.notice);
+    $('#wCloudText').textContent=cloud.notice || (cloud.ready?'Je kunt je oude lokale W-bon eenmalig overnemen in jullie gezamenlijke W-bon.':cloud.signedIn?'De gezamenlijke W-bon wordt geladen. Tellen is tijdelijk geblokkeerd.':'Log hierboven in om jullie gezamenlijke W-bon te bekijken en bij te werken.');
+    $('#wMigrate').classList.toggle('hide',!canMigrate);
     $('#cloudPricesNotice').classList.remove('hide');
     $('#cloudPricesNotice').textContent=cloud.pricesReady?(cloud.owner?'✓ Prijslijst wordt centraal gedeeld. Jouw wijzigingen verschijnen bij iedereen.': '✓ Dit is de gezamenlijke prijslijst. Alleen de beheerder kan prijzen aanpassen.'): 'De centrale prijslijst wordt geladen. De beheerder kan prijzen instellen zodra deze is verbonden.';
     const canEdit=cloud.owner && cloud.pricesReady;
@@ -692,7 +707,11 @@
     },
     auth(user,owner=false){
       cloud.signedIn=!!user;cloud.owner=!!(user && owner);cloud.email=user?.email||'';
+      if(user)$('#cloudLoginForm').classList.add('hide');
       cloud.ready=false;cloud.notice='';
+      $('#cloudAccountInfo').classList.add('hide');
+      $('#cloudAccountToggle').setAttribute('aria-expanded','false');
+      $('#cloudAccountToggle').textContent='Account ▾';
       if(!user){cloud.remoteActive=null;state.wBons=[newWBon(1)];state.activeWBonId=state.wBons[0].id;}
       renderAll();refreshCloudUI();
     },
@@ -1446,6 +1465,12 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modalWrap').classList.contains('open'))closeModal();});
   $('#newDrinkCategory').innerHTML=CATEGORY.map(c=>`<option value="${c}">${c}</option>`).join('');
   $('#cloudLoginToggle').addEventListener('click',()=>{$('#cloudLoginForm').classList.toggle('hide');$('#cloudLoginError').classList.add('hide');});
+  $('#cloudAccountToggle').addEventListener('click',()=>{
+    const details=$('#cloudAccountInfo'),button=$('#cloudAccountToggle'),opening=details.classList.contains('hide');
+    details.classList.toggle('hide',!opening);
+    button.setAttribute('aria-expanded',String(opening));
+    button.textContent=opening?'Account ▴':'Account ▾';
+  });
   $('#wMigrate').addEventListener('click',()=>{
     const original=localWBonForImport();if(!original || !cloudReadyOrMessage())return;
     if(!confirm('Je eerder lokaal getelde W-bon online zetten? Dit kan alleen als de gezamenlijke W-bon nog leeg is.'))return;
